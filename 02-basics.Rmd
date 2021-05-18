@@ -1,0 +1,1285 @@
+# The basics {#thebasics}
+Let's start from the very beginning. This chapter acts as an introduction to R, which will show you how to install and work with R and RStudio.
+
+After working with the material in this chapter, you will be able to use R to:
+
+* Create reusable R scripts,
+* Store data in R,
+* Use functions in R to analyse data,
+* Install add-on packages adding additional features to R,
+* Compute descriptive statistics like the mean and the median,
+* Do mathematical calculations,
+* Create nice-looking plots, including scatterplots, boxplots, histograms and bar charts,
+* Find errors in your code.
+
+## Installing R and RStudio {#installation}
+To download R, go to the R Project website
+
+https://cran.r-project.org/mirrors.html
+
+Choose a _download mirror_, i.e. a server to download the software from. I recommend choosing a mirror close to you. You can then choose to download R for either Linux^[For many Linux distributions, R is also available from the package management system.], Mac or Windows by following the corresponding links (Figure 2.1).
+
+![A screenshot from the R download page at https://ftp.acc.umu.se/mirror/CRAN/](downloadr.png)
+
+The version of R that you should download is called the (base) binary. Download and run it to install R. You may see mentions of 64-bit and 32-bit versions of R; if you have a modern computer (which in this case means a computer from 2010 or later), you should go with the 64-bit version.
+
+You have now installed the R programming language. Working with it is easier with an _integrated development environment_, or IDE for short, which allows you to easily write, run and debug your code. This books is written for use with the RStudio\index{\texttt{RStudio}} IDE, but 99.9 % of it will work equally well with other IDE's, like Emacs with ESS or Jupyter notebooks.
+
+To download RStudio, go the the RStudio download page
+
+https://rstudio.com/products/rstudio/download/#download
+
+Click on the link to download the installer for your operating system, and then run it.
+
+## A first look at RStudio
+When you launch RStudio, you will see three or four panels:
+
+![The four RStudio panels.](rstudio2.png)
+
+1. The _Environment_ panel, where a list of the data you have imported and created can be found.
+2. The _Files_, _Plots_ and _Help_ panel, where you can see a list of available files, will be able to view graphs that you produce, and can find help documents for different parts of R.
+3. The _Console_ panel, used for running code. This is where we'll start with the first few examples.
+4. The _Script_ panel, used for writing code. This is where you'll spend most of your time working.
+
+If you launch RStudio by opening an file with R code, the _Script_ panel will appear, otherwise it won't. Don't worry if you don't see it at this point - you'll learn how to open it soon enough.
+
+The _Console_ panel will contain R's startup message, which shows information about which version of R you're running:
+
+```{r eval=FALSE}
+R version 4.0.0 (2020-04-24) -- "Arbor Day"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+```
+
+You can resize the panels as you like, either by clicking and dragging their borders or using the minimise/maximise buttons in the upper right corner of each panel.
+
+When you exit RStudio, you will be asked if you wish to _save your workspace_, meaning that the data that you're worked with will be stored so that it is available the next time you run R. That might sound like a good idea, but in general I recommend that you don't save your workspace, as that often turns out to cause problems down the line. It is almost invariably a much better idea to simply rerun the code you worked with in your next R session.
+
+
+## Running R code {#runningcode}
+Everything that we do in R revolves around _code_\index{code}. The code will contain instructions for how the computer should treat, analyse and manipulate^[The word manipulate has different meanings. Just to be perfectly clear: whenever I speak of _manipulating data_ in this book, I will mean _handling and transforming the data_, not tampering with it.] data\index{manipulating data}. Thus each line of code tells R to do something: compute a mean value, create a plot, sort a dataset, or something else.
+
+Throughout the text, there will be code chunks that you can paste into the Console panel. Here is a first example of such a code chunk. Type or copy the code into the console and press Enter on your keyboard:
+
+```{r eval=FALSE}
+1+1
+```
+
+Code chunks will frequently contain multiple lines. You can select and copy both lines from the digital version of this book and simultaneously paste them directly into the Console:
+
+```{r eval=FALSE}
+2*2
+1+2*3-5
+```
+
+As you can see, when you type the code into the Console panel and press Enter, R _runs_\index{running code} (or _executes_) the code and returns an answer. To get you started, the first exercise will have you write a line of code to perform a computation. You can find a [solution to this and other exercises at the end of the book, in Chapter \@ref(solutions)](#solutions).
+
+$$\sim$$
+
+```{exercise, label="ch2bexc1"}
+Use R to compute the product of the first ten integers: $1\cdot 2\cdot 3\cdot 4\cdot 5\cdot 6\cdot 7\cdot 8\cdot 9\cdot 10$.
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch2bsolutions1)
+
+
+
+
+
+### R scripts
+When working in the Console panel^[I.e. when the Console panel is active and you see a blinking text cursor in it.], you can use the up arrow ↑ on your keyboard to retrieve lines of code that you've previously used. There is however a much better way of working with R code: to put it in _script files_\index{scripts}. These are files containing R code, that you can save and then run again whenever you like.
+
+To create a new script file in RStudio, press Ctrl+Shift+N on your keyboard, or select _File > New File > R Script_ in the menu\index{scripts!creating new}. This will open a new Script panel (or a new tab in the Script panel, in case it was already open). You can then start writing your code in the Script panel. For instance, try the following:
+
+```{r eval=FALSE}
+1+1
+2*2
+1+2*3-5
+(1+2)*3-5
+```
+
+In the Script panel, when you press Enter, you insert a new line instead of running the code. That's because the Script panel is used for _writing_ code rather than _running_ it. To actually run the code, you must send it to the Console panel. This can be done in several ways. Let's give them a try to see which you prefer.
+
+To run the entire script do one of the following\index{scripts!running}:
+
+* Press the Source button at the upper right corner of the Script panel.
+* Press Ctrl+Shift+Enter on your keyboard.
+* Press Ctrl+Alt+Enter on your keyboard to run the code without printing the code and its output in the console.
+
+To run a part of the script, first select the lines that you wish to run, e.g. by highlighting them using your mouse. Then do one of the following:
+
+* Press the Run button at the upper right corner of the Script panel.
+* Press Ctrl+Enter on your keyboard (this is how I usually do it!).
+
+To save your script, click the Save icon, choose _File > Save_ in the menu or press Ctrl+S. R script files should have the file extension `.R`, e.g. `My first R script.R`. Remember to save you work often, and to save your code for all the examples and exercises in this book - you will likely want to revisit old examples in the future, to see how something was done.
+
+
+
+## Variables and functions {#varsandfuncs}
+Of course, R is so much more than just a fancy calculator. To unlock its full potential, we need to discuss two key concepts: _variables_ (used for storing data) and _functions_ (used for doing things with the data).
+
+### Storing data
+Without data, no data analytics. So how can we store and read data in R? The answer is that we use _variables_\index{variable}. A variable is a name used to store data, so that we can refer to a dataset when we write code. As the name _variable_ implies, what is stored can change over time^[If you are used to programming languages like C or Java, you should note that R is _dynamically typed_, meaning that the data type of an R variable also can change over time. This also means that there is no need to declare variable types in R (which is either liberating or terrifying, depending on what type of programmer you are).].
+
+The code
+
+```{r eval=FALSE}
+x <- 4
+```
+
+is used to _assign_ the value `4` to the _variable_ `x`\index{assignment}\index{\texttt{<-}}. It is read as "assign `4` to `x`". The `<-` part is made by writing a less than sign (`<`) and a hyphen (`-`) with no space between them^[In RStudio, you can also create the assignment operator `<-` by using the keyboard shortcut Alt+- (i.e. press Alt and the - button at the same time).].
+
+If we now type `x` in the console, R will return the answer `4`, or, rather, R returns the rather cryptic output:
+
+```{eval=FALSE}
+[1] 4
+```
+
+The meaning of the `4` is clear - it's a 4. We'll return to what the `[1]` part means soon.
+
+Now that we've created a variable, called `x`, and assigned a value (4) to it, `x` will have the value 4 whenever we use it again. This works just like a mathematical formula, where we for instance can insert the value $x=4$ into the formula $x+1$. The following two lines of code will compute $x+1=4+1=5$ and $x+x=4+4=8$:
+
+```{r eval=FALSE}
+x + 1
+x + x
+```
+
+Once we have assigned a value to `x`, it will appear in the Environment panel in RStudio, where you can see both the variable's name and its value.
+
+The left-hand side of the assignment `x <- 4` is always the name of a variable, but the right-hand side can be any piece of code that creates some sort of object to be stored in the variable. For instance, we could perform a computation on the right-hand side and then store the result in the variable:
+
+```{r eval=FALSE}
+x <- 1 + 2 + 3 + 4
+```
+
+R first evaluates the entire right-hand side, which in this case amounts to computing 1+2+3+4, and then assigns the result (10) to `x`. Note that the previous value assigned to `x` (i.e. `4`) now has been replaced by `10`. After a piece of code has been run, the values of the variables affected by it will have changed. There is no way to revert the run and get that `4` back, save to rerun the code that generated it in the first place.
+
+You'll notice that in the code above, I've added some spaces, for instance between the numbers and the plus signs. This is simply to improve readability. The code works just as well without spaces:
+
+```{r eval=FALSE}
+x<-1+2+3+4
+```
+
+or with spaces in some places but not in others:
+
+```{r eval=FALSE}
+x<- 1+2+3 + 4
+```
+
+However, you can not place a space in the middle of the `<-` arrow. The following will not assign a value to `x`:
+
+```{r eval=FALSE}
+x < - 1 + 2 + 3 + 4
+```
+
+Running that piece of code rendered the output `FALSE`. This is because `< -` with a space has a different meaning than `<-` in R, one that we shall return to in the next chapter.
+
+In rare cases, you may want to switch the direction of the arrow, so that the variable names is on the right-hand side. This is called right-assignment and works just fine too\index{\texttt{->}}:
+
+```{r eval=FALSE}
+2 + 2 -> y
+```
+
+Later on, we'll see plenty of examples where right-assignment comes in handy.
+
+$$\sim$$
+
+```{exercise, label="ch2bexc2"}
+Do the following using R:
+
+1. Compute the sum $924+124$ and assign the result to a variable named `a`.
+
+2. Compute $a\cdot a$.
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch2bsolutions2)
+
+
+
+### What's in a name?
+You now know how to assign values to variables. But what should you call your variables? Of course, you can follow the examples in the previous section and give your variables names like `x`, `y`, `a` and `b`. However, you don't have to use single-letter names, and for the sake of readability it is often preferable to give your variables more informative names. Compare the following two code chunks:
+
+```{r eval=FALSE}
+y <- 100
+z <- 20
+x <- y - z
+```
+
+and
+
+```{r eval=FALSE}
+income <- 100
+taxes <- 20
+net_income <- income - taxes
+```
+
+Both chunks will run without any errors and yield the same results, and yet there is a huge difference between them. The first chunk is opaque - in no way does the code help us conceive _what it actually computes_. On the other hand, it is perfectly clear that the second chunk is used to compute a net income by subtracting taxes from income. You don't want to be a chunk-one type R user, who produces impenetrable code with no clear purpose. You want to be a chunk-two type R user, who writes clear and readable code where the intent of each line is clear. Take it from me - for years I was a chunk-one guy. I managed to write a lot of useful code, but whenever I had to return to my old code to reuse it or fix some bug, I had difficulties understanding what each line was supposed to do. My new life as a chunk-two guy is better in every way.
+
+So, what's in a name? Shakespeare's balcony-bound Juliet\index{Juliet} would have us believe that that which we call a rose by any other name would smell as sweet. Translated to R practice, this means that your code will run just fine no matter what names you choose for your variables. But when you or somebody else reads your code, it will help greatly if you call a rose a rose and not `x` or `my_new_variable_5`.
+
+You should note that R is case-sensitive, meaning that `my_variable`, `MY_VARIABLE`, `My_Variable` and `mY_VariABle` all are treated as different variables. To access the data stored in a variable, you must use its exact name - including lower- and uppercase letters in the right places. Writing the wrong variable name is one of the most common errors in R programming. \index{variable!name}
+
+You'll frequently find yourself wanting to compose variable names out of multiple words, as we did with `net_income`. However, R does not allow spaces in variable names, and so `net income` would not be a valid variable name. There are a few different naming conventions that can be used to name your variables\index{naming conventions}:
+
+* `snake_case`, where words are separated by an underscore (`_`). Example: `househould_net_income`.
+* `camelCase` or `CamelCase`, where each new word starts with a capital letter. Example: `househouldNetIncome` or `HousehouldNetIncome`.
+* `period.case`, where each word is separated by a period (`.`). You'll find this used a lot in R, but I'd advise that you don't use it for naming variables, as a period in the middle of a name can have a different meaning in more advanced cases^[Specifically, the period is used to separate methods and classes in object-oriented programming, which is hugely important in R (although you can use R for several years without realising this).]. Example: `household.net.income`.
+* `concatenatedwordscase`, where the words are concatenated using only lowercase letters. Adownsidetothisconventionisthatitcanmakevariablenamesverydifficultoreadsousethisatyourownrisk. Example: `householdnetincome`
+* `SCREAMING_SNAKE_CASE`, which mainly is used in Unix shell scripts these days. You can use it in R if you like, although you will run the risk of making others think that you are either angry, super excited or stark staring mad^[I find myself using screaming snake case on occasion. Make of that what you will.]. Example: `HOUSEHOULD_NET_INCOME`.
+
+Some characters, including spaces, `-`, `+`, `*`, `:`, `=`, `!` and `$` are not allowed in variable names, as these all have other uses in R. The plus sign `+`, for instance, is used for addition (as you would expect), and allowing it to be used in variable names would therefore cause all sorts of confusion. In addition, variable names can't start with numbers. Other than that, it is up to you how you name your variables and which convention you use. Remember, your variable will smell as sweet regardless of what name you give it, but using a good naming convention will improve readability^[I recommend `snake_case` or `camelCase`, just in case that wasn't already clear.].
+
+Another great way to improve the readability of your code is to use _comments_\index{comments}\index{\texttt{\#}}. A comment is a piece of text, marked by `#`, that is ignored by R. As such, it can be used to explain what is going on to people who read your code (including future you) and to add instructions for how to use the code. Comments can be placed on separate lines or at the end of a line of code. Here is an example:
+
+```{r eval=FALSE}
+#############################################################
+#  This lovely little code snippet can be used to compute   #
+#                   your net income.                        #
+#############################################################
+
+# Set income and taxes:
+income <- 100  # Replace 100 with your income
+taxes <- 20    # Replace 20 with how much taxes you pay
+
+# Compute your net income:
+net_income <- income - taxes
+# Voilà!
+```
+
+In the Script panel in RStudio, you can comment and uncomment (i.e. remove the `#` symbol) a row by pressing Ctrl+Shift+C on your keyboard. This is particularly useful if you wish to comment or uncomment several lines - simply select the lines and press Ctrl+Shift+C.\newline
+
+$$\sim$$
+
+```{exercise, label="ch2bexc3"}
+Answer the following questions:
+```
+
+1. What happens if you use an invalid character in a variable name? Try e.g. the following:
+  
+```{r eval=FALSE}
+net income <- income - taxes
+net-income <- income - taxes
+ca$h <- income - taxes
+```
+
+2. What happens if you put R code as a comment? E.g.:
+
+```{r eval=FALSE}
+income <- 100
+taxes <- 20
+net_income <- income - taxes
+# gross_income <- net_income + taxes
+```
+
+3. What happens if you remove a line break and replace it by a semicolon `;`\index{\texttt{;}}? E.g.:
+
+```{r eval=FALSE}
+income <- 200; taxes <- 30
+```
+
+4. What happens if you do two assignments on the same line? E.g.:
+
+```{r eval=FALSE}
+income2 <- taxes2 <- 100
+```
+
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch2bsolutions3)
+
+
+
+
+### Vectors and data frames
+Almost invariably, a data scientist deals with more than one figure at a time. For instance, we may have a list of the ages of customers at a bookstore:
+
+$$28, 48, 47, 71, 22, 80, 48, 30, 31$$
+Of course, we could store each observation in a separate variable:
+
+```{r eval=FALSE}
+age_person_1 <- 28
+age_person_2 <- 48
+age_person_3 <- 47
+# ...and so on
+```
+
+...but this quickly becomes awkward. A much better solution is to store the entire list in just one variable. In R, such a list is called a _vector_\index{\texttt{c}}\index{vector}. We can create a vector using the following code, where `c` stands for _combine_:
+
+```{r eval=FALSE}
+age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
+```
+
+The numbers in the vector are called _elements_\index{element}. We can treat the vector variable `age` just as we treated variables containing a single number. The difference is that the operations will apply to all elements in the list. So for instance, if we wish to express the ages in months rather than years, we can convert all ages to months using:
+
+```{r eval=FALSE}
+age_months <- age * 12
+```
+
+Most of the time, data will contain measurements of more than one quantity. In the case of our bookstore customers, we also have information about the amount of money they spent on their last purchase:
+
+$$20, 59, 2, 12, 22, 160, 34, 34, 29$$
+
+First, let's store this data in a vector:
+
+```{r eval=FALSE}
+purchase <- c(20, 59, 2, 12, 22, 160, 34, 34, 29)
+```
+
+It would be nice to be able to combine these two vectors into a table, like we would do in a spreadsheet software such as Excel. That would allow us to look at relationships between the two vectors - perhaps we could find some interesting patterns? In R, tables of vectors are called _data frames_. We can combine the two vectors into a data frame as follows\index{\texttt{data.frame}}\index{\texttt{bookstore}}:
+
+```{r eval=FALSE}
+bookstore <- data.frame(age, purchase)
+```
+
+If you type `bookstore` into the Console, it will show a simply formatted table with the values of the two vectors (and row numbers):
+
+```{r eval=FALSE}
+> bookstore
+  age purchase
+1  28       20
+2  48       59
+3  47        2
+4  71       12
+5  22       22
+6  80      160
+7  48       34
+8  30       34
+9  31       29
+```
+
+A better way to look at the table may be to click on the variable name `bookstore` in the Environment panel, which will open the data frame in a spreadsheet format.
+
+You will have noticed that R tends to print a `[1]` at the beginning of the line when we ask it to print the value of a variable:\index{\texttt{{[} 1{]}}}
+
+```{r eval=FALSE}
+> age
+[1] 28 48 47 71 22 80 48 30 31
+```
+
+Why? Well, let's see what happens if we print a longer vector:
+
+```{r eval=FALSE}
+# When we enter data into a vector, we can put line breaks between
+# the commas:
+distances <- c(687, 5076, 7270, 967, 6364, 1683, 9394, 5712, 5206,
+               4317, 9411, 5625, 9725, 4977, 2730, 5648, 3818, 8241,
+               5547, 1637, 4428, 8584, 2962, 5729, 5325, 4370, 5989,
+               9030, 5532, 9623)
+distances
+```
+
+Depending on the size of your Console panel, R will require different number of rows to display the data in `distances`. The output will look something like this:
+
+```{r eval=FALSE}
+> distances
+ [1]  687 5076 7270  967 6364 1683 9394 5712 5206 4317 9411 5625 9725
+[14] 4977 2730 5648 3818 8241 5547 1637 4428 8584 2962 5729 5325 4370
+[27] 5989 9030 5532 9623
+```
+
+or, if you have a narrower panel,
+
+```{r eval=FALSE}
+> distances
+ [1]  687 5076 7270  967 6364 1683 9394
+ [8] 5712 5206 4317 9411 5625 9725 4977
+[15] 2730 5648 3818 8241 5547 1637 4428
+[22] 8584 2962 5729 5325 4370 5989 9030
+[29] 5532 9623
+```
+
+The numbers within the square brackets - `[1]`, `[8]`, `[15]`, and so on - tells us which _elements_ of the vector that are printed first on each row. So in the latter example, the first element in the vector is `687`, the 8th element is `5712`, the 15th element is `2730`, and so forth. Those numbers, called the _indices_\index{index} of the elements, aren't exactly part of your data, but as we'll see later they are useful for keeping track of it.
+
+This also tells you something about the inner workings of R. The fact that 
+
+```{r eval=FALSE}
+x <- 4
+x
+```
+
+renders the output
+
+```{r eval=FALSE}
+> x
+[1] 4
+```
+
+tells us that `x` in fact is a vector, albeit with a single element. In fact, almost everything in R is a vector, in one way or another.
+
+Being able to put data on multiple lines when creating vectors is hugely useful, but can also cause problems if you forget to include the closing bracket `)`. Try running the following code, where the final bracket is missing, in your Console panel:
+
+```{r eval=FALSE}
+distances <- c(687, 5076, 7270, 967, 6364, 1683, 9394, 5712, 5206,
+               4317, 9411, 5625, 9725, 4977, 2730, 5648, 3818, 8241,
+               5547, 1637, 4428, 8584, 2962, 5729, 5325, 4370, 5989,
+               9030, 5532, 9623
+```
+
+When you hit Enter, a new line starting with a `+`\index{\texttt{+}} sign appears. This indicates that R doesn't think that your statement has finished. To finish it, type `)` in the Console and then press Enter.
+
+Vectors and data frames are hugely important when working with data in R. Chapters \@ref(datachapter) and \@ref(messychapter) are devoted to how to work with these objects.\newline
+
+$$\sim$$
+
+```{exercise, label="ch2bexc4"}
+Do the following:
+
+1. Create two vectors, `height` and `weight`, containing the heights and weights of five fictional people (i.e. just make up some numbers!).
+
+2. Combine your two vectors into a data frame.
+
+You will use these vectors in Exercise \@ref(exr:ch2bexc5).
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch2bsolutions4)
+
+
+<br>
+
+```{exercise, label="ch2bexc4b"}
+Try creating a vector using `x <- 1:5`. What happens? What happens if you use `5:1` instead? How can you use this notation to create the vector $(1,2,3,4,5,4,3,2,1)$?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch2bsolutions4b)
+
+
+
+### Functions
+You have some data. Great. But simply having data is not enough - you want to _do_ something with it. Perhaps you want to draw a graph, compute a mean value or apply some advanced statistical model to it. To do so, you will use a _function_\index{function}.
+
+A function is a ready-made set of instructions - code - that tells R to do something. There are thousands of functions in R. Typically, you insert a variable into the function and it returns an answer. The code for doing this follows the pattern `function_name(variable_name)`. As a first example, consider the function `mean`, which computes the mean of a variable\index{\texttt{mean}}\index{mean}:
+
+```{r eval=FALSE}
+# Compute the mean age of bookstore customers
+age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
+mean(age)
+```
+
+Note that the code follows the pattern `function_name(variable_name)`: the name of the function is `mean` and the name of the variable is `age`.
+
+Some functions take more than one variable as input, and may also have additional _arguments_\index{function!arguments/parameters/input} (or _parameters_) that you can use to control the behaviour of the function. One such example is `cor`\index{\texttt{cor}}\index{correlation}, which computes the correlation between two variables:
+
+```{r eval=FALSE}
+# Compute the correlation between the variables age and purchase
+age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
+purchase <- c(20, 59, 2, 12, 22, 160, 34, 34, 29)
+cor(age, purchase)
+```
+
+The answer, $0.59$ means that there appears to be a fairly strong positive correlation between age and the size of the purchase, which implies that older customers tend to spend more. On the other hand, just by looking at the data we can see that the oldest customer - aged 80 - spent much more than anybody else - 160 monetary units. It can happen that such _outliers_ strongly influence the computation of the correlation. By default, `cor` uses the Pearson correlation formula, which is known to be sensitive to outliers. It is therefore of interest to also perform the computation using a formula that is more robust to outliers, such as the Spearman correlation. This can be done by passing and additional _argument_ to `cor`, telling it which method to use for the computation:
+
+```{r eval=FALSE}
+cor(age, purchase, method = "spearman")
+```
+
+The resulting correlation, $0.35$ is substantially lower than the previous result. Perhaps the correlation isn't all that strong after all.
+
+So, how can we know what arguments to pass to a function? Luckily, we don't have to memorise all possible arguments for all functions. Instead, we can look at the _documentation_\index{documentation}\index{help file}\index{\texttt{?}}, i.e. help file, for a function that we are interested in. This is done by typing `?function_name` in the Console panel, or doing a web search for `R function_name`. To view the documentation for the `cor` function, type:
+
+```{r eval=FALSE}
+?cor
+```
+
+The documentation for R functions all follow the same pattern:
+
+* _Description_: a short (and sometimes quite technical) description of what the function does.
+* _Usage_: an abstract example of how the function is used in R code.
+* _Arguments_: a list and description of the input arguments for the function.
+* _Details_: further details about how the function works.
+* _Value_: information about the output from the function.
+* _Note_: additional comments from the function's author (not always included).
+* _References_: references to papers or books related to the function (not always included).
+* _See Also_: a list of related functions.
+* _Examples_: practical (and sometimes less practical) examples of how to use the function.
+
+The first time that you look at the documentation for an R function, all this information can be a bit overwhelming. Perhaps even more so for `cor`, which is a bit unusual in that it shares its documentation page with three other (heavily related) functions: `var`, `cov` and `cov2cor`. Let the section headlines guide you when you look at the documentation. What information are you looking for? If you're just looking for an example of how the function is used, scroll down to Examples. If you want to know what arguments are available, have a look at Usage and Arguments.
+
+Finally, there are a few functions which don't require any input at all, because they don't do anything with your variables. One such example is `Sys.time()`\index{\texttt{Sys.time()}} which prints the current time on your system:
+
+```{r eval=FALSE}
+Sys.time()
+```
+
+Note that even though `Sys.time` doesn't require any input, you still have to write the parentheses `()`, which tells R that you want to run a function.
+
+$$\sim$$
+
+```{exercise, label="ch2bexc5"}
+Using the data you created in Exercise \@ref(exr:ch2bexc4), do the following:
+
+1. Compute the mean height of the people.
+
+2. Compute the correlation between height and weight.
+
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch2bsolutions5)
+
+
+<br>
+
+```{exercise, label="ch2bexc6"}
+Do the following:
+
+1. Read the documentation for the function `length`\index{\texttt{length}}. What does it do? Apply it to your `height` vector.
+
+2. Read the documentation for the function `sort`. What does it do? What does the argument `decreasing` (the values of which can be either `FALSE` or `TRUE`) do? Apply the function to your `weight` vector.
+
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch2bsolutions6)
+
+
+
+### Mathematical operations {#maths}
+To perform addition, subtraction, multiplication and division in R, we can use the standard symbols `+`, `-`, `*`, `/`. As in mathematics, expressions within parentheses are evaluated first, and multiplication is performed before addition. So `1 + 2*(8/2)` is $1+2\cdot(8/2)=1+2\cdot 4=1+8=9$.
+
+In addition to these basic arithmethic operators, R has a number of mathematical functions that you can apply to your variables, including square roots, logarithms and trigonometric functions. Below is an incomplete list, showing the syntax for using the functions on a variable `x`. Throughout, `a` is supposed to be a number.\index{mathematical operators}\index{\texttt{abs}}\index{\texttt{sqrt}}\index{\texttt{log}}\index{\texttt{exp}}\index{\texttt{sin}}\index{\texttt{sum}}\index{\texttt{prod}}\index{\texttt{pi}}\index{\texttt{factorial}}\index{\texttt{choose}}\index{\texttt{\%\%}}
+
+* `abs(x)`: computes the absolute value $|x|$.
+* `sqrt(x)`: computes $\sqrt{x}$.
+* `log(x)`: computes the logarithm of $x$ with the natural number $e$ as the base.
+* `log(x, base = a)`: computes the logarithm of $x$ with the number $a$ as the base.
+* `a^x`: computes $a^x$.
+* `exp(x)`: computes $e^x$.
+* `sin(x)`: computes $\sin(x)$.
+* `sum(x)`: when `x` is a vector $x=(x_1,x_2,x_3,\ldots,x_n)$, computes the sum of the elements of `x`: $\sum_{i=1}^nx_i$.
+* `prod(x)`: when `x` is a vector $x=(x_1,x_2,x_3,\ldots,x_n)$, computes the product of the elements of `x`: $\prod_{i=1}^nx_i$.
+* `pi`: a built-in variable with value $\pi$, the ratio of the circumference of a circle to its diameter.
+* `x %% a`: computes $x$ modulo $a$.
+* `factorial(x)`: computes $x!$.
+* `choose(n,k)`: computes ${n}\choose{k}$.
+
+
+$$\sim$$
+
+```{exercise, label="ch2bexc7"}
+Compute the following:
+
+1. $\sqrt{\pi}$
+
+2. $e^2\cdot log(4)$
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch2bsolutions7)
+
+
+<br>
+
+
+```{exercise, label="ch2bexc8"}
+R will return non-numerical answers if you try to perform computations where the answer is infinite or undefined. Try the following to see some possible results:
+
+1. Compute $1/0$.
+
+2. Compute $0/0$.
+
+3. Compute $\sqrt{-1}$.
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch2bsolutions8)
+
+
+## Packages
+R comes with a ton of functions, but of course these cannot cover all possible things that you may want to do with your data. That's where _packages_\index{package} come in. Packages are collections of functions and datasets that add new features to R. Do you want to apply some obscure statistical test to your data? Plot your data on a map? Run C++ code in R? Speed up some part of your data handling process? There are R packages for that. In fact, with more than 15,000 packages and counting, there are R packages for just about anything that you could possibly want to do. All packages have been contributed by the R community - that is, by users like you and me.
+
+Most R packages are available from CRAN, the official R repository - a network of servers (so-called _mirrors_) around the world. Packages on CRAN are checked before they are published, to make sure that they do what they are supposed to do and don't contain malicious components. Downloading packages from CRAN is therefore generally considered to be safe.
+
+In the rest of this chapter, we'll make use of a package called `ggplot2`, which adds additional graphical features to R. To install the package from CRAN, you can either select _Tools > Install packages_ in the RStudio menu and then write `ggplot2` in the text box in the pop-up window that appears, or use the following line of code\index{package!installing}\index{\texttt{install.packages}}:
+
+```{r eval=FALSE}
+install.packages("ggplot2")
+```
+
+A menu may appear where you are asked to select the location of the CRAN mirror to download from. Pick the one the closest to you, or just use the default option - your choice can affect the download speed, but will in most cases not make much difference. There may also be a message asking whether to create a folder for your packages, which you should agree to do.
+
+As R downloads and installs the packages, a number of technical messages are printed in the Console panel (an example of what these messages can look like during a successful installation is found in Section \@ref(installationmessages)). `ggplot2` depends on a number of packages that R will install for you, so expect this to take a few minutes. If the installation finishes successfully, it will finish with a message saying:
+
+```{r eval=FALSE}
+* DONE (ggplot2)
+```
+
+Or, on some systems,
+
+```{r eval=FALSE}
+package ‘ggplot2’ successfully unpacked and MD5 sums checked
+```
+
+If the installation fails for some reason, there will usually be a (sometimes cryptic) error message. You can read more about troubleshooting errors in Section \@ref(troubleshooting). There is also a list of common problems when installing packages available on the RStudio support page at https://support.rstudio.com/hc/en-us/articles/200554786-Problem-Installing-Packages.
+
+After you've installed the package, you're still not finished quite yet. The package may have been installed, but its functions and datasets won't be available until you _load_ it.\index{\texttt{library}}\index{package!load} This is something that you need to do each time that you start a new R session. Luckily, it is done with a single short line of code using the `library` function^[The use of `library` causes people to erroneously refer to R packages as _libraries_. Think of the library as the place where you store your packages, and calling `library` means that you go to your library to fetch the package.], that I recommend putting at the top of your script file:
+
+```{r eval=FALSE}
+library(ggplot2)
+```
+
+We'll discuss more details about installing and updating R packages in Section \@ref(moreonpackages).
+
+
+## Descriptive statistics {#descstats}
+In the remainder of this chapter, we will study two datasets that are shipped with the `ggplot2` package:
+
+* `diamonds`: describing the prices of more than 50,000 cut diamonds.
+* `msleep`: describing the sleep times of 83 mammals.
+
+These, as well as some other datasets, are automatically loaded as data frames when you load `ggplot2`:
+
+```{r eval=FALSE}
+library(ggplot2)
+```
+
+To begin with, let's explore the `msleep` dataset. To have a first look at it, type the following in the Console panel\index{data!\texttt{msleep}}:
+
+```{r eval=FALSE}
+msleep
+```
+
+That shows you the first 10 rows of the data, and some of its columns. It also gives another important piece of information: `83 x 11`, meaning that the dataset has 83 rows (i.e. 83 observations) and 11 columns (with each column corresponding to a variable in the dataset).
+
+There are however better methods for looking at the data. To view all 83 rows and all 11 variables, use:
+
+```{r eval=FALSE}
+View(msleep)
+```
+
+You'll notice that some cells have the value `NA` instead of a proper value.\index{\texttt{NA}}\index{missing data} `NA` stands for Not Available, and is a placeholder used by R to point out _missing data_. In this case, it means that the value is unknown for the animal.
+
+To find information about the data frame containing the data, some useful functions are\index{\texttt{head}}\index{\texttt{tail}}\index{\texttt{dim}}\index{\texttt{str}}\index{\texttt{names}}:
+
+```{r eval=FALSE}
+head(msleep)
+tail(msleep)
+dim(msleep)
+str(msleep)
+names(msleep)
+```
+
+`dim` returns the numbers of rows and columns of the data frame, whereas `str` returns information about the 11 variables. Of particular importance are the _data types_ of the variables (`chr` and `num`, in this instance), which tells us what kind of data we are dealing with (numerical, categorical, dates, or something else). We'll delve deeper into data types in Chapter \@ref(datachapter). Finally, `names` returns a vector containing the names of the variables.
+
+Like functions, datasets that come with packages have documentation describing them. The documentation for `msleep` gives a short description of the data and its variables. Read it to learn a bit more about the variables:
+
+```{r eval=FALSE}
+?msleep
+```
+
+Finally, you'll notice that `msleep` isn't listed among the variables in the Environment panel in RStudio. To include it there, you can run\index{\texttt{data}}:
+
+```{r eval=FALSE}
+data(msleep)
+```
+
+### Numerical data
+Now that we know what each variable represents, it's time to compute some statistics. A convenient way to get some descriptive statistics giving a summary of each variable is to use the `summary` function\index{\texttt{summary}}\index{descriptive statistics}:
+
+```{r eval=FALSE}
+summary(msleep)
+```
+
+For the text variables, this doesn't provide any information at the moment. But for the numerical variables, it provides a lot of useful information. For the variable `sleep_rem`, for instance, we have the following:
+
+```{r eval=FALSE}
+  sleep_rem  
+Min.   :0.100
+1st Qu.:0.900
+Median :1.500
+Mean   :1.875
+3rd Qu.:2.400
+Max.   :6.600
+NA's   :22
+```
+
+This tells us that the mean of `sleep_rem` is `1.875`, that smallest value  is `0.100` and that the largest is `6.600`. The 1st quartile^[The first quartile is a value such that 25 % of the observations are smaller than it; the 3rd quartile is a value such that 25 % of the observations are larger than it.] is `0.900`, the median is `1.500` and the third quartile is `2.400`. Finally, there are 22 animals for which there are no values (missing data - represented by `NA`).
+
+Sometimes we want to compute just one of these, and other times we may want to compute summary statistics not included in `summary`. Let's say that we want to compute some descriptive statistics for the `sleep_total` variable. \index{data frame!extract vector from}\index{\texttt{\$}} To access a vector inside a data frame, we use a dollar sign: `data_frame_name$vector_name`. So to access the `sleep_total` vector in the `msleep` data frame, we write:
+
+```{r eval=FALSE}
+msleep$sleep_total
+```
+
+Some examples of functions that can be used to compute descriptive statistics for this vector are\index{descriptive statistics}\index{\texttt{mean}}\index{\texttt{median}}\index{\texttt{max}}\index{\texttt{min}}\index{\texttt{sd}}\index{\texttt{var}}\index{\texttt{quantile}}:
+
+```{r eval=FALSE}
+mean(msleep$sleep_total)      # Mean
+median(msleep$sleep_total)    # Median
+max(msleep$sleep_total)       # Max
+min(msleep$sleep_total)       # Min
+sd(msleep$sleep_total)        # Standard deviation
+var(msleep$sleep_total)       # Variance
+quantile(msleep$sleep_total)  # Various quantiles
+```
+
+To see how many animals sleep for more than 8 hours a day, we can use the following\index{\texttt{sum}}:
+
+```{r eval=FALSE}
+sum(msleep$sleep_total > 8)   # Frequency (count)
+mean(msleep$sleep_total > 8)  # Relative frequency (proportion)
+```
+
+`msleep$sleep_total > 8` checks whether the total sleep time of each animal is greater than 8. We'll return to expressions like this in Section \@ref(findingpoints).
+
+Now, let's try to compute the mean value for the length of REM sleep for the animals:
+
+```{r eval=FALSE}
+mean(msleep$sleep_rem)
+```
+
+The above call returns the answer `NA`. The reason is that there are `NA` values in the `sleep_rem` vector (22 of them, as we saw before). What we actually wanted was the mean value among the animals for which we know the REM sleep. We can have a look at the documentation for `mean` to see if there is some way we can get this:
+
+```{r eval=FALSE}
+?mean
+```
+
+The argument `na.rm` looks promising - it is "a logical value indicating whether NA values should be stripped before the computation proceeds". In other words, it tells R whether or not to ignore the `NA` values when computing the mean. In order to ignore `NA`:s in the computation, we set `na.rm = TRUE` in the function call\index{\texttt{na.rm}}\index{\texttt{NA}!remove}:
+
+```{r eval=FALSE}
+mean(msleep$sleep_rem, na.rm = TRUE)
+```
+
+Note that the `NA` values have not been removed from `msleep`. Setting `na.rm = TRUE` simply tells R to ignore them in a particular computation, not to delete them.
+
+We run into the same problem if we try to compute the correlation between `sleep_total` and `sleep_rem`:
+
+```{r eval=FALSE}
+cor(msleep$sleep_total, msleep$sleep_rem)
+```
+
+A quick look at the documentation (`?cor`), tells us that the argument used to ignore `NA` values has a different name for `cor` - it's not `na.rm` but `use`. The reason will become evident later on, when we study more than two variables at a time. For now, we set `use = "complete.obs"` to compute the correlation using only observations with complete data (i.e. no missing values):
+
+```{r eval=FALSE}
+cor(msleep$sleep_total, msleep$sleep_rem, use = "complete.obs")
+```
+
+
+### Categorical data {#catdata1}
+Some of the variables, like `vore` (feeding behaviour) and `conservation` (conservation status) are _categorical_ rather than _numerical_. It therefore makes no sense to compute means or largest values. For categorical variables (often called _factors_ in R),  we can instead create a table showing the frequencies of different categories using `table`:
+
+```{r eval=FALSE}
+table(msleep$vore)
+```
+
+To instead show the proportion of different categories, we can apply `proportions`\index{\texttt{proportions}} to the table that we just created:
+
+```{r eval=FALSE}
+proportions(table(msleep$vore))
+```
+
+The `table` function can also be used to construct a cross table that shows the counts for different combinations of two categorical variables:
+
+```{r eval=FALSE}
+# Counts:
+table(msleep$vore, msleep$conservation)
+
+# Proportions, per row:
+proportions(table(msleep$vore, msleep$conservation),
+            margin = 1)
+
+# Proportions, per column:
+proportions(table(msleep$vore, msleep$conservation),
+            margin = 2)
+```
+
+$$\sim$$
+
+```{exercise, label="ch2exc1"}
+Load `ggplot2` using `library(ggplot2)` if you have not already done so. Then do the following:
+
+1. View the documentation for the `diamonds` data and read about different the variables.
+
+2. Check the data structures: how many observations and variables are there and what type of variables (numeric, categorical, etc.) are there?
+
+3. Compute summary statistics (means, median, min, max, counts for categorical variables). Are there any missing values?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#solutions1)
+
+
+
+
+## Plotting numerical data
+There are several different approaches to creating plots with R. In this book, we will mainly focus on creating plots using the `ggplot2` package, which allows us to create good-looking plots using the so-called _grammar of graphics_. The grammar of graphics is a set of structural rules that helps us establish a language for graphics. The beauty of this is that (almost) all plots will be created with functions that all follow the same logic, or grammar. That way, we don't have to learn new arguments for each new plot. You can compare this to the problems we encountered when we wanted to ignore `NA` values when computing descriptive statistics - `mean` required the argument `na.rm` whereas `cor` required the argument `use`. By using a common grammar for all plots, we reduce the number of arguments that we need to learn.\index{numerical data}
+
+The three key components to grammar of graphics plots are:\index{aesthetics}\index{geoms}\index{\texttt{ggplot2}}
+
+* **Data**: the observations in your dataset,
+* **Aesthetics**: mappings from the data to visual properties (like axes and sizes of geometric objects), and
+* **Geoms**: geometric objects, e.g. lines, representing what you see in the plot.
+
+When we create plots using `ggplot2`, we must define what data, aesthetics and geoms to use. If that sounds a bit strange, it will hopefully become a lot clearer once we have a look at some examples. To begin with, we will illustrate how this works by visualising some continuous variables in the `msleep` data.
+
+### Our first plot
+As a first example, let's make a scatterplot by plotting the total sleep time of an animal against the REM sleep time of an animal.
+
+Using base R, we simply do a call to the `plot`\index{\texttt{plot}} function in a way that is analogous to how we'd use e.g. `cor`:
+
+```{r eval=FALSE}
+plot(msleep$sleep_total, msleep$sleep_rem)
+```
+
+The code for doing this using `ggplot2` is more verbose:\index{\texttt{ggplot}}\index{\texttt{geom\_point}}\index{\texttt{aes}}\index{\texttt{aes}!\texttt{x}}\index{\texttt{aes}!\texttt{y}}
+
+```{r warning = FALSE, message = FALSE, fig.align = "center", fig.cap = "A scatterplot of mammal sleeping times."}
+library(ggplot2)
+ggplot(msleep, aes(x = sleep_total, y = sleep_rem)) + geom_point()
+```
+
+The code consists of three parts:
+
+* **Data**: given by the first argument in the call to `ggplot`: `msleep`
+* **Aesthetics**: given by the second argument in the `ggplot` call: `aes`, where we map `sleep_total` to the x-axis and `sleep_rem` to the y-axis.
+* **Geoms**: given by `geom_point`, meaning that the observations will be represented by points.
+
+At this point you may ask why on earth anyone would ever want to use `ggplot2` code for creating plots. It's a valid question. The base R code looks simpler, and is consistent with other functions that we've seen. The `ggplot2` code looks... different. This is because it uses the _grammar of graphics_, which in many ways is a language of its own, different from how we otherwise work with R.
+
+But, the plot created using `ggplot2` also looked different. It used filled circles instead of empty circles for plotting the points, and had a grid in the background. In both base R graphics and `ggplot2` we can changes these settings, and many others. We can create something similar to the `ggplot2` plot using base R as follows, using the `pch` argument and the `grid` function\index{\texttt{pch}}\index{\texttt{grid}}:
+
+```{r eval=FALSE}
+plot(msleep$sleep_total, msleep$sleep_rem, pch = 16)
+grid()
+```
+
+Some people prefer the look and syntax of base R plots, while others argue that `ggplot2` graphics has a prettier default look. I can sympathise with both groups. Some types of plots are easier to create using base R, and some are easier to create using ggplot2. I like base R graphics for their simplicity, and prefer them for quick-and-dirty visualisations as well as for more elaborate graphs where I want to combine many different components. For everything in between, including exploratory data analysis where graphics are used to explore and understand datasets, I prefer `ggplot2`. In this book, we'll use base graphics for some quick-and-dirty plots, but put more emphasis on `ggplot2` and how it can be used to explore data.
+
+The syntax used to create the `ggplot2` scatterplot was in essence `ggplot(data, aes) + geom`. All plots created using `ggplot2` follow this pattern, regardless of whether they are scatterplots, bar charts or something else. The plus sign in `ggplot(data, aes) + geom` is important, as it implies that we can add more geoms to the plot, for instance a trend line, and perhaps other things as well. We will return to that shortly.
+
+Unless the user specifies otherwise, the first two arguments to `aes` will always be mapped to the `x` and `y` axes, meaning that we can simplify the code above by removing the `x =` and `y =` bits (at the cost of a slight reduction in readability). Moreover, it is considered good style to insert a line break after the `+` sign. The resulting code is:
+
+```{r eval=FALSE}
+ggplot(msleep, aes(sleep_total, sleep_rem)) +
+      geom_point()
+```
+
+Note that this does not change the plot in any way - the difference is merely in the style of the code.\newline
+
+$$\sim$$
+
+```{exercise, label="ch2exc2"}
+Create a scatterplot with total sleeping time along the x-axis and time awake along the y-axis (using the `msleep` data). What pattern do you see? Can you explain it?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#solutions2)
+
+
+### Colours, shapes and axis labels
+You now know how to make scatterplots, but if you plan to show your plot to someone else, there are probably a few changes that you'd like to make. For instance, it's usually a good idea to change the label for the x-axis from the variable name "sleep_total" to something like "Total sleep time (h)". This is done by using the `+` sign again, adding a call to `xlab` to the plot:\index{\texttt{xlab}}\index{\texttt{ylab}}
+
+```{r eval=FALSE}
+ggplot(msleep, aes(sleep_total, sleep_rem)) +
+      geom_point() +
+      xlab("Total sleep time (h)")
+```
+
+Note that the plus signs must be placed at the end of a row rather than at the beginning. To change the y-axis label, add `ylab` instead.
+
+To change the colour of the points, you can set the colour in `geom_point`:
+
+```{r eval=FALSE}
+ggplot(msleep, aes(sleep_total, sleep_rem)) +
+      geom_point(colour = "red") +
+      xlab("Total sleep time (h)")
+```
+
+In addition to `"red"`, there are a few more colours that you can choose from. You can run `colors()` in\index{\texttt{colors}} the Console to see a list of the 657 colours that have names in R (examples of which include `"papayawhip"`, `"blanchedalmond"`, and `"cornsilk4"`), or use colour hex codes like `"#FF5733"`.
+
+Alternatively, you may want to use the colours of the point to separate different categories. This is done by adding a `colour` argument to `aes`, since you are now mapping a data variable to a visual property. For instance, we can use the variable `vore` to show differences between herbivores, carnivores and omnivores:\index{\texttt{aes}!\texttt{colour}}
+
+```{r eval=FALSE}
+ggplot(msleep, aes(sleep_total, sleep_rem, colour = vore)) +
+      geom_point() +
+      xlab("Total sleep time (h)")
+```
+
+What happens if we use a continuous variable, such as the sleep cycle length `sleep_cycle` to set the colour?
+
+```{r eval=FALSE}
+ggplot(msleep, aes(sleep_total, sleep_rem, colour = sleep_cycle)) +
+      geom_point() +
+      xlab("Total sleep time (h)")
+```
+
+You'll learn more about customising colours (and other parts) of your plots in Section \@ref(themes).
+
+$$\sim$$
+
+```{exercise, label="ch2exc3"}
+Using the `diamonds` data, do the following:
+
+1. Create a scatterplot with carat along the x-axis and price along the y-axis. Change the x-axis label to read "Weight of the diamond (carat)" and the y-axis label to "Price (USD)". Use `cut` to set the colour of the points.
+
+2. Try adding the argument `alpha = 1` to `geom_point`, i.e. `geom_point(alpha = 1)`. Does anything happen? Try changing the `1` to `0.5` and `0.25` and see how that affects the plot.\index{\texttt{aes}!\texttt{alpha}}
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#solutions3)
+
+
+<br>
+
+```{exercise, label="ch2exc4"}
+Similar to how you changed the colour of the points, you can also change their size and shape. The arguments for this are called `size` and `shape`.
+
+1. Change the scatterplot from Exercise \@ref(exr:ch2exc3) so that diamonds with different cut qualities are represented by different shapes.
+
+2. Then change it so that the size of each point is determined by the diamond's length, i.e. the variable `x`.
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#solutions4)
+
+
+
+### Axis limits and scales
+Next, assume that we wish to study the relationship between animals' brain sizes and their total sleep time. We create a scatterplot using:\index{\texttt{xlab}}\index{\texttt{ylab}}
+
+```{r eval=FALSE}
+ggplot(msleep, aes(brainwt, sleep_total, colour = vore)) + 
+      geom_point() +
+      xlab("Brain weight") +
+      ylab("Total sleep time")
+```
+
+There are two animals with brains that are much heavier than the rest (African elephant and Asian elephant). These outliers distort the plot, making it difficult to spot any patterns. We can try changing the x-axis to only go from 0 to 1.5 by adding `xlim` to the plot, to see if that improves it:\index{\texttt{xlim}}\index{\texttt{ylim}}
+
+```{r eval=FALSE}
+ggplot(msleep, aes(brainwt, sleep_total, colour = vore)) + 
+      geom_point() +
+      xlab("Brain weight") +
+      ylab("Total sleep time") +
+      xlim(0, 1.5)
+```
+
+This is slightly better, but we still have a lot of points clustered near the y-axis, and some animals are now missing from the plot. If instead we wished to change the limits of the y-axis, we would have used `ylim` in the same fashion.
+
+Another option is to resacle the x-axis by applying a log transform to the brain weights, which we can do directly in `aes`:\index{log transform}
+
+```{r eval=FALSE}
+ggplot(msleep, aes(log(brainwt), sleep_total, colour = vore)) + 
+      geom_point() +
+      xlab("log(Brain weight)") +
+      ylab("Total sleep time")
+```
+
+This is a better-looking scatterplot, with a weak declining trend. We didn't have to remove the outliers (the elephants) to create it, which is good. The downside is that the x-axis now has become difficult to interpret. A third option that mitigates this is to add `scale_x_log10` to the plot, which changes the scale of the x-axis to a $\log_{10}$ scale (which increases interpretability because the values shown at the ticks still are on the original x-scale).\index{\texttt{scale\_x\_log10}}
+
+```{r eval=FALSE}
+ggplot(msleep, aes(brainwt, sleep_total, colour = vore)) + 
+      geom_point() +
+      xlab("Brain weight (logarithmic scale)") +
+      ylab("Total sleep time") +
+      scale_x_log10()
+```
+
+$$\sim$$
+
+```{exercise, label="ch2exc5"}
+Using the `msleep` data, create a plot of log-transformed body weight versus log-transformed brain weight. Use total sleep time to set the colours of the points. Change the text on the axes to something informative.
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#solutions5)
+
+
+### Comparing groups {#comparinggroups}
+We frequently wish to make visual comparison of different groups. One way to display differences between groups in plots is to use _facetting_, i.e. to create a grid of plots corresponding to the different groups. For instance, in our plot of animal brain weight versus total sleep time, we may wish to separate the different feeding behaviours (omnivores, carnivores, etc.) in the `msleep` data using facetting instead of different coloured points. In `ggplot2` we do this by adding a call to `facet_wrap` to the plot:\index{\texttt{facet\_wrap}}\index{facetting}
+
+```{r eval=FALSE}
+ggplot(msleep, aes(brainwt, sleep_total)) + 
+      geom_point() +
+      xlab("Brain weight (logarithmic scale)") +
+      ylab("Total sleep time") +
+      scale_x_log10() +
+      facet_wrap(~ vore)
+```
+
+Note that the x-axes and y-axes of the different plots in the grid all have the same scale and limits.\newline
+
+$$\sim$$
+
+```{exercise, label="ch2exc6"}
+Using the `diamonds` data, do the following:
+
+1. Create a scatterplot with `carat` along the x-axis and `price` along the y-axis, facetted by `cut`.
+
+2. Read the documentation for `facet_wrap` (`?facet_wrap`). How can you change the number of rows in the plot grid? Create the same plot as in part 1, but with 5 rows.
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#solutions6)
+
+
+### Boxplots
+Another option for comparing groups is boxplots (also called box-and-whiskers plots). Using `ggplot2`, we create boxplots for animal sleep times, grouped by feeding behaviour, with `geom_boxplot`\index{boxplot}\index{\texttt{geom\_boxplot}}. Using base R, we use the `boxplot`\index{\texttt{boxplot}} function instead:
+
+```{r eval=FALSE}
+# Base R:
+boxplot(sleep_total ~ vore, data = msleep)
+
+# ggplot2:
+ggplot(msleep, aes(vore, sleep_total)) +
+      geom_boxplot()
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.align = "center", fig.cap = "Boxplots showing mammal sleeping times."}
+ggplot(msleep, aes(vore, sleep_total)) +
+      geom_boxplot()
+```
+
+The boxes visualise important descriptive statistics for the different groups, similar to what we got using `summary`:
+
+* _Median_: the thick black line inside the box.
+* _First quartile_: the bottom of the box.
+* _Third quartile_: the top of the box.
+* _Minimum_: the end of the line ("whisker") that extends from the bottom of the box.
+* _Maximum_: the end of the line that extends from the top of the box.
+* _Outliers_: observations that deviate too much^[In this case, _too much_ means that they are more than 1.5 times the height of the box away from the edges of the box.] from the rest are shown as separate points. These outliers are not included in the computation of the median, quartiles and the extremes.
+
+Note that just as for a scatterplot, the code consists of three parts:
+
+* **Data**: given by the first argument in the call to `ggplot`: `msleep`
+* **Aesthetics**: given by the second argument in the `ggplot` call: `aes`, where we map the group variable `vore` to the x-axis and the numerical variable `sleep_total` to the y-axis.
+* **Geoms**: given by `geom_boxplot`, meaning that the data will be visualised with boxplots.\newline
+
+$$\sim$$
+
+```{exercise, label="ch2exc7"}
+Using the `diamonds` data, do the following:
+
+1. Create boxplots of diamond prices, grouped by `cut`.
+
+2. Read the documentation for `geom_boxplot`. How can you change the colours of the boxes and their outlines?
+
+3. Replace `cut` by `reorder(cut, price, median)` in\index{\texttt{reorder}} the plot's aestethics. What does `reorder` do? What is the result?
+
+4. Add `geom_jitter(size = 0.1, alpha = 0.2)` to\index{\texttt{geom\_jitter}} the plot. What happens?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#solutions7)
+
+
+
+
+
+### Histograms
+To show the distribution of a continuous variable, we can use a histogram, in which the data is split into a number of bins and the number of observations in each bin is shown by a bar. The `ggplot2` code for histograms follows the same pattern as other plots, while the base R code uses the `hist` function\index{\texttt{hist}}\index{\texttt{geom\_histogram}}\index{histogram}:
+
+```{r eval=FALSE}
+# Base R:
+hist(msleep$sleep_total)
+
+# ggplot2:
+ggplot(msleep, aes(sleep_total)) +
+      geom_histogram()
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.align = "center", fig.cap = "A histogram for mammal sleeping times."}
+ggplot(msleep, aes(sleep_total)) +
+      geom_histogram()
+```
+
+As before, the three parts in the `ggplot2` code are:
+
+* **Data**: given by the first argument in the call to `ggplot`: `msleep`
+* **Aesthetics**: given by the second argument in the `ggplot` call: `aes`, where we map `sleep_total` to the x-axis.
+* **Geoms**: given by `geom_histogram`, meaning that the data will be visualised by a histogram.\newline
+
+$$\sim$$
+
+```{exercise, label="ch2exc8"}
+Using the `diamonds` data, do the following:
+  
+1. Create a histogram of diamond prices.
+
+2. Create histograms of diamond prices for different cuts, using facetting.
+
+3. Add a suitable argument to `geom_histogram` to add black outlines around the bars^[Personally, I don't understand why anyone would ever plot histograms without outlines!].
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#solutions8)
+
+
+
+
+
+
+## Plotting categorical data {#catdata2}
+When visualising categorical data, we typically try to show the counts, i.e. the number of observations, for each category. The most common plot for this type of data is the bar chart.\index{categorical data}
+
+### Bar charts
+Bar charts are discrete analogues to histograms, where the category counts are represented by bars. The code for creating them is\index{\texttt{geom\_bar}}\index{\texttt{barplot}}\index{bar chart}:
+
+```{r eval=FALSE}
+# Base R
+barplot(table(msleep$vore))
+
+# ggplot2
+ggplot(msleep, aes(vore)) +
+      geom_bar()
+```
+
+```{r echo = FALSE, warning = FALSE, message = FALSE, fig.align = "center", fig.cap = "A bar chart for the mammal sleep data."}
+ggplot(msleep, aes(vore)) +
+      geom_bar()
+```
+
+As always, the three parts in the `ggplot2` code are:
+
+* **Data**: given by the first argument in the call to `ggplot`: `msleep`
+* **Aesthetics**: given by the second argument in the `ggplot` call: `aes`, where we map `vore` to the x-axis.
+* **Geoms**: given by `geom_bar`, meaning that the data will be visualised by a bar chart.\newline
+
+To create a stacked bar chart using `ggplot2`, we use map all groups to the same value on the x-axis and then map the different groups to different colours. This can be done as follows:
+
+```{r eval=FALSE}
+ggplot(msleep, aes(factor(1), fill = vore)) +
+      geom_bar()
+```
+
+$$\sim$$
+
+```{exercise, label="ch2exc9"}
+Using the `diamonds` data, do the following:
+  
+1. Create a bar chart of diamond cuts.
+
+2. Add different colours to the bars by adding a `fill` argument to `geom_bar`.
+
+3. Check the documentation for `geom_bar`. How can you decrease the width of the bars?
+
+4. Return to the code you used for part 1. Add `fill = clarity` to the `aes`. What happens?\index{\texttt{aes}!\texttt{fill}}
+
+5. Next, add `position = "dodge"` to `geom_bar`. What happens?
+
+6. Return to the code you used for part 1. Add `coord_flip()` to the plot. What happens?\index{\texttt{coord\_flip}}
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#solutions9)
+
+
+
+## Saving your plot
+When you create a `ggplot2` plot, you can save it as a plot object in R:\index{graphics!save}
+
+```{r eval=FALSE}
+library(ggplot2)
+myPlot <- ggplot(msleep, aes(sleep_total, sleep_rem)) +
+      geom_point()
+```
+
+To plot a saved plot object, just write its name:
+
+```{r eval=FALSE}
+myPlot
+```
+
+If you like, you can add things to the plot, just as before:
+
+```{r eval=FALSE}
+myPlot + xlab("I forgot to add a label!")
+```
+
+To save your plot object as an image file, use `ggsave`. The `width` and `height` arguments allows us to control the size of the figure (in inches, unless you specify otherwise using the `units` argument).\index{\texttt{ggsave}}
+
+```{r eval=FALSE}
+ggsave("filename.pdf", myPlot, width = 5, height = 5)
+```
+
+If you don't supply the name of a plot object, `ggsave` will save the last `ggplot2` plot you created.
+
+In addition to pdf, you can save images e.g. as jpg, tif, eps, svg, and png files, simply by changing the file extension in the filename. Alternatively, graphics from both base R and `ggplot2` can be saved using the `pdf` and `png` functions, using `dev.off`\index{\texttt{pdf}}\index{\texttt{png}}\index{\texttt{dev.off}} to mark the end of the file:
+
+```{r eval=FALSE}
+pdf("filename.pdf", width = 5, height = 5)
+myPlot
+dev.off()
+
+png("filename.png", width = 500, height = 500)
+plot(msleep$sleep_total, msleep$sleep_rem)
+dev.off()
+```
+
+Note that you also can save graphics by clicking on the Export button in the Plots panel in RStudio. Using code to save your plot is usually a better idea, because of reproducibility. At some point you'll want to go back and make changes to an old figure, and that will be much easier if you already have the code to export the graphic.
+
+$$\sim$$
+
+```{exercise, label="ch2exc10"}
+Do the following:
+  
+1. Create a plot object and save it as a 4 by 4 inch png file.
+
+2. When preparing images for print, you may want to increase their resolution. Check the documentation for `ggsave`. How can you increase the resolution of your png file to 600 dpi?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#solutions10)
+
+
+You've now had a first taste of graphics using R. We have however only scratched the surface, and will return to the many uses of statistical graphics in Chapter \@ref(eda).
+
+
+
+## Troubleshooting {#troubleshooting}
+Every now and then R will throw an error message at you. Sometimes these will be informative and useful, as in this case:
+
+```{r eval=FALSE}
+age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
+means(age)
+```
+
+where R prints:
+
+```{r eval=FALSE}
+> means(age)
+Error in means(age) : could not find function "means"
+```
+
+This tells us that the function that we are trying to use, `means` does not exist. There are two possible reasons for this: either we haven't loaded the package in which the function exists, or we have misspelt the function name. In our example the latter is true, the function that we really wanted to use was of course `mean` and not `means`.
+
+At other times interpreting the error message seems insurmountable, like in these examples:
+
+```{r eval=FALSE}
+Error in if (str_count(string = f[[j]], pattern = \"\\\\S+\") == 1) { :
+  \n  argument is of length zero
+```
+
+and
+
+```{r eval=FALSE}
+Error in if (requir[y] &gt; supply[x]) { : \nmissing value where
+  TRUE/FALSE needed
+```
+
+When you encounter an error message, I recommend following these steps:\index{error message}
+
+1. Read the error message carefully and try to decipher it. Have you seen it before? Does it point to a particular variable or function? Check Section \@ref(commonerrors) of this book, which deals with common error messages in R.
+
+2. Check your code. Have you misspelt any variable or function names? Are there missing brackets, strange commas or invalid characters?
+
+3. Copy the error message and do a web search using the message as your search term. It is more than likely that somebody else has encountered the same problem, and that you can find a solution to it online. This is a great shortcut for finding solutions to your problem. In fact, __this may well be the single most important tip in this entire book.__
+
+4. Read the documentation for the function causing the error message, and look at some examples of how to use it (both in the documentation and online, e.g. in blog posts). Have you used it correctly?
+
+5. Use the debugging tools presented in Chapter \@ref(errorchapter), or try to simplify the example that you are working with (e.g. removing parts of the analysis or the data) and see if that removes the problem.
+
+6. If you still can't find a solution, post a question at a site like [Stack Overflow](https://stackoverflow.com/) or the [RStudio community forums](https://community.rstudio.com/). Make sure to post your code and describe the context in which the error message appears. If at all possible, post a reproducible example, i.e. a piece of code that others can run, that causes the error message. This will make it a lot easier for others to help you.
+
+
+
+<!--## Video lecture
+Placeholder video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/enWEkKSS9U4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+The code used in the video:
+
+```{r eval=FALSE}
+placeholder
+```
+-->
+
+\vfill

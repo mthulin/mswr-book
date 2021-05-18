@@ -1,0 +1,18 @@
+bookdown::gitbook:
+  css: preamble.css
+  config:
+    toc:
+      before: |
+        <li><a href="./">Modern Statistics with R</a></li>
+      after: |
+        <li>&copy; 2021 Måns Thulin.</li>
+    edit:
+    download: ["pdf", "epub"]
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+    after_body: end.tex
+  latex_engine: xelatex
+  citation_package: natbib
+  keep_tex: yes
+bookdown::epub_book: default

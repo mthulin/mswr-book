@@ -1,0 +1,11 @@
+bookdown::gitbook:
+  lib_dir: assets
+  split_by: section
+  config:
+    toolbar:
+      position: static
+bookdown::pdf_book:
+  keep_tex: yes
+  papersize: executivepaper
+bookdown::html_book:
+  css: toc.css

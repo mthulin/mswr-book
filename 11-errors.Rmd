@@ -1,0 +1,682 @@
+# Debugging {#errorchapter}
+In Section \@ref(troubleshooting) I gave some general advice about what to do when there is an error in your R code:
+
+1. Read the error message carefully and try to decipher it. Have you seen it before? Does it point to a particular variable or function? Check Section \@ref(commonerrors) of this book, which deals with common error messages in R.
+
+2. Check your code. Have you misspelt any variable or function names? Are there missing brackets, strange commas or invalid characters?
+
+3. Copy the error message and do a web search using the message as your search term. It is more than likely that somebody else has encountered the same problem, and that you can find a solution to it online. This is a great shortcut for finding solutions to your problem. In fact, __this may well be the single most important tip in this entire book.__
+
+4. Read the documentation for the function causing the error message, and look at some examples of how to use it (both in the documentation and online, e.g. in blog posts). Have you used it correctly?
+
+5. Use the debugging tools presented in Chapter \@ref(errorchapter), or try to simplify the example that you are working with (e.g. removing parts of the analysis or the data) and see if that removes the problem.
+
+6. If you still can't find a solution, post a question at a site like [Stack Overflow](https://stackoverflow.com/) or the [RStudio community forums](https://community.rstudio.com/). Make sure to post your code and describe the context in which the error message appears. If at all possible, post a reproducible example, i.e. a piece of code that others can run, that causes the error message. This will make it a lot easier for others to help you.
+
+The debugging tools mentioned in point 5 are an important part of your toolbox, particularly if you're doing more advanced programming with R.
+
+In this chapter you will learn how to:
+
+* Debug R code,
+* Recognise and resolve common errors in R code,
+* Interpret and resolve common warning messages in R.
+
+## Debugging
+Debugging is the process of finding and removing bugs in your scripts. R and RStudio have several functions that can be used for this purpose. We'll have a closer look at some of them here.
+
+### Find out where the error occured with `traceback`
+If a function returns an error, it is not always clear _where_ exactly the error occurred. Let's say that we want to compute the correlation between two variables, but have forgotten to give the variables values:
+
+```{r eval=FALSE}
+cor(variable1, variable2)
+```
+
+The resulting error message is:
+
+```{r eval=FALSE}
+> cor(variable1, variable2)
+Error in is.data.frame(y) : object 'variable2' not found
+```
+
+Why is the function `is.data.frame` throwing an error? We were using `cor`, not `is.data.frame`!
+
+Functions often make calls to other functions, which in turn make calls the functions, and so on. When you get an error message, the error can have taken place in any one of these functions. To find out in which function the error occurred, you can run `traceback`\index{\texttt{traceback}}, which shows the sequence of calls that lead to the error:
+
+```{r eval=FALSE}
+traceback()
+```
+
+Which in this case will yield the output:
+
+```{r eval=FALSE}
+> traceback()
+2: is.data.frame(y)
+1: cor(variable1, variable2)
+```
+
+What this tells you is that `cor` makes a call to `is.data.frame`, and that that is where the error occurs. This can help you understand why a function that you weren't aware that you were calling (`is.data.frame` in this case) is throwing an error, but won't tell you _why_ there was an error. To find out, you can use `debug`, which we'll discuss next.
+
+As a side note, if you'd like to know why and when `cor` called `is.data.frame` you can print the code for `cor` in the Console by typing the function name without parentheses:
+
+```{r eval=FALSE}
+cor
+```
+
+Reading the output, you can see that it makes a call to `is.data.frame` on the 10th line:
+
+```{r eval=FALSE}
+1  function (x, y = NULL, use = "everything", method = c("pearson", 
+2      "kendall", "spearman")) 
+3  {
+4      na.method <- pmatch(use, c("all.obs", "complete.obs",
+5                                 "pairwise.complete.obs", 
+6          "everything", "na.or.complete"))
+7      if (is.na(na.method)) 
+8          stop("invalid 'use' argument")
+9      method <- match.arg(method)
+10     if (is.data.frame(y)) 
+11         y <- as.matrix(y)
+    
+...
+```
+
+### Interactive debugging of functions with `debug`
+If you are looking for an error in a script, you can simply run the script one line at a time until the error occurs, to find out where the error is. But what if the error is inside of a function, as in the example above?
+
+Once you know in which function the error occurs, you can have a look inside it using `debug`\index{\texttt{debug}}. `debug` takes a function name as input, and the next time you run that function, an interactive debugger starts, allowing you to step through the function one line at a time. That way, you can find out exactly where in the function the error occurs. We'll illustrate its use with a custom function:
+
+```{r eval=FALSE}
+transform_number <- function(x)
+{
+  square <- x^2
+  if(x >= 0) { logx <- log(x) } else { stop("x must be positive") }
+  if(x >= 0) { sqrtx <- sqrt(x) } else { stop("x must be positive") }
+  return(c(x.squared = square, log = logx, sqrt = sqrtx))
+}
+```
+
+The function appears to work just fine:
+
+```{r eval=FALSE}
+transform_number(2)
+transform_number(-1)
+```
+
+However, if we input an `NA`, an error occurs:
+
+```{r eval=FALSE}
+transform_number(NA)
+```
+
+We now run `debug`:
+
+```{r eval=FALSE}
+debug(transform_number)
+transform_number(NA)
+```
+
+Two things happen. First, a tab with the code for `transform_number` opens. Second, a _browser_ is initialised in the Console panel. This allows you to step through the code, by typing one of the following and pressing Enter:
+
+* `n` to run the next line,
+* `c` to run the function until it finishes or an error occurs,
+* a variable name to see the current value of that variable (useful for checking that variables have the intended values),
+* `Q` to quit the browser and stop the debugging.
+
+If you either use `n` a few times, or `c`, you can see that the error occurs on line number 4 of the function:
+
+```{r eval=FALSE}
+if(x >= 0) { logx <- log(x) } else { stop("x must be positive") }
+```
+
+Because this function was so short, you could probably see that already, but for longer and more complex functions, `debug` is an excellent way to find out where exactly the error occurs.
+
+The browser will continue to open for debugging each time `transform_number` is run. To turn it off, use `undebug`\index{\texttt{undebug}}:
+
+```{r eval=FALSE}
+undebug(transform_number)
+```
+
+### Investigate the environment with `recover`
+By default, R prints an error message, returns to the global environment and stops the execution when an error occurs. You can use `recover`\index{\texttt{recover}} to change this behaviour, so that R stays in the environment where the error occurred. This allows you to investigate that environment, e.g. to see if any variables have been assigned the wrong values.
+
+```{r eval=FALSE}
+transform_number(NA)
+recover()
+```
+
+This gives you the same list of function calls as `traceback` (called the _function stack_), and you can select which of these that you'd like to investigate (in this case there is only one, which you access by writing `1` and pressing Enter). The environment for that call shows up in the Environment panel, which in this case shows you that the local variable `x` has been assigned the value `NA` (which is what causes an error when the condition `x >= 0` is checked).
+
+## Common error messages {#commonerrors}
+Some errors are more frequent than others. Below is a list of some of the most common ones, along with explanations of what they mean, and how to resolve them.
+
+### `+`
+If there is a `+`\index{\texttt{+}} sign at the beginning of the last line in the Console, and it seems that your code doesn't run, that is likely due to missing brackets or quotes. Here is an example where a bracket is missing:
+
+```{r eval=FALSE}
+> 1 + 2*(3 + 2
++
+```
+
+Type `)` in the Console to finish the expression, and your code will run. The same problem can occur if a quote is missing:
+
+```{r eval=FALSE}
+> myString <- "Good things comes in threes
++
+```
+
+Type `"` in the Console to finish the expression, and your code will run.
+
+### `could not find function`
+This error message appears when you try to use a function that doesn't exist.\index{error message!\texttt{could not find function}} Here is an example:
+
+```{r eval=FALSE}
+> age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
+> means(age)
+Error in means(age) : could not find function "means"
+```
+
+This error is either due to a misspelling (in which case you should fix the spelling) or due to attempting to use a function from a package that hasn't been loaded (in which case you should load the package using `library(package_name)`). If you are unsure which package the function belongs to, doing a quick web search for "R function_name" usually does the trick.
+
+### `object not found`
+R throws this error message if we attempt to use a variable that does not exist\index{error message!\texttt{object not found}}:
+
+```{r eval=FALSE}
+> name_of_a_variable_that_doesnt_exist + 1 * pi^2
+Error: object 'name_of_a_variable_that_doesnt_exist' not found
+```
+
+This error may be due to a spelling error, so check the spelling of the variable name. It is also commonly encountered if you return to an old R script and try to run just a part of it - if the variable is created on an earlier line which hasn't been run, R won't find it because it hasn't been created yet.
+
+### `cannot open the connection` and `No such file or directory`
+This error message appears\index{error message!\texttt{cannot open the connection}}\index{error message!\texttt{No such file or directory}} when you try to load a file that doesn't exist:
+
+```{r eval=FALSE}
+> read.csv("not-a-real-file-name.csv")
+Error in file(file, "rt") : cannot open the connection
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file 'not-a-real-file-name.csv': No such file or
+  directory
+```
+
+Check the spelling of the file name, and that you have given the correct path to it (see Section \@ref(paths)). If you are unsure about the path, you can use
+
+```{r eval=FALSE}
+read.csv(file.choose())
+```
+
+to interactively search for the file in question.
+
+
+### `invalid 'description' argument`
+When you try to import data from an Excel file, you can run into error messages like:
+
+```{r eval=FALSE}
+Error in file(con, "r") : invalid 'description' argument
+In addition: Warning message:
+In unzip(xlsxFile, exdir = xmlDir) : error 1 in extracting from zip file
+```
+
+and
+
+```{r eval=FALSE}
+Error: Evaluation error: zip file 'C:\Users\mans\Data\some_file.xlsx' cannot be opened.
+```
+
+These usually appear if you have the file open in Excel _at the same time_ that you're trying to import data from it in R. Excel temporarily locks the file so that R can't open it. Close Excel and then import the data.
+
+### `missing value where TRUE/FALSE needed`
+This message appears when a condition in a conditional statement evaluates to `NA`\index{error message!\texttt{missing value where TRUE/FALSE needed}}. Here is an example:
+
+```{r eval=FALSE}
+x <- c(8, 5, 9, NA)
+for(i in seq_along(x))
+{
+    if(x[i] > 7) { cat(i, "\n") }
+}
+```
+
+which yields:
+
+```{r eval=FALSE}
+> x <- c(8, 5, 9, NA)
+> for(i in seq_along(x))
++ {
++     if(x[i] > 7) { cat(i, "\n") }
++ }
+1 
+3 
+Error in if (x[i] > 7) { : missing value where TRUE/FALSE needed
+```
+
+The error occurs when `i` is `4`, because the expression `x[i] > 7` becomes `NA > 7` which evaluates to `NA`. `if` statements require that the condition evaluates to either `TRUE` or `FALSE`. When this error occurs, you should investigate why you get an `NA` instead.
+
+### `unexpected '=' in ...`
+This message indicates that you have an assignment happening in the wrong place\index{error message!\texttt{unexpected '=' in ...}}. You probably meant to use `==` to check for equality, but accidentally wrote `=` instead, as in this example: 
+
+
+```{r eval=FALSE}
+x <- c(8, 5, 9, NA)
+for(i in seq_along(x))
+{
+    if(x[i] = 5) { cat(i, "\n") }
+}
+```
+
+which yields:
+
+```{r eval=FALSE}
+> x <- c(8, 5, 9, NA)
+> for(i in seq_along(x))
++ {
++     if(x[i] = 5) { cat(i, "\n") }
+Error: unexpected '=' in:
+"{
+    if(x[i] ="
+> }
+Error: unexpected '}' in "}"
+```
+
+Replace the `=` by `==` and your code should run as intended. If you really intended to assign a value to a variable inside the `if` condition, you should probably rethink that.
+
+### `attempt to apply non-function`
+This error occurs when you put parentheses after something that isn't a function\index{error message!\texttt{attempt to apply non-function}}. It is easy to make that mistake e.g. when doing a mathematical computation. 
+
+```{r eval=FALSE}
+> 1+2(2+3)
+Error: attempt to apply non-function
+```
+
+In this case, we need to put a multiplication symbol `*` between `2` and `(` to make the code run:
+
+```{r eval=FALSE}
+> 1+2*(2+3)
+[1] 11
+```
+
+### `undefined columns selected`
+If you try to select a column that doesn't exist from a data frame, this message will be printed.\index{error message!\texttt{undefined columns selected}} Let's start by defining an example data frame:
+
+```{r eval=FALSE}
+age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
+purchase <- c(20, 59, 2, 12, 22, 160, 34, 34, 29)
+bookstore <- data.frame(age, purchase)
+```
+
+If we attempt to access the third column of the data, we get the error message:
+
+```{r eval=FALSE}
+> bookstore[,3]
+Error in `[.data.frame`(bookstore, , 3) : undefined columns selected
+```
+
+Check that you really have the correct column number. It is common to get this error if you have removed columns from your data.
+
+### `subscript out of bounds`
+This error message is similar to the last example above, but occurs if you try to access the column in another way\index{error message!\texttt{subscript out of bounds}}:
+
+```{r eval=FALSE}
+> bookstore[[3]]
+Error in .subset2(x, i, exact = exact) : subscript out of bounds
+```
+
+Check that you really have the correct column number. It is common to get this error if you have removed columns from your data, or if you are running a for loop accessing element `[i, j]` of your data frame, where either `i` or `j` is greater than the number of rows and columns of your data.
+
+### `Object of type ‘closure’ is not subsettable`
+This error occurs when you use square brackets `[ ]` directly after a function\index{error message!\texttt{Object of type ‘closure’ is not subsettable}}:
+
+```{r eval=FALSE}
+> x <- c(8, 5, 9, NA)
+> sqrt[x]
+Error in sqrt[x] : object of type 'closure' is not subsettable
+```
+
+You probably meant to use parentheses `( )` instead. Or perhaps you wanted to use the square brackets on the object returned by the function:
+
+```{r eval=FALSE}
+> sqrt(x)[2]
+[1] 2.236068
+```
+
+
+### `$ operator is invalid for atomic vectors`
+This messages is printed when you try to use the `$` operator with an object that isn't a `list` or a data frame\index{error message!\texttt{\$ operator is invalid for atomic vectors}}, for instance with a vector. Even though the elements in a vector can be named, you cannot access them using `$`:
+
+```{r eval=FALSE}
+> x <- c(a = 2, b = 3)
+> x
+a b 
+2 3 
+> x$a
+Error in x$a : $ operator is invalid for atomic vectors
+```
+
+If you need to access the element named `a`, you can do so using bracket notation:
+
+```{r eval=FALSE}
+> x["a"]
+a 
+2 
+```
+
+Or use a data frame instead:
+
+```{r eval=FALSE}
+> x <- data.frame(a = 2, b = 3)
+> x$a 
+[1] 2
+```
+
+### `(list) object cannot be coerced to type ‘double’`
+This error occurs when you try to convert the elements of a `list` to `numeric`\index{error message!\texttt{(list) object cannot be coerced to type ‘double’}}. First, we create a `list`:
+
+```{r eval=FALSE}
+x <- list(a = c("1", "2", "3"),
+          b = c("1", "4", "1889"))
+```
+
+If we now try to apply `as.numeric` we get the error:
+
+```{r eval=FALSE}
+> as.numeric(x)
+Error: 'list' object cannot be coerced to type 'double'
+```
+
+You can apply `unlist` to collapse the `list` to a vector:
+
+```{r eval=FALSE}
+as.numeric(unlist(x))
+```
+
+You can also use `lapply` (see Section \@ref(vectorloops)):
+
+```{r eval=FALSE}
+lapply(x, as.numeric)
+```
+
+
+
+### `arguments imply differing number of rows`
+This message is printed when you try to create a data frame with different number of rows for different columns, like in this example\index{error message!\texttt{arguments imply differing number of rows}}, where `a` has 3 rows and `b` has 4:
+
+```{r eval=FALSE}
+> x <- data.frame(a = 1:3, b = 6:9)
+Error in data.frame(a = 1:3, b = 6:9) : 
+  arguments imply differing number of rows: 3, 4
+```
+
+If you really need to create an object with different number of rows for different columns, create a `list` instead:
+
+```{r eval=FALSE}
+x <- list(a = 1:3, b = 6:9)
+```
+
+### `non-numeric argument to a binary operator`
+This error occurs when you try to use mathematical operators with non-numerical variables\index{error message!\texttt{non-numeric argument to a binary operator}}. For instance, it occurs if you try to add `character` variables:
+
+```{r eval=FALSE}
+> "Hello" + "World"
+Error in "Hello" + "world" : non-numeric argument to binary operator
+```
+
+If you want to combine `character` variables, use `paste` instead:
+
+```{r eval=FALSE}
+paste("Hello", "world")
+```
+
+### `non-numeric argument to mathematical function`
+This error message is similar the the previous one, and appears when you try to apply a mathematical function, like `log` or `exp` to non-numerical variables\index{error message!\texttt{non-numeric argument to mathematical function}}:
+
+```{r eval=FALSE}
+> log("1")
+Error in log("1") : non-numeric argument to mathematical function
+```
+
+Make sure that the data you are inputting doesn't contain `character` variables.
+
+### `cannot allocate vector of size ...`
+This message is shown when you're trying to create an object that would require more RAM than is available.\index{error message!\texttt{cannot allocate vector of size}} You can try to free up RAM by closing other programs and removing data that you don't need using `rm` (see Section \@ref(commontasks)). Also check your code so that you don't make copies of your data, which takes up more RAM. Replacing base R and `dplyr` code for data wrangling with `data.table` code can also help, as `data.table` uses considerably less RAM for most tasks.
+
+### `Error in plot.new() : figure margins too large`
+This error occurs\index{error message!\texttt{plot.new() : figure margins too large}} when your Plot panel (or file, if you are saving your plot as a graphics file) is too small to fit the graphic that you're trying to create. Enlarge your Plot panel (or increase the size of the graphics file) and run the code again.
+
+
+### `Error in .Call.graphics(C_palette2, .Call(C_palette2, NULL)) : invalid graphics state` 
+This error\index{error message!\texttt{.Call.graphics... : invalid graphics state}} can happen when you create plots with `ggplot2`. You can usually solve it by running `dev.off()` to close the previous plot window. In rare cases, you may have to reinstall `ggplot2` (see Section \@ref(moreonpackages)).
+
+## Common warning messages {#commonwarnings}
+
+### `replacement has ... rows ...`
+This occurs when you try to assign values to rows in a data frame, but the object you are assigning to them has a different number of rows.\index{error message!\texttt{replacement has ... rows ...}} Here is an example:
+
+```{r eval=FALSE}
+> x <- data.frame(a = 1:3, b = 6:8)
+> y <- data.frame(a = 4:5, b = 10:11)
+> x[3,] <- y
+Warning messages:
+1: In `[<-.data.frame`(`*tmp*`, 3, , value = list(a = 4:5, b = 10:11)) :
+  replacement element 1 has 2 rows to replace 1 rows
+2: In `[<-.data.frame`(`*tmp*`, 3, , value = list(a = 4:5, b = 10:11)) :
+  replacement element 2 has 2 rows to replace 1 rows
+```
+
+You can fix this e.g. by changing the numbers of rows to place the data in:
+
+```{r eval=FALSE}
+x[3:4,] <- y
+```
+
+### `the condition has length > 1 and only the first element will be used` {#iferror}
+This warning is thrown when you the condition in a conditional statement is a vector rather than a single value\index{warning message!\texttt{the condition has length > 1 and only the first element will be used}}. Here is an example:
+
+```{r eval=FALSE}
+> x <- 1:3
+> if(x == 2) { cat("Two!") }
+Warning message:
+In if (x == 2) { :
+  the condition has length > 1 and only the first element will be used
+```
+
+Only the first element of the vector is used for evaluating the condition. See if you can change the condition so that it doesn't evaluate to a vector. If you actually want to evaluate the condition for all elements of the vector, either collapse it using `any` or `all` or wrap it in a loop:
+
+```{r eval=FALSE}
+x <- 1:3
+if(any(x == 2)) { cat("Two!") }
+
+for(i in seq_along(x))
+{
+    if(x[i] == 2) { cat("Two!") }
+}
+```
+
+### `number of items to replace is not a multiple of replacement length`
+This error occurs when you try to assign too many values to too short a vector.\index{warning message!\texttt{number of items to replace...}} Here is an example:
+
+```{r eval=FALSE}
+> x <- c(8, 5, 9, NA)
+> x[4] <- c(5, 7)
+Warning message:
+In x[4] <- c(5, 7) :
+  number of items to replace is not a multiple of replacement length
+```
+
+Don't try to squeeze more values than can fit into a single element! Instead, do something like this:
+
+```{r eval=FALSE}
+x[4:5] <- c(5, 7)
+```
+
+
+### `longer object length is not a multiple of shorter object length`
+This warning is printed e.g. when you try to add two vectors of different lengths together\index{warning message!\texttt{longer object length is not a multiple of shorter object length}}. If you add two vectors of equal length, everything is fine:
+
+```{r eval=FALSE}
+a <- c(1, 2, 3)
+b <- c(4, 5, 6)
+a + b
+```
+
+R does _element-wise_ addition, i.e. adds the first element of `a` to the first element of `b`, and so on.
+
+But what happens if we try to add two vectors of different lengths together?
+
+```{r eval=FALSE}
+a <- c(1, 2, 3)
+b <- c(4, 5, 6, 7)
+a + b
+```
+
+This yields the following warning message:
+
+```{r eval=FALSE}
+> a + b
+[1] 5 7 9 8
+Warning message:
+In a + b : longer object length is not a multiple of shorter object length
+```
+
+R _recycles_ the numbers in `a` in the addition, so that the first element of `a` is added to the fourth element of `b`. Was that really what you wanted? Maybe. But probably not.
+
+
+### `NAs introduced by coercion`
+This warning is thrown when you try to convert something that cannot be converted to another data type:\index{warning message!\texttt{NAs introduced by coercion}}
+```{r eval=FALSE}
+> as.numeric("two")
+[1] NA
+Warning message:
+NAs introduced by coercion
+```
+
+You can try using `gsub` to manually replace values instead:
+
+```{r eval=FALSE}
+x <- c("one", "two")
+x <- gsub("one", 1, x)
+as.numeric(x)
+```
+
+### `package is not available (for R version 4.x.x)`
+This warning message (which perhaps should be a error message rather than a warning) occurs when you try to install a package\index{warning message!\texttt{package is not available}} that isn't available for the version of R that you are using.
+
+```{r eval=FALSE}
+> install.packages("great_name_for_a_package")
+Installing package into ‘/home/mans/R/x86_64-pc-linux-gnu-library/4.0’
+(as ‘lib’ is unspecified)
+Warning in install.packages :
+  package ‘great_name_for_a_package’ is not available (for R version
+  4.0.0)
+```
+
+This can be either due to the fact that you've misspelt the package name or that the package isn't available for your version of R, either because you are using an out-of-date version or because the package was developed for an older version of R. In the former case, consider updating to a newer version of R. In the latter case, if you really need the package you can find and download older version of R at [R-project.org](https://cran.r-project.org/bin/windows/base/old/) - on Windows it is relatively easy to have multiple version of R installed side-by-side.
+
+
+## Messages printed when installing `ggplot2` {#installationmessages}
+Below is an excerpt from the output from when I installed the `ggplot2` package on a fresh install of R 4.0.0, provided here as a reference for what messages can be expected during a successful installation. The full output covers more than 20 pages. Parts that have been removed are marked by three points: `...`
+
+```{r eval=FALSE}
+> install.packages("ggplot2")
+Installing package into ‘/home/mans/R/x86_64-pc-linux-gnu-library/4.0’
+(as ‘lib’ is unspecified)
+also installing the dependencies ‘ps’, ‘processx’, ‘callr’,
+‘prettyunits’, ‘backports’, ‘desc’, ‘pkgbuild’, ‘rprojroot’,
+‘rstudioapi’, ‘evaluate’, ‘pkgload’, ‘praise’, ‘colorspace’,
+‘assertthat’, ‘utf8’, ‘Rcpp’, ‘testthat’, ‘farver’, ‘labeling’,
+‘munsell’, ‘R6’, ‘RColorBrewer’, ‘viridisLite’, ‘lifecycle’,
+‘cli’, ‘crayon’, ‘ellipsis’, ‘fansi’, ‘magrittr’, ‘pillar’,
+‘pkgconfig’, ‘vctrs’, ‘digest’, ‘glue’, ‘gtable’, ‘isoband’,
+‘rlang’, ‘scales’, ‘tibble’, ‘withr’
+
+trying URL 'https://cloud.r-project.org/src/contrib/ps_1.3.2.tar.gz'
+Content type 'application/x-gzip' length 98761 bytes (96 KB)
+==================================================
+downloaded 96 KB
+
+trying URL 'https://cloud.r-project.org/src/contrib/processx_3.4.2.tar.
+gz'
+Content type 'application/x-gzip' length 130148 bytes (127 KB)
+==================================================
+downloaded 127 KB
+
+trying URL 'https://cloud.r-project.org/src/contrib/callr_3.4.3.tar.gz'
+Content type 'application/x-gzip' length 85802 bytes (83 KB)
+==================================================
+downloaded 83 KB
+
+...
+
+trying URL 'https://cloud.r-project.org/src/contrib/ggplot2_3.3.0.tar.gz'
+Content type 'application/x-gzip' length 3031461 bytes (2.9 MB)
+==================================================
+downloaded 2.9 MB
+
+* installing *source* package ‘ps’ ...
+** package ‘ps’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+gcc -std=gnu99 -g -O2 -fstack-protector-strong -Wformat -Werror=format-
+  security-Wdate-time -D_FORTIFY_SOURCE=2 -g  -Wall px.c -o px
+gcc -std=gnu99 -I"/usr/share/R/include" -DNDEBUG      -fpic  -g -O2
+-fstack-protector-strong -Wformat -Werror=format-security -Wdate-time 
+-D_FORTIFY_SOURCE=2
+-g -c init.c -o init.o
+gcc -std=gnu99 -I"/usr/share/R/include" -DNDEBUG      -fpic  -g -O2
+-fstack-protector-strong -Wformat -Werror=format-security -Wdate-time
+-D_FORTIFY_SOURCE=2
+-g  -c api-common.c -o api-common.o
+gcc -std=gnu99 -I"/usr/share/R/include" -DNDEBUG      -fpic  -g -O2
+-fstack-protector-strong -Wformat -Werror=format-security -Wdate-time
+-D_FORTIFY_SOURCE=2
+-g  -c common.c -o common.o
+gcc -std=gnu99 -I"/usr/share/R/include" -DNDEBUG      -fpic  -g -O2
+-fstack-protector-strong -Wformat -Werror=format-security 
+
+...
+
+gcc -std=gnu99 -shared -L/usr/lib/R/lib -Wl,-Bsymbolic-functions -Wl,-z,
+relro -o ps.so init.o api-common.o common.o extra.o dummy.o posix.o
+api-posix.o linux.o api-linux.o
+-L/usr/lib/R/lib -lR
+installing via 'install.libs.R' to
+/home/mans/R/x86_64-pc-linux-gnu-library/4.0/00LOCK-ps/00new/ps
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation
+path
+* DONE (ps)
+
+...
+
+* installing *source* package ‘ggplot2’ ...
+** package ‘ggplot2’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+*** copying figures
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation
+path
+* DONE (ggplot2)
+
+The downloaded source packages are in
+	‘/tmp/RtmpVck22r/downloaded_packages’
+> 
+```
+
+
+\vfill

@@ -1,0 +1,6 @@
+```{r, echo = FALSE}
+knitr::kable(
+  head(airquality),
+  caption = "Some data I found."
+)
+```

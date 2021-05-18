@@ -1,0 +1,1088 @@
+# Transforming, summarising, and analysing data {#datachapter}
+Most datasets are stored as tables, with rows and columns. In this chapter we'll see how you can import and export such data, and how it is stored in R. We'll also discuss how you can transform, summarise, and analyse your data.
+
+After working with the material in this chapter, you will be able to use R to:
+
+* Distinguish between different data types,
+* Import data from Excel spreadsheets and csv text files,
+* Compute descriptive statistics for subgroups in your data,
+* Find interesting points in your data,
+* Add new variables to your data,
+* Modify variables in your data,
+* Remove variables from your data,
+* Save and export your data,
+* Work with RStudio projects,
+* Run t-tests and fit linear models,
+* Use `%>%` pipes to chain functions together.
+
+The chapter ends with a discussion of ethical guidelines for statistical work.
+
+## Data frames and data types
+
+### Types and structures
+We have already seen that different kinds of data require different kinds of statistical methods. For numeric data we create boxplots and compute means, but for categorical data we don't. Instead we produce bar charts and display the data in tables. It is no surprise then, that what R also treats different kinds of data differently. 
+
+In programming, a variable's_data type_\index{data type} describes what kind of object is assigned to it. We can assign many different types of objects to the variable `a`: it could for instance contain a number, text, or a data frame. In order to treat `a` correctly, R needs to know what data type its assigned object has. In some programming languages, you have to explicitly state what data type a variable has, but not in R. This makes programming R simpler and faster, but can cause problems if a variable turns out to have a different data type than what you thought^[And the subsequent troubleshooting makes programming R more difficult and slower.].
+
+R has six basic data types. For most people, it suffices to know about the first three in the list below:
+
+* `numeric`: numbers like `1` and `16.823` (sometimes also called `double`).\index{\texttt{numeric}}\index{\texttt{double}}
+* `logical`: true/false values (boolean): either `TRUE` or `FALSE`.\index{\texttt{logical}}\index{\texttt{TRUE/FALSE}}
+* `character`: text, e.g. `"a"`, `"Hello! I'm Ada."` and `"name@domain.com"`.\index{\texttt{character}}
+* `integer`: integer numbers, denoted in R by the letter `L`: `1L`, `55L`.\index{\texttt{integer}}
+* `complex`: complex numbers, like `2+3i`. Rarely used in statistical work.\index{\texttt{complex}}
+* `raw`: used to hold raw bytes. Don't fret if you don't know what that means. You can have a long and meaningful career in data science (or pretty much any other field) without ever having to worry about raw bytes. We won't discuss `raw` objects again in this book.\index{\texttt{raw}}
+
+In addition, these can be combined into special data types sometimes called _data structures_, examples of which include vectors and data frames. Important data structures include `factor`\index{\texttt{factor}}, which is used to store categorical data, and the awkwardly named `POSIXct`\index{\texttt{POSIXct}} which is used to store date and time data.
+
+To check what type of object a variable is, you can use the `class`\index{class} function:
+
+```{r eval=FALSE}
+x <- 6
+y <- "Scotland"
+z <- TRUE
+
+class(x)
+class(y)
+class(z)
+```
+
+What happens if we use `class` on a vector?
+
+```{r eval=FALSE}
+numbers <- c(6, 9, 12)
+class(numbers)
+```
+
+`class` returns the data type of the elements of the vector. So what happens if we put objects of different type together in a vector?
+
+```{r eval=FALSE}
+all_together <- c(x, y, z)
+all_together
+class(all_together)
+```
+
+In this case, R has coerced the objects in the vector to all be of the same type\index{data type!coercion}. Sometimes that is desirable, and sometimes it is not. The lesson here is to be careful when you create a vector from different objects. We'll learn more about coercion and how to change data types in Section \@ref(coercion).
+
+### Types of tables {#typesoftables}
+The basis for most data analyses in R are data frames: spreadsheet-like tables with rows and columns containing data. You encountered some data frames in the previous chapter. Have a quick look at them to remind yourself of what they look like:\index{data frame}
+
+```{r eval=FALSE}
+# Bookstore example
+age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
+purchase <- c(20, 59, 2, 12, 22, 160, 34, 34, 29)
+bookstore <- data.frame(age, purchase)
+View(bookstore)
+
+# Animal sleep data
+library(ggplot2)
+View(msleep)
+
+# Diamonds data
+View(diamonds)
+```
+
+Notice that all three data frames follow the same format: each column represents a _variable_ (e.g. age) and each row represents an _observation_ (e.g. an individual). This is the standard way to store data in R (as well as the standard format in statistics in general). In what follows, we will use the terms column and variable interchangeably, to describe the columns/variables in a data frame.
+
+This kind of table can be stored in R as different types of objects - that is, in several different ways. As you'd expect, the different types of objects have different properties and can be used with different functions. Here's the run-down of four common types:
+
+* `matrix`: a table where all columns must contain objects of the same type (e.g. all `numeric` or all `character`). Uses less memory than other types and allows for much faster computations, but is difficult to use for certain types of data manipulation, plotting and analyses.\index{\texttt{matrix}}
+* `data.frame`: the most common type, where different columns can contain different types (e.g. one `numeric` column, one `character` column).\index{\texttt{data.frame}}
+* `data.table`: an enhanced version of `data.frame`.\index{\texttt{data.table}}
+* `tbl_df` ("tibble"): another enhanced version of `data.frame`.\index{\texttt{tbl\_df}}\index{tibble}
+
+First of all, in most cases it doesn't matter which of these four that you use to store your data. In fact, they all look similar to the user. Have a look at the following datasets (`WorldPhones` and `airquality` come with base R):
+
+```{r eval=FALSE}
+# First, an example of data stored in a matrix:
+?WorldPhones
+class(WorldPhones)
+View(WorldPhones)
+
+# Next, an example of data stored in a data frame:
+?airquality
+class(airquality)
+View(airquality)
+
+# Finally, an example of data stored in a tibble:
+library(ggplot2)
+?msleep
+class(msleep)
+View(msleep)
+```
+
+That being said, in some cases it _really_ matters which one you use. Some functions require that you input a matrix, while others may break or work differently from what was intended if you input a tibble instead of an ordinary data frame. Luckily, you can convert objects into other types:\index{\texttt{as.data.frame}}\index{\texttt{as.matrix}}
+
+```{r eval=FALSE}
+WorldPhonesDF <- as.data.frame(WorldPhones)
+class(WorldPhonesDF)
+
+airqualityMatrix <- as.matrix(airquality)
+class(airqualityMatrix)
+```
+
+$$\sim$$
+
+```{exercise, label="ch3exc1"}
+The following tasks are all related to data types and data structures:
+
+1. Create a text variable using e.g. `a <- "A rainy day in Edinburgh"`. Check that it gets the correct type. What happens if you use single quotes marks instead of double quotes when you create the variable?
+
+2. What data types are the sums `1 + 2`, `1L + 2` and `1L + 2L`?
+  
+3. What happens if you add a `numeric` to a `character`, e.g. `"Hello" + 1`?
+  
+4. What happens if you perform mathematical operations involving a `numeric` and a `logical`, e.g. `FALSE * 2` or `TRUE + 1`?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions1)
+
+
+<br>
+
+```{exercise, label="ch3exc1c"}
+What do the functions `ncol`\index{\texttt{ncol}}, `nrow`\index{\texttt{nrow}}, `dim`\index{\texttt{dim}}, `names`\index{\texttt{names}}, and `row.names`\index{\texttt{row.names}} return when applied to a data frame?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions1c)
+
+
+<br>
+
+```{exercise, label="ch3exc1b"}
+`matrix`\index{\texttt{matrix}} tables can be created from vectors using the function of the same name. Using the vector `x <- 1:6` use `matrix` to create the following matrices:
+  
+$$\begin{pmatrix}
+  1 & 2 & 3\\ 
+  4 & 5 & 6
+\end{pmatrix}$$
+
+and 
+
+$$\begin{pmatrix}
+  1 & 4\\ 
+  2 & 5\\
+  3 & 6
+\end{pmatrix}.$$
+  
+Remember to check `?matrix` to find out how to set the dimensions of the matrix, and how it is filled with the numbers from the vector!
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions1b)
+
+
+## Vectors in data frames {#findingpoints}
+In the next few sections, we will explore the `airquality` dataset\index{data!\texttt{airquality}}. It contains daily air quality measurements from New York during a period of five months:
+
+* `Ozone`: mean ozone concentration (ppb),
+* `Solar.R`: solar radiation (Langley),
+* `Wind`: average wind speed (mph),
+* `Temp`: maximum daily temperature in degrees Fahrenheit,
+* `Month`: numeric month (May=5, June=6, and so on),
+* `Day`: numeric day of the month (1-31).
+
+There are lots of things that would be interesting to look at in this dataset. What was the mean temperature during the period? Which day was the hottest? Which was the windiest? What days were the temperature more than 90 degrees Fahrenheit? To answer these questions, we need to be able to access the vectors inside the data frame. We also need to be able to quickly and automatically screen the data in order to find interesting observations (e.g. the hottest day)
+
+### Accessing vectors and elements {#accessingelements}
+In Section \@ref(descstats), we learned how to compute the mean of a vector. We also learned that to compute the mean of a vector _that is stored inside a data frame_^[This works regardless of whether this is a regular `data.frame`, a `data.table` or a tibble.] we could use a dollar sign: `data_frame_name$vector_name`. Here is an example with the `airquality` data:
+
+```{r eval=FALSE}
+# Extract the Temp vector:
+airquality$Temp
+
+# Compute the mean temperature:
+mean(airquality$Temp)
+```
+
+If we want to grab a particular element from a vector, we must use its _index_\index{index} within square brackets: `[index]`. The first element in the vector has index 1, the second has index 2, the third index 3, and so on. To access the fifth element in the `Temp` vector in the `airquality` data frame, we can use:
+
+```{r eval=FALSE}
+airquality$Temp[5]
+```
+
+The square brackets can also be applied directly to the data frame. The syntax for this follows that used for matrices in mathematics: `airquality[i, j]` means the element at the i:th row and j:th column of `airquality`. We can also leave out either `i` or `j` to extract an entire row or column from the data frame. Here are some examples:
+
+```{r eval=FALSE}
+# First, we check the order of the columns:
+names(airquality)
+# We see that Temp is the 4th column.
+
+airquality[5, 4]    # The 5th element from the 4th column,
+                    # i.e. the same as airquality$Temp[5]
+airquality[5,]      # The 5th row of the data
+airquality[, 4]     # The 4th column of the data, like airquality$Temp
+airquality[[4]]     # The 4th column of the data, like airquality$Temp
+airquality[, c(2, 4, 6)] # The 2nd, 4th and 6th columns of the data
+airquality[, -2]    # All columns except the 2nd one
+airquality[, c("Temp", "Wind")] # The Temp and Wind columns
+```
+
+$$\sim$$
+
+```{exercise, label="ch3exc2"}
+The following tasks all involve using the the `[i, j]` notation for extracting data from data frames:
+  
+1. Why does `airquality[, 3]` not return the third row of `airquality`?
+  
+2. Extract the first five rows from `airquality`. _Hint:_ a fast way of creating the vector `c(1, 2, 3, 4, 5)` is to write `1:5`.
+
+3. Compute the correlation between the `Temp` and `Wind` vectors of `airquality` without refering to them using `$`.
+
+4. Extract all columns from `airquality` _except_ `Temp` and `Wind`.
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions2)
+
+
+### Use your dollars
+The `$` operator can be used not just to extract data from a data frame, but also to manipulate it. Let's return to our `bookstore` data frame, and see how we can make changes to it using the dollar sign.
+
+```{r eval=FALSE}
+age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
+purchase <- c(20, 59, 2, 12, 22, 160, 34, 34, 29)
+bookstore <- data.frame(age, purchase)
+```
+
+Perhaps there was a data entry error - the second customer was actually 18 years old and not 48. We can assign a new value to that element by referring to it in either of two ways:
+
+```{r eval=FALSE}
+bookstore$age[2] <- 18
+# or
+bookstore[2, 1] <- 18
+```
+
+We could also change an entire column if we like.\index{variable!modify} For instance, if we wish to change the `age` vector to months instead of years, we could use
+```{r eval=FALSE}
+bookstore$age <- bookstore$age * 12
+```
+
+What if we want to add another variable to the data, for instance the length of the customers' visits in minutes? There are several ways to accomplish this,\index{variable!add to data frame}\index{data frame!add variable} one of which involves the dollar sign:
+
+```{r eval=FALSE}
+bookstore$visit_length <- c(5, 2, 20, 22, 12, 31, 9, 10, 11)
+bookstore
+```
+
+As you see, the new data has now been added to a new column in the data frame.
+
+$$\sim$$
+
+```{exercise, label="ch3exc2p5"}
+Use the `bookstore` data frame to do the following:
+  
+1. Add a new variable `rev_per_minute` which is the ratio between purchase and the visit length.
+
+2. Oh no, there's been an error in the data entry! Replace the purchase amount for the 80-year old customer with `16`.
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions2p5)
+
+
+
+### Using conditions {#conditionsintro}
+A few paragraphs ago, we were asking which was the hottest day in the `airquality` data. Let's find out! We already know how to find the maximum value in the `Temp` vector:
+
+```{r eval=FALSE}
+max(airquality$Temp)
+```
+
+But can we find out which day this corresponds to? We could of course manually go through all 153 days e.g. by using `View(airquality)`, but that seems tiresome and wouldn't even be possible in the first place if we'd had more observations.\index{\texttt{which.max}} A better option is therefore to use the function `which.max`:
+
+```{r eval=FALSE}
+which.max(airquality$Temp)
+```
+
+`which.max` returns the index of the observation with the maximum value. If there is more than one observation attaining this value, it only returns the first of these.
+
+We've just used `which.max` to find out that day `120` was the hottest during the period. If we want to have a look at the entire row for that day, we can use
+
+```{r eval=FALSE}
+airquality[120,]
+```
+
+Alternatively, we could place the call to `which.max` inside the brackets. Because `which.max(airquality$Temp)` returns the number `120`, this yields the same result as the previous line:
+
+```{r eval=FALSE}
+airquality[which.max(airquality$Temp),]
+```
+
+Were we looking for the day with the lowest temperature, we'd use `which.min` analogously.\index{\texttt{which.min}} In fact, we could use any function or computation that returns an index in the same way, placing it inside the brackets to get the corresponding rows or columns. This is extremely useful is we want to extract observations with certain properties, for instance all days where the temperature was above 90 degrees. We do this using _conditions_\index{condition}, i.e. by giving statements that we wish to be fulfilled.
+
+As a first example of a condition, we use the following, which checks if the temperature exceeds 90 degrees:
+
+```{r eval=FALSE}
+airquality$Temp > 90
+```
+
+For each element in `airquality$Temp` this returns either `TRUE` (if the condition is fulfilled, i.e. when the temperature is greater than 90) or `FALSE` (if the conditions isn't fulfilled, i.e. when the temperature is 90 or lower). If we place the condition inside brackets following the name of the data frame, we will extract only the rows corresponding to those elements which were marked with `TRUE`:
+
+```{r eval=FALSE}
+airquality[airquality$Temp > 90, ]
+```
+
+If you prefer, you can also store the `TRUE` or `FALSE` values in a new variable:
+
+```{r eval=FALSE}
+airquality$Hot <- airquality$Temp > 90
+```
+
+There are several logical operators and functions which are useful when stating conditions in R.\index{logical operators} Here are some examples\index{\texttt{is.na}}\index{\texttt{\%in\%}}:
+
+```{r eval=FALSE}
+a <- 3
+b <- 8
+
+a == b     # Check if a equals b
+a > b      # Check if a is greater than b
+a < b      # Check if a is less than b
+a >= b     # Check if a is equal to or greater than b
+a <= b     # Check if a is equal to or less than b
+a != b     # Check if a is not equal to b
+is.na(a)   # Check if a is NA
+a %in% c(1, 4, 9) # Check if a equals at least one of 1, 4, 9
+```  
+
+When checking a conditions for all elements in a vector, we can use `which`\index{\texttt{which}} to get the indices of the elements that fulfill the condition:
+
+```{r eval=FALSE}
+which(airquality$Temp > 90)
+```  
+
+If we want to know if all elements in a vector fulfill the condition, we can use `all`:\index{\texttt{all}}
+
+```{r eval=FALSE}
+all(airquality$Temp > 90)
+```  
+
+In this case, it returns `FALSE`, meaning that not all days had a temperature above 90 (phew!). Similarly, if we wish to know whether _at least one_ day had a temperature above 90, we can use `any`\index{\texttt{any}}:
+
+```{r eval=FALSE}
+any(airquality$Temp > 90)
+```
+
+To find how many elements that fulfill a condition, we can use `sum`\index{\texttt{sum}}:
+
+```{r eval=FALSE}
+sum(airquality$Temp > 90)
+```
+
+Why does this work? Remember that `sum` computes the sum of the elements in a vector, and that when `logical` values are used in computations, they are treated as `0` (`FALSE`) or `1` (`TRUE`). Because the condition returns a vector of `logical` values, the sum of them becomes the number of 1's - the number of `TRUE` values  - i.e. the number of elements that fulfill the condition.
+
+To find the proportion of elements that fulfill a condition, we can count how many elements fulfill it and then divide by how many elements are in the vector. This is exactly what happens if we use `mean`\index{\texttt{mean}}:
+
+```{r eval=FALSE}
+mean(airquality$Temp > 90)
+```
+
+Finally, we can combine conditions by using the logical operators `&` (AND), `|` (OR), and, less frequently, `xor` (exclusive or, XOR). Here are some examples\index{\texttt{\&}}\index{\texttt{$\mid$}}\index{\texttt{xor}}:
+
+```{r eval=FALSE}
+a <- 3
+b <- 8
+
+# Is a less than b and greater than 1?
+a < b & a > 1
+
+# Is a less than b and equal to 4?
+a < b & a == 4
+
+# Is a less than b and/or equal to 4?
+a < b | a == 4
+
+# Is a equal to 4 and/or equal to 5?
+a == 4 | a == 5
+
+# Is a less than b XOR equal to 4?
+# I.e. is one and only one of these satisfied?
+xor(a < b, a == 4)
+```
+
+$$\sim$$
+
+```{exercise, label="ch3exc3"}
+The following tasks all involve checking conditions for the `airquality` data:
+  
+1. Which was the coldest day during the period?
+  
+2. How many days was the wind speed greater than 17 mph?
+  
+3. How many missing values are there in the `Ozone` vector?
+  
+4. How many days are there for which the temperature was below 70 and the wind speed was above 10?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions3)
+
+
+<br>
+
+```{exercise, label="ch3exc3b"}
+The function `cut`\index{\texttt{cut}}\index{variable!numeric $\rightarrow$ categorical} can be used to create a categorical variable from a numerical variable, by dividing it into categories corresponding to different intervals. Reads its documentation and then create a new categorical variable in the `airquality` data, `TempCat`, which divides `Temp` into the three intervals `(50, 70]`, `(70, 90]`, `(90, 110]`^[In interval notation, `(50, 70]` means that the interval contains all values between 50 and 70, excluding 50 but including 70; the intervals is _open_ on the left but _closed_ to the right.].
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions3b)
+
+
+## Importing data {#paths}
+So far, we've looked at examples of data they either came shipped with base R or `ggplot2`, or simple toy examples that we created ourselves, like `bookstore`. While you can do all your data entry work in R, `bookstore` style, it is much more common to load data from other sources.\index{import data}\index{file!import data from} Two important types of files are _comma-separated value files_, `.csv`, and Excel spreadsheets, `.xlsx`. `.csv` files are spreadsheets stored as text files - basically Excel files stripped down to the bare minimum - no formatting, no formulas, no macros. You can open and edit them in spreadsheet software like LibreOffice Calc, Google Sheets or Microsoft Excel. Many devices and databases can export data in `.csv` format, making it a commonly used file format that you are likely to encounter sooner rather than later.
+
+### Importing csv files
+In order to load data from a file into R, you needs its _path_ - that is, you need to tell R where to find the file. Unless you specify otherwise, R will look for files in its current _working directory_\index{working directory}\index{\texttt{getwd}}. To see what your current working directory is, run the following code in the Console panel:
+
+```{r eval=FALSE}
+getwd()
+```
+
+In RStudio, your working directory will usually be shown in the Files panel. If you have opened RStudio by opening a `.R` file, the working directory will be the directory in which the file is stored. You can change the working directory by using the function `setwd`\index{\texttt{setwd}} or selecting _Session > Set Working Directory > Choose Directory_ in the RStudio menu.
+
+Before we discuss paths further, let's have a look at how you can import data from a file that is in your working directory. [Download the file `philosophers.csv`\index{data!\texttt{philosophers.csv}} from the book's web page](http://www.modernstatisticswithr.com/data.zip) and store it in the folder that is your current working directory. Open it with a spreadsheet software to have a quick look at it. Then open it in a text editor (for instance Notepad for Windows, TextEdit for Mac or Gedit for Linux). Note how commas are used to separate the columns of the data:
+
+```{r eval=FALSE}
+"Name","Description","Born","Deceased","Rating"
+"Aristotle","Pretty influential, as philosophers go.",-384,"322 BC",
+"4.8"
+"Basilides","Denied the existence of incorporeal entities.",-175,
+"125 BC",4
+"Cercops","An Orphic poet",,,"3.2"
+"Dexippus","Neoplatonic!",235,"375 AD","2.7"
+"Epictetus","A stoic philosopher",50,"135 AD",5
+"Favorinus","Sceptic",80,"160 AD","4.7"
+```
+
+Then run the following\index{\texttt{read.csv}}\index{data!import from csv} code to import the data using the `read.csv` function and store it in a variable named `imported_data`:
+
+```{r eval=FALSE}
+imported_data <- read.csv("philosophers.csv")
+```
+
+If you get an error message that says:
+
+```{r eval=FALSE}
+Error in file(file, "rt") : cannot open the connection
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file 'philosophers.csv': No such file or directory
+```
+
+...it means that `philosophers.csv` is not in your working directory. Either move the file to the right directory (remember, you can use run `getwd()` to see what your working directory is) or change your working directory, as described above.
+
+Now, let's have a look at `imported_data`:
+
+```{r eval=FALSE}
+View(imported_data)
+str(imported_data)
+```
+
+The columns `Name` and `Description` both contain text, and have been imported as `character` vectors^[If you are running an older version of R (specifically, a version older than the 4.0.0 version released in April 2020), the `character` vectors will have been imported as `factor` vectors instead. You can change that behaviour by adding a `stringsAsFactors = FALSE` argument to `read.csv`.]. The `Rating` column contains numbers with decimals and has been imported as a `numeric` vector. The column `Born` only contain integer values, and has been imported as an `integer` vector. The missing value is represented by an `NA`. The `Deceased` column contains years formatted like `125 BC` and `135 AD`. These have been imported into a `character` vector - because numbers and letters are mixed in this column, R treats is as a text string (in Chapter \@ref(messychapter) we will see how we can convert it to numbers or proper dates). In this case, the missing value is represented by an empty string, `""`, rather than by `NA`.
+
+So, what can you do in case you need to import data from a file that is not in your working directory? This is a common problem, as many of us store script files and data files in separate folders (or even on separate drives). One option is to use `file.choose`\index{\texttt{file.choose}}, which opens a pop-up window that lets you choose which file to open using a graphical interface:
+
+```{r eval=FALSE}
+imported_data2 <- read.csv(file.choose())
+```
+
+A third option is to not write any code at all. Instead, you can import the data using RStudio's graphical interface by choosing _File > Import dataset > From Text (base)_ and then choosing `philosophers.csv`. This will generate the code needed to import the data (using `read.csv`) and run it in the Console window.
+
+The latter two solutions work just fine if you just want to open a single file once. But if you want to reuse your code or run it multiple times, you probably don't want to have to click and select your file each time. Instead, you can specify the path to your file in the call to `read.csv`.
+
+### File paths
+File paths look different in different operating systems. If the user `Mans` has a file named `philosophers.csv` stored in a folder called `MyData` on his desktop, its path on an English-language Windows system would be:
+
+```{r eval=FALSE}
+C:\Users\Mans\Desktop\MyData\philosophers.csv
+```
+
+On a Mac it would be:
+
+```{r eval=FALSE}
+/Users/Mans/Desktop/MyData/philosophers.csv
+```
+
+And on Linux:
+
+```{r eval=FALSE}
+/home/Mans/Desktop/MyData/philosophers.csv
+```
+
+You can copy the path of the file from your file browser:\index{file!find path} Explorer^[To copy the path, navigate to the file in Explorer. Hold down the Shift key and right-click the file, selecting _Copy as path_.] (Windows), Finder^[To copy the path, navigate to the file in Finder and right-click/Control+click/two-finger click on the file. Hold down the Option key, and then select _Copy "file name" as Pathname_.] (Mac) or Nautilus/similar^[To copy the path from Nautilus, navigate to the file and press Ctrl+L to show the path, then copy it. If you are using some other file browser or the terminal, my guess is that you're tech-savvy enough that you don't need me to tell you how to find the path of a file.] (Linux). Once you have copied the path, you can store it in R as a `character` string.
+
+Here's how to do this on Mac and Linux:
+
+```{r eval=FALSE}
+file_path <- "/Users/Mans/Desktop/MyData/philosophers.csv" # Mac
+file_path <- "/home/Mans/Desktop/MyData/philosophers.csv"  # Linux
+```
+
+If you're working on a Windows system, file paths are written using backslashes, `\`, like so:
+
+```{r eval=FALSE}
+C:\Users\Mans\Desktop\MyData\file.csv
+```
+
+You have to be careful when using backslashes in `character` strings in R, because they are used to create special characters (see Section \@ref(strings)). If we place the above path in a string, R won't recognise it as a path. Instead we have to reformat it into one of the following two formats:
+
+```{r eval=FALSE}
+# Windows example 1:
+file_path <- "C:/Users/Mans/Desktop/MyData/philosophers.csv"
+# Windows example 2:
+file_path <- "C:\\Users\\Mans\\Desktop\\MyData\\philosophers.csv"
+```
+
+If you've copied the path to your clipboard, you can also get the path in the second of the formats above by using
+
+```{r eval=FALSE}
+file_path <- readClipboard()   # Windows example 3
+```
+
+Once the path is stored in `file_path`, you can then make a call to `read.csv` to import the data:
+
+```{r eval=FALSE}
+imported_data <- read.csv(file_path)
+```
+
+Try this with your `philosophers.csv` file, to make sure that you know how it works.
+
+Finally, you can read a file directly from a URL, by giving the URL as the file path.\index{data!\texttt{tb\_data}}\index{data!import from URL} Here is an example with data from [the WHO Global Tuberculosis Report](https://www.who.int/tb/country/data/download/en/):
+
+```{r eval=FALSE}
+# Download WHO tuberculosis burden data:
+tb_data <- read.csv("https://tinyurl.com/whotbdata")
+```
+
+`.csv` files can differ slightly in how they are formatted - for instance, different symbols can be used to delimit the columns. You will learn how to handle this in the exercises below.
+
+A downside to `read.csv` is that it is very slow when reading large (50 MB or more) csv files. Faster functions are available in add-on packages; see Section \@ref(dtbasics). In addition, it is also possible to import data from other statistical software packages such as SAS and SPSS, from other file formats like JSON, and from databases. We'll discuss most of these in Section \@ref(commontasks)
+
+### Importing Excel files
+One common file format we will discuss right away though - `.xlsx` - Excel spreadsheet files. There are several packages that can be used to import Excel files to R. I like the `openxlsx`\index{\texttt{openxlsx}}\index{data!import from Excel}  package, so let's install that:
+
+```{r eval=FALSE}
+install.packages("openxlsx")
+```
+
+Now, [download the `philosophers.xlsx` file from the book's web page](http://www.modernstatisticswithr.com/data.zip) and save it in a folder of your choice. Then set `file_path` to the path of the file, just as you did for the `.csv` file.\index{\texttt{read.xlsx}}  To import data from the Excel file, you can then use:
+
+```{r eval=FALSE}
+library(openxlsx)
+imported_from_Excel <- read.xlsx(file_path)
+
+View(imported_from_Excel)
+str(imported_from_Excel)
+```
+
+As with `read.csv`, you can replace the file path with `file.choose()` in order to select the file manually.
+
+$$\sim$$
+
+```{exercise, label="ch3exc4"}
+The abbreviation CSV stands for _Comma Separated Values_, i.e. that commas `,` are used to separate the data columns. Unfortunately, the `.csv` format is not standardised, and `.csv` files can use different characters to delimit the columns. Examples include semicolons (`;`) and tabs (multiple spaces, denoted `\t` in strings in R). Moreover, decimal points can be given either as points (`.`) or as commas (`,`). [Download the `vas.csv`\index{data!\texttt{vas.csv}} file from the book's web page](http://www.modernstatisticswithr.com/data.zip). In this dataset, a number of patients with chronic pain have recorded how much pain they experience each day during a period, using the Visual Analogue Scale (VAS, ranging from 0 - no pain - to 10 - worst imaginable pain). Inspect the file in a spreadsheet software and a text editor - check which symbol is used to separate the columns and whether a decimal point or a decimal comma is used. Then set `file_path` to its path and import the data from it using the code below:
+
+```{r eval=FALSE}
+vas <- read.csv(file_path, sep = ";", dec = ",", skip = 4)
+
+View(vas)
+str(vas)
+```
+
+1. Why are there two variables named `X` and `X.1` in the data frame?
+
+2. What happens if you remove the `sep = ";"` argument?
+
+3. What happens if you instead remove the `dec = ","` argument?
+
+4. What happens if you instead remove the `skip = 4` argument?
+
+5. What happens if you change `skip = 4` to `skip = 5`?
+
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions4)
+
+<br>
+
+```{exercise, label="ch3exc5"}
+[Download the `projects-email.xlsx` file from the book's web page](http://www.modernstatisticswithr.com/data.zip) and have a look at it in a spreadsheet software. Note that it has three sheet: _Projects_, _Email_, and _Contact_.
+
+1. Read the documentation for `read.xlsx`. How can you import the data from the second sheet, _Email_?
+
+2. Some email addresses are repeated more than once. Read the documentation for `unique`\index{\texttt{unique}}. How can you use it to obtain a vector containing the email addresses without any duplicates?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions5)
+
+
+<br>
+
+```{exercise, label="ch3exc6"}
+[Download the `vas-transposed.csv`\index{data!\texttt{vas-transposed.csv}} file from the book's web page](http://www.modernstatisticswithr.com/data.zip) and have a look at it in a spreadsheet software. It is a _transposed_ version of `vas.csv`, where rows represent variables and columns represent observations (instead of the other way around, as is the case in data frames in R). How can we import this data into R?
+
+1. Import the data using `read.csv`. What does the resulting data frame look like?
+
+2. Read the documentation for `read.csv`. How can you make it read the row names that can be found in the first column of the `.csv` file?
+
+3. The function `t` can be applied to transpose (i.e. rotate) your data frame.\index{\texttt{t}}\index{data frame!transpose/rotate} Try it out on your imported data. Is the resulting object what you were looking for? What happens if you make a call to `as.data.frame` with your data after transposing it?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions6)
+
+
+
+## Saving and exporting your data
+In many a case, data manipulation is a huge part of statistical work, and of course you want to be able to save a data frame after manipulating it. There are two options for doing this in R - you can either export the data as e.g. a `.csv` or a `.xlsx` file, or save it in R format as an `.RData` file.
+
+### Exporting data
+Just as we used the functions `read.csv` and `read.xlsx` to import data, we can use `write.csv`\index{\texttt{write.csv}} and `write.xlsx`\index{\texttt{write.xlsx}}\index{data!export} to export it. The code below saves the `bookstore` data frame as a `.csv` file and an `.xlsx` file. Both files will be created in the current working directory. If you wish to store them somewhere else, you can replace the `"bookstore.csv"` bit with a full path, e.g. `"/home/mans/my-business/bookstore.csv"`.
+
+```{r eval=FALSE}
+# Bookstore example
+age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
+purchase <- c(20, 59, 2, 12, 22, 160, 34, 34, 29)
+bookstore <- data.frame(age, purchase)
+
+# Export to .csv:
+write.csv(bookstore, "bookstore.csv")
+
+# Export to .xlsx (Excel):
+library(openxlsx)
+write.xlsx(bookstore, "bookstore.xlsx")
+```
+
+### Saving and loading R data
+Being able to export to different spreadsheet formats is very useful, but sometimes you want to save an object that can't be saved in a spreadsheet format. For instance, you may wish to save a machine learning model that you've created. `.RData` files can be used to store one or more R objects.
+
+To save the objects `bookstore` and `age` in a `.Rdata` file, we can use the `save`\index{\texttt{save}}\index{data!save to \texttt{.RData}} function:
+
+```{r eval=FALSE}
+save(bookstore, age, file = "myData.RData")
+```
+
+To save all objects in your environment, you can use `save.image`\index{\texttt{save.image}}:
+
+```{r eval=FALSE}
+save.image(file = "allMyData.RData")
+```
+
+When we wish to load the stored objects, we use the `load` function\index{\texttt{load}}\index{data!load from \texttt{.RData}}:
+
+```{r eval=FALSE}
+load(file = "myData.RData")
+```
+
+
+
+## RStudio projects
+It is good practice to create a new folder for each new data analysis project that you are working on, where you store code, data and the output from the analysis. In Rstudio you can associate a folder with a Project, which lets you easily start RStudio with that folder as your working directory. Moreover, by opening another Project you can have several RStudio sessions, each with their separate variables and working directories, running simultaneously.
+
+To create a new Project, click _File > New Project_ in the RStudio menu\index{project}. You then get to choose whether to create a Project associated with a folder that already exists, or to create a Project in a new folder. After you've created the Project, it will be saved as an `.Rproj` file. You can launch RStudio with the Project folder as the working directory by double-clicking the `.Rproj` file. If you already have an active RStudio session, this will open another session in a separate window.
+
+When working in a Project, I recommend that you store your data in a subfolder of the Project folder. You can the use _relative paths_\index{relative path} to access your data files, i.e. paths that are relative to you working directory. For instance, if the file `bookstore.csv` is in a folder in your working directory called `Data`, it's relative path is:
+
+```{r eval=FALSE}
+file_path <- "Data/bookstore.csv"
+```
+
+Much simpler that having to write the entire path, isn't it?
+
+If instead your working directory is contained inside the folder where `bookstore.csv` is stored, its relative path would be
+
+```{r eval=FALSE}
+file_path <- "../bookstore.csv"
+```
+
+The beauty of using relative paths is that they are simpler to write, and if you transfer the entire project folder to another computer, your code will still run, because the relative paths will stay the same.
+
+## Running a t-test {#firstttest}
+R has thousands of functions for running different statistical hypothesis tests. We'll delve deeper into that in Chapter \@ref(modchapter), but we'll have a look at one of them right away: `t.test`\index{\texttt{t.test}}\index{hypothesis test!t-test}, which (yes, you guessed it!) can be used to run Student's t-test, which can be used to test whether the mean of two populations are equal.
+
+Let's say that we want to compare the mean sleeping times of carnivores and herbivores, using the `msleep` data. `t.test` takes two vectors as input, corresponding to the measurements from the two groups:
+
+```{r eval=FALSE}
+library(ggplot2)
+carnivores <- msleep[msleep$vore == "carni",]
+herbivores <- msleep[msleep$vore == "herbi",]
+t.test(carnivores$sleep_total, herbivores$sleep_total)
+```
+
+The output contains a lot of useful information, including the p-value ($0.53$) and a 95 % confidence interval. `t.test` contains a number of useful arguments that we can use to tailor the test to our taste. For instance, we can change the confidence level of the confidence interval (to 90 %, say), use a one-sided alternative hypothesis ("carnivores sleep more than herbivores", i.e. the mean of the first group is _greater_ than that of the second group) and perform the test under the assumption of equal variances in the two samples:
+
+```{r eval=FALSE}
+t.test(carnivores$sleep_total, herbivores$sleep_total,
+       conf.level = 0.90,
+       alternative = "greater",
+       var.equal = TRUE)
+```
+
+We'll explore `t.test` and related functions further in Section \@ref(ttest).
+
+## Fitting a linear regression model {#firstlm}
+The `mtcars`\index{data!\texttt{mtcars}} data from Henderson and Velleman (1981) has become one of the classic datasets in R, and a part of the initiation rite for new R users is to use the `mtcars` data to fit a linear regression model. The data describes fuel consumption, number of cylinders and other information about cars from the 1970's:
+
+```{r eval=FALSE}
+?mtcars
+View(mtcars)
+```
+
+Let's have a look at the relationship between gross horsepower (`hp`) and fuel consumption (`mpg`):
+
+```{r eval=FALSE}
+ggplot(mtcars, aes(hp, mpg)) +
+      geom_point()
+```
+
+The relationship doesn't appear to be perfectly linear, but nevertheless we can try fitting a linear regression model to the data. This can be done using `lm`\index{\texttt{lm}}\index{\texttt{\textasciitilde}}. We fit a model with `mpg` as the response variable and `hp` as the explanatory variable:
+
+```{r eval=FALSE}
+m <- lm(mpg ~ hp, data = mtcars)
+```
+
+The first argument is a formula, saying that `mpg` is a function of `hp`, i.e.
+
+$$mpg=\beta_0 +\beta_1 \cdot hp.$$
+
+A summary of the model is obtained using `summary`\index{\texttt{summary}}. Among other things, it includes the estimated parameters, p-values and the coefficient of determination $R^2$.
+
+```{r eval=FALSE}
+summary(m)
+```
+
+We can add the fitted line to the scatterplot by using `geom_abline`\index{\texttt{geom\_abline}}, which lets us add a straight line with a given intercept and slope - we take these to be the coefficients from the fitted model, given by `coef`\index{\texttt{coef}}:
+
+```{r eval=FALSE}
+# Check model coefficients:
+coef(m)
+
+# Add regression line to plot:
+ggplot(mtcars, aes(hp, mpg)) +
+      geom_point() + 
+      geom_abline(aes(intercept = coef(m)[1], slope = coef(m)[2]),
+                colour = "red")
+```
+
+Diagnostic plots for the residuals are obtained using `plot`:
+
+```{r eval=FALSE}
+plot(m)
+```
+
+If we wish to add further variables to the model, we simply add them to the right hand-side of the formula in the function call: 
+
+```{r eval=FALSE}
+m2 <- lm(mpg ~ hp + wt, data = mtcars)
+summary(m2)
+```
+
+In this case, the model becomes
+
+$$mpg=\beta_0 +\beta_1 \cdot hp + \beta_2\cdot wt.$$
+
+There is much more to be said about linear models in R. We'll return to them in Section \@ref(linearmodels).
+
+$$\sim$$
+
+```{exercise, label="ch3exc6bb"}
+Fit a linear regression model to the `mtcars` data, using `mpg` as response variable and `hp`, `wt`, `cyl`, and `am` as explanatory variables. Are all four explanatory variables significant?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions6bb)
+
+
+
+## Grouped summaries {#grouped}
+Being able to compute the mean temperature for the `airquality` data during the entire period is great, but it would be even better if we also had a way to compute it for each month. The `aggregate`\index{\texttt{aggregate}} function can be used to create that kind of _grouped summary_\index{grouped summary}.
+
+To begin with, let's compute the mean temperature for each month. Using `aggregate`, we do this as follows:\index{\texttt{mean}!by group}
+
+
+```{r eval=FALSE}
+aggregate(Temp ~ Month, data = airquality, FUN = mean)
+```
+
+The first argument is a formula, similar to what we used for `lm`, saying that we want a summary of `Temp` grouped by `Month`. Similar formulas are used also in other R functions, for instance when building regression models. In the second argument, `data`, we specify in which data frame the variables are found, and in the third, `FUN`, we specify which function should be used to compute the summary.
+
+By default, `mean` returns `NA` if there are missing values. In `airquality`, `Ozone` contains missing values, but when we compute the grouped means the results are not `NA`:
+
+```{r eval=FALSE}
+aggregate(Ozone ~ Month, data = airquality, FUN = mean)
+```
+
+By default, `aggregate` removes `NA` values before computing the grouped summaries.
+
+It is also possible to compute summaries for multiple variables at the same time. For instance, we can compute the standard deviations (using `sd`) of `Temp` and `Wind`, grouped by `Month`:
+
+```{r eval=FALSE}
+aggregate(cbind(Temp, Wind) ~ Month, data = airquality, FUN = sd)
+```
+
+`aggregate` can also be used to count the number of observations in the groups\index{count occurences}. For instance, we can count the number of days in each month. In order to do so, we put a variable with no `NA` values on the left-hand side in the formula, and use `length`\index{\texttt{length}}, which returns the length of a vector:
+
+```{r eval=FALSE}
+aggregate(Temp ~ Month, data = airquality, FUN = length)
+```
+
+Another function that can be used to compute grouped summaries is `by`\index{\texttt{by}}. The results are the same, but the output is not as nicely formatted. Here's how to use it to compute the mean temperature grouped by month:
+
+```{r eval=FALSE}
+by(airquality$Temp, airquality$Month, mean)
+```
+
+What makes `by` useful, is that unlike `aggregate` it is easy to use with functions that take more than one variable as input. If we want to compute the correlation between `Wind` and `Temp` grouped by month\index{\texttt{cor}!by group}, we can do that as follows:
+
+```{r eval=FALSE}
+names(airquality)  # Check that Wind and Temp are in columns 3 and 4
+by(airquality[, 3:4], airquality$Month, cor)
+```
+
+For each month, this outputs a _correlation matrix_, which shows both the correlation between `Wind` and `Temp` and the correlation of the variables with themselves (which always is 1).
+
+$$\sim$$
+
+```{exercise, label="ch3exc8"}
+Load the VAS pain data `vas.csv` from Exercise \@ref(exr:ch3exc4). Then do the following:
+  
+1. Compute the mean VAS for each patient.
+  
+2. Compute the lowest and highest VAS recorded for each patient.
+
+3. Compute the number of high-VAS days, defined as days where the VAS was at least 7, for each patient.
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions8)
+
+
+<br>
+
+```{exercise, label="ch3exc9"}
+Install the `datasauRus` package using `install.packages("datasauRus")` (note the capital R!). It contains the dataset `datasaurus_dozen`\index{data!\texttt{datasaurus\_dozen}}. Check its structure and then do the following:
+
+1. Compute the mean of `x`, mean of `y`, standard deviation of `x`, standard deviation of `y`, and correlation between `x` and `y`, grouped by `dataset`. Are there any differences between the 12 datasets?
+  
+2. Make a scatterplot of `x` against `y` for each dataset (use facetting!). Are there any differences between the 12 datasets?
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions9)
+
+
+
+
+## Using `%>%` pipes {#pipes}
+Consider the code you used to solve part 1 of Exercise \@ref(exr:ch3exc2p5):
+
+```{r eval=FALSE}
+bookstore$rev_per_minute <- bookstore$purchase / bookstore$visit_length
+```
+
+Wouldn't it be more convenient if you didn't have to write the `bookstore$` part each time? To just say once that you are manipulating `bookstore`, and have R implicitly understand that all the variables involved reside in that data frame? Yes. Yes, it would. Fortunately, R has tools that will let you do just that.
+
+### _Ceci n'est pas une pipe_
+The `magrittr`\index{\texttt{magrittr}} package^[Arguably the [best-named](https://en.wikipedia.org/wiki/The_Treachery_of_Images) R package.] adds a set of tools called _pipes_ to R. Pipes are operators that let you improve the readability of your code, and let you restructure your code so that it is read from the left to the right instead of from the inside out. Let's start by installing the package:
+
+```{r eval=FALSE}
+install.packages("magrittr")
+```
+
+Now, let's say that are interested in finding out what the mean wind speed (in m/s rather than mph) on hot days (temperature above 80, say) in the `airquality` data is, aggregated by month. We could do something like this:
+
+```{r eval=FALSE}
+# Extract hot days:
+airquality2 <- airquality[airquality$Temp > 80, ]
+# Convert wind speed to m/s:
+airquality2$Wind <- airquality2$Wind * 0.44704
+# Compute mean wind speed for each month:
+hot_wind_means <- aggregate(Wind ~ Month, data = airquality2,
+                            FUN = mean)
+```
+
+There is nothing wrong with this code per se. We create a copy of `airquality` (because we don't want to change the original data), change the units of the wind speed and then compute the grouped means. A downside is that we end up with a copy of `airquality` that we maybe won't need again. We could avoid that by putting all the operations inside of `aggregate`:
+
+```{r eval=FALSE}
+# More compact:
+hot_wind_means <-  aggregate(Wind*0.44704 ~ Month,
+                            data = airquality[airquality$Temp > 80, ],
+                            FUN = mean)
+```
+
+The problem with this is that it is a little difficult to follow, because we have to read the code from the inside out. When we run the code, R will first extract the hot days, then convert the wind speed to m/s, and then compute the grouped means - so the operations happen in an order that is the opposite of the order in which we wrote them.
+
+`magrittr` introduces a new operator, `%>%`, called a _pipe_\index{pipe}\index{\texttt{\%>\%}}, which can be used to chain functions together. Calls that you would otherwise write as
+
+```{r eval=FALSE}
+new_variable <- function_2(function_1(your_data))
+```
+
+can be written as
+
+```{r eval=FALSE}
+your_data %>% function_1 %>% function_2 -> new_variable
+```
+
+so that the operations are written in the order they are performed. Some prefer the former style, which is more like mathematics, but many prefer the latter, which is more like natural language (particularly for those of us who are used to reading from the left to the right).
+
+Three operations are required to solve the `airquality` wind speed problem:
+
+1. Extract the hot days,
+2. Convert the wind speed to m/s,
+3. Compute the grouped means.
+
+Where before we used function-less operations like `airquality2$Wind <- airquality2$Wind * 0.44704`, we would now require functions that carried out the same operations if we wanted to solve this problem using pipes.
+
+A function that lets us extract the hot days is `subset`\index{\texttt{subset}}:
+
+```{r eval=FALSE}
+subset(airquality, Temp > 80)
+```
+
+The `magrittr` function `inset`\index{\texttt{inset}} lets us convert the wind speed:
+
+```{r eval=FALSE}
+library(magrittr)
+inset(airquality, "Wind", value = airquality$Wind * 0.44704)
+```
+
+And finally, `aggregate` can be used to compute the grouped means. We could use these functions step-by-step:
+
+```{r eval=FALSE}
+# Extract hot days:
+airquality2 <- subset(airquality, Temp > 80)
+# Convert wind speed to m/s:
+airquality2 <- inset(airquality2, "Wind",
+                     value = airquality2$Wind * 0.44704)
+# Compute mean wind speed for each month:
+hot_wind_means <- aggregate(Wind ~ Month, data = airquality2,
+                            FUN = mean)
+```
+
+But, because we have functions to perform the operations, we can instead use `%>%` pipes to chain them together in a _pipeline_. Pipes automatically send the output from the previous function as the first argument to the next, so that the data flows from the left to the right, which make the code more concise. They also let us refer to the output from the previous function as `.`, which saves even more space. The resulting code is:
+
+```{r eval=FALSE}
+airquality %>%
+      subset(Temp > 80) %>% 
+      inset("Wind", value = .$Wind * 0.44704) %>%
+      aggregate(Wind ~ Month, data = ., FUN = mean) ->
+      hot_wind_means
+```
+
+You can read the `%>%` operator as _then_: take the `airquality` data, _then_ subset it, _then_ convert the `Wind` variable, _then_ compute the grouped means. Once you wrap your head around the idea of reading the operations from the left to the right, this code is arguably clearer and easier to read. Note that we used the right-assignment operator `->` to assign the result to `hot_wind_means`, to keep in line with the idea that the data flows from the left to the right.
+
+### Aliases and placeholders
+In the remainder of the book, we will use pipes in some situations where they make the code easier to write or read. Pipes don't always make code easier to read though, as can be seen if we use them to compute $\exp(\log(2))$:
+
+```{r eval=FALSE}
+# Standard solution:
+exp(log(2))
+# magrittr solution:
+2 %>% log %>% exp
+```
+
+If you need to use binary operators like `+`, `^` and `<`, `magrittr` has a number of _aliases_ that you can use. For instance, `add`\index{\texttt{add}} works as an alias for `+`:
+
+```{r eval=FALSE}
+x <- 2
+exp(x + 2)
+x %>% add(2) %>% exp
+```
+
+Here are a few more examples\index{\texttt{subtract}}\index{\texttt{multiply\_by}}\index{\texttt{divide\_by}}\index{\texttt{raise\_to\_power}}\index{\texttt{extract}}\index{\texttt{use\_series}}:
+
+```{r eval=FALSE}
+x <- 2
+# Base solution;          magrittr solution
+exp(x - 2);               x %>% subtract(2) %>% exp
+exp(x * 2);               x %>% multiply_by(2) %>% exp
+exp(x / 2);               x %>% divide_by(2) %>% exp
+exp(x^2);                 x %>% raise_to_power(2) %>% exp
+head(airquality[,1:4]);   airquality %>% extract(,1:4) %>% head
+airquality$Temp[1:5];     airquality %>%
+                            use_series(Temp) %>% extract(1:5)
+```
+
+In simple cases like these it is usually preferable to use the base R solution - the point here is that if you need to perform this kind of operation inside a pipeline, the aliases make it easy to do so. For a complete list of aliases, see `?extract`.
+
+If the function does not take the output from the previous function as its first argument, you can use `.` as a placeholder, just as we did in the `airquality` problem. Here is another example:
+
+```{r eval=FALSE}
+cat(paste("The current time is ", Sys.time())))
+Sys.time() %>% paste("The current time is", .) %>% cat
+```
+
+If the data only appears inside parenthesis, you need to wrap the function in curly brackets `{}`, or otherwise `%>%` will try to pass it as the first argument to the function:
+
+```{r eval=FALSE}
+airquality %>% cat("Number of rows in data:", nrow(.)) # Doesn't work
+airquality %>% {cat("Number of rows in data:", nrow(.))} # Works!
+```
+
+In addition to the `magrittr` pipes, from version 4.1 R also offers a native pipe, `|>`\index{$\mid >$}, which can be used in lieu of `%>%` without having to load any packages. Nevertheless, we'll use `%>%` pipes in the remainder of the book, partially because they are more commonly used (meaning that you are more likely to encounter them when looking at other people's code), and partially because `magrittr` also offers some other useful pipe operators. You'll see plenty of examples of how pipes can be used in Chapters \@ref(messychapter)-\@ref(mlchapter), and learn about other pipe operators in Section \@ref(morepipes).
+
+$$\sim$$
+
+```{exercise, label="ch3exc10"}
+Rewrite the following function calls using pipes, with `x <- 1:8`:
+  
+1. `sqrt(mean(x))`
+
+2. `mean(sqrt(x))`
+
+3. `sort(x^2-5)[1:2]`
+
+```
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions10)
+
+
+<br>
+
+```{exercise, label="ch3exc11"}
+Using the `bookstore` data:
+  
+```{r eval=FALSE}
+age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
+purchase <- c(20, 59, 2, 12, 22, 160, 34, 34, 29)
+visit_length <- c(5, 2, 20, 22, 12, 31, 9, 10, 11)
+bookstore <- data.frame(age, purchase, visit_length)
+``` 
+
+Add a new variable `rev_per_minute` which is the ratio between purchase and the visit length, using a pipe.
+
+`r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions11)
+
+## Flavours of R: base and tidyverse
+R is a programming _language_, and just as any language it has different dialects. When you read about R online you'll frequently see people mentioning the words "base" and "tidyverse". These are the two most common dialects of R. Base R is just that, R in its purest form. The tidyverse is a collection of add-on packages for working with different types of data. The two are fully compatible, and you can mix and match as much as you like. Both `ggplot2` and `magrittr` are part of the tidyverse.
+
+In recent years, the tidyverse has been heavily promoted as being "modern" R which "makes data science faster, easier and more fun". You should believe the hype. The tidyverse is marvelous. But if you only learn tidyverse R, you will miss out on much of what R has to offer. Base R is just as marvelous, and can definitely make data science as fast, easy and fun as the tidyverse.  Besides, nobody uses just base R anyway - there are a ton of non-tidyverse packages that extend and enrich R in exciting new ways. Perhaps "extended R" or "superpowered R" would be better names for the non-tidyverse dialect.
+
+The point I'm trying to make is that anyone who tells you to just learn one of these dialects is wrong. Both are great, they work extremely well together, and they are similar enough that you shouldn't limit yourself to just mastering one of them. This book will show you both base R and tidyverse solutions to problems, so that you can decide for yourself which is faster, easier and more fun.
+
+A defining property of the tidyverse is that there is a separate function for everything, which is perfect for code that relies on pipes. In contrast, base R uses fewer functions, but with more parameters, to perform the same tasks. If you use tidyverse solutions there is a good chance that there exists a function which performs exactly the task you're going to do with its default settings. This is great (once again, especially if you want to use pipes), but it means that there are many more functions to master for tidyverse users, whereas you can make do with much fewer in base R. You will spend more time looking up function arguments when working with base R (which fortunately is fairly straightforward using the `?` documentation), but on the other hand, looking up arguments for a function that you know the name of is easier than finding a function that does something very specific that you don't know the name of. There are advantages and disadvantages to both approaches.
+
+
+## Ethics and good statistical practice {#ethicalguidelines}
+Throughout this book, there will be sections devoted to ethics\index{ethics}. Good statistical practice is intertwined with good ethical practice. Both requires transparent assumptions, reproducible results, and valid interpretations.
+
+One of the most commonly cited ethical guidelines for statistical work is The American Statistical Association’s _Ethical Guidelines for Statistical Practice_\index{ethics!ASA guidelines} (Committee on Professional Ethics of the American Statistical Association, 2018), a shortened version of which is presented below^[The excerpt is from the version of the guidelines dated April 2018, and presented here with permission from the ASA.]. The full ethical guidelines are available at https://www.amstat.org/ASA/Your-Career/Ethical-Guidelines-for-Statistical-Practice.aspx
+
+* __Professional Integrity and Accountability__. The ethical statistician uses methodology and data that are relevant and appropriate; without favoritism or prejudice; and in a manner intended to produce valid, interpretable, and reproducible results. The ethical statistician does not knowingly accept work for which he/she is not sufficiently qualified, is honest with the client about any limitation of expertise, and consults other statisticians when necessary or in doubt. It is essential that statisticians treat others with respect.
+* __Integrity of data and methods__. The ethical statistician is candid about any known or suspected limitations, defects, or biases in the data that may affect the integrity or reliability of the statistical analysis. Objective and valid interpretation of the results requires that the underlying analysis recognizes and acknowledges the degree of reliability and integrity of the data.
+* __Responsibilities to Science/Public/Funder/Client__. The ethical statistician supports valid inferences, transparency, and good science in general, keeping the interests of the public, funder, client, or customer in mind (as well as professional colleagues, patients, the public, and the scientific community).
+* __Responsibilities to Research Subjects__. The ethical statistician protects and respects the rights and interests of human and animal subjects at all stages of their involvement in a project. This includes respondents to the census or to surveys, those whose data are contained in administrative records, and subjects of physically or psychologically invasive research.
+* __Responsibilities to Research Team Colleagues__. Science and statistical practice are often conducted in teams made up of professionals with different professional standards. The statistician must know how to work ethically in this environment.
+* __Responsibilities to Other Statisticians or Statistics Practitioners__. The practice of statistics requires consideration of the entire range of possible explanations for observed phenomena, and distinct observers drawing on their own unique sets of experiences can arrive at different and potentially diverging judgments about the plausibility of different explanations. Even in adversarial settings, discourse tends to be most successful when statisticians treat one another with mutual respect and focus on scientific principles, methodology, and the substance of data interpretations.
+* __Responsibilities Regarding Allegations of Misconduct__. The ethical statistician understands the differences between questionable statistical, scientific, or professional practices and practices that constitute misconduct. The ethical statistician avoids all of the above and knows how each should be handled.
+* __Responsibilities of Employers, Including Organizations, Individuals, Attorneys, or Other Clients Employing Statistical Practitioners__. Those employing any person to analyze data are implicitly relying on the profession’s reputation for objectivity. However, this creates an obligation on the part of the employer to understand and respect statisticians’ obligation of objectivity.
+
+Similar ethical guidelines for statisticians have been put forward by the International Statistical Institute (https://www.isi-web.org/about-isi/policies/professional-ethics), the United Nations Statistics Division (https://unstats.un.org/unsd/dnss/gp/fundprinciples.aspx), and the Data Science Association (http://www.datascienceassn.org/code-of-conduct.html). For further reading on ethics in statistics, see Franks (2020) and Fleming & Bruce (2021).
+
+$$\sim$$
+
+```{exercise, label="ch3ethics1"}
+_Discuss the following._ In the introduction to American Statistical Association’s _Ethical Guidelines for Statistical Practice_, it is stated that "using statistics in pursuit of unethical ends is inherently unethical". What is considered unethical depends on social, moral, political, and religious values, and ultimately you must decide for yourself what you consider to be unethical ends. Which (if any) of the following do you consider to be unethical?
+  
+1. Using statistical analysis to help a company that harm the environment through their production processes. Does it matter to you what the purpose of the the analysis is?
+2. Using statistical analysis to help a tobacco or liquor manufacturing company. Does it matter to you what the purpose of the the analysis is?
+3. Using statistical analysis to help a bank identify which loan applicants that are likely to default on their loans.
+4. Using statistical analysis of social media profiles to identify terrorist.
+5. Using statistical analysis of social media profiles to identify people likely to protest against the government.
+6. Using statistical analysis of social media profiles to identify people to target with political adverts. 
+7. Using statistical analysis of social media profiles to target ads at people likely to buy a bicycle.
+8. Using statistical analysis of social media profiles to target ads at people likely to gamble at a new online casino. Does it matter to you if it's an ad for the casino or for help for gambling addiction?
+
+```
+
+\vfill
+

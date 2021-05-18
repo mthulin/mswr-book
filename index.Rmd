@@ -1,0 +1,99 @@
+---
+title: "Modern Statistics with R"
+subtitle: "From wrangling and exploring data to inference and predictive modelling"
+author: "Måns Thulin"
+date: '`r Sys.Date()` - Draft version 0.9.12'
+bibliography: ["book.bib"]
+link-citations: true
+documentclass: book
+output:
+  bookdown::pdf_book:
+    highlight: default
+    toc: yes
+    toc_depth: 3
+  bookdown::gitbook:
+    split_bib: no
+site: bookdown::bookdown_site
+---
+
+
+`r if (knitr::is_html_output()) '# Welcome {-}
+<img style="float: right;" src="mswr-cover.png">This is the online version of the book _Modern Statistics with R_. It is free to use, and always will be. Printed copies will be available in the (Northern hemisphere) summer of 2021.
+
+The past decades have transformed the world of statistical data analysis, with new methods, new types of data, and new computational tools. The aim of _Modern Statistics with R_ is to introduce you to key parts of the modern statistical toolkit. It teaches you:
+
+- __Data wrangling__ - importing, formatting, reshaping, merging, and filtering data in R.
+- __Exploratory data analysis__ - using visualisations and multivariate techniques to explore datasets.
+- __Statistical inference__ - modern methods for testing hypotheses and computing confidence intervals.
+- __Predictive modelling__ - regression models and machine learning methods for prediction, classification, and forecasting.
+- __Simulation__ - using simulation techniques for sample size computations and evaluations of statistical methods.
+- __Ethics in statistics__ - ethical issues and good statistical practice.
+- __R programming__ - writing code that is fast, readable, and (hopefully!) free from bugs.
+
+The book includes plenty of examples and more than 200 exercises with worked solutions.
+
+Navigate the book using the menu to the left.
+
+The digital version of the book is offered under the Creative Commons [CC BY-NC-SA 4.0.](https://creativecommons.org/licenses/by-nc-sa/4.0/) license, meaning that you are free to redistribute and build upon the material for noncommercial purposes, as long as appropriate credit is given to the author.' else ' '`
+
+# Introduction
+
+## Welcome to R
+Welcome to the wonderful world of R!
+
+R is not like other statistical software packages. It is free, versatile, fast and modern. It has a large and friendly community of users, that help answer questions and develop new R tools. With more than 15,000 add-on packages available, R offers more functions for data analysis than any other statistical software, including specialised tools for disciplines as varied as political science, environmental chemistry, and astronomy, and new methods come to R long before they come to other programs. R makes it easy to construct reproducible analyses and workflows that allow you to easily repeat the same analysis more than once.
+
+R is not like other programming languages. It was developed by statisticians as a tool for data analysis, and not by software engineers as a tool for other programming tasks. It is designed from the ground up to handle data, and that shows. But it is also flexible enough to be used to create interactive web pages, automated reports and API's.
+
+R is, simply put, currently the best tool there is for data analysis.
+
+## About this book
+This book was born out of lecture notes and materials that I created for courses at the University of Edinburgh, Uppsala University, Dalarna University, the Swedish University of Agricultural Sciences, and Karolinska Institutet. It can be used as a textbook, for self-study, or as a reference manual for R. No background in programming is assumed.
+
+This is not a book that has been written with the intention that you should read it back-to-back. Rather, it is intended to serve as a guide to what to do next as you explore R. Think of it as a conversation, where you and I discuss different topics related to data analysis and data wrangling. At times I'll do the talking, introduce concepts and pose questions. At times you'll do the talking, working with exercises and discovering all that R has to offer. The best way to learn R is to use R. You should strive for active learning, meaning that you should spend more time with R and less time stuck with your nose in a book. Together we will strive for an exploratory approach, where the text guides you to new discoveries and the exercises challenge you to go further. This is the way that I've been teaching R since 2008, and I hope that it's a way that you will find works well for you.
+
+The book contains more than 200 exercises. Some are open-ended questions about ethical issues, but most involve R code. The latter group of exercises all have [worked solutions](#solutions). It is highly recommended that you actually work with all the exercises, as they are central to the approach to learning that this book seeks to support: using R to solve problems is a much better way to learn the language than to just read about how to use R to solve problems. Once you have finished an exercise (or attempted but failed to finish it) read the proposed solution - it may differ from what you came up with and will sometimes contain comments that you may find interesting. Treat the proposed solutions as a part of our conversation. As you work with the exercises and compare your solutions to those in the back of the book, you will gain more and more experience of working with R, and will build your own library of examples of how problems can be solved.
+
+Some books on R focus entirely on data science - data wrangling and exploratory data analysis - ignoring the many great tools R has to offer for deeper data analyses. Others focus on predictive modelling or classical statistics, but ignore data-handling, which is a key part of modern statistical work. Many books on statistical methods put too little focus on recent advances in computational statistics, and advocate methods that have become obsolete. Far too few books contain discussions of ethical issues in statistical practice. The aim of this book is to cover all of these topics, and to show you the state-of-the-art tools for all these tasks. It covers data science and (modern!) classical statistics as well as predictive modelling and machine learning, and deals with important topics that rarely appear in other introductory texts, such as simulation. It is written for R 4.0 or later, and will teach you powerful add-on packages like `data.table`, `dplyr`, `ggplot2`, and `caret`.
+
+The book is organised as follows:
+
+Chapter \@ref(thebasics) covers basic concepts and shows how to use R to compute descriptive statistics and create nice-looking plots.
+
+Chapter \@ref(datachapter) is concerned with how to import and handle data in R, and how to perform routine statistical analyses.
+
+Chapter \@ref(eda) covers exploratory data analysis using statistical graphics, as well as unsupervised learning techniques like principal components analysis and clustering. It also contains an introduction to R Markdown, a powerful markup language that can be used e.g. to create reports.
+
+Chapter \@ref(messychapter) describes how to deal with messy data - including filtering, rearranging and merging datasets - and different data types.
+
+Chapter \@ref(progchapter) deals with programming in R, and covers concepts such as iteration, conditional statements and functions.
+
+Chapters \@ref(eda)-\@ref(progchapter) can be read in any order.
+
+Chapter \@ref(modchapter) is concerned with classical statistical topics like estimation, confidence intervals, hypothesis tests, and sample size computations. Frequentist methods are presented alongside Bayesian methods utilising weakly informative priors. It also covers simulation and important topics in computational statistics, such as the bootstrap and permutation tests.
+
+Chapter \@ref(regression) deals with various regression models, including linear, generalised linear and mixed models. Survival models and methods for analysing different kinds of censored data are also included, along with methods for creating matched samples.
+
+Chapter \@ref(mlchapter) covers predictive modelling, including regularised regression, machine learning techniques, and an introduction to forecasting using time series models. Much focus is given to cross-validation and ways to evaluate the performance of predictive models. 
+
+Chapter \@ref(advancedchapter) gives an overview of more advanced topics, including parallel computing, matrix computations, and integration with other programming languages.
+
+Chapter \@ref(errorchapter) covers debugging, i.e. how to spot and fix errors in your code. It includes a list of more than 25 common error and warning messages, and advice on how to resolve them.
+
+Chapter \@ref(mathschap) covers some mathematical aspects of methods used in Chapters \@ref(modchapter)-\@ref(mlchapter).
+
+Finally, Chapter \@ref(solutions) contains fully worked solutions to all exercises in the book.
+
+The datasets that are used for the examples and exercises can be downloaded from
+
+[http://www.modernstatisticswithr.com/data.zip](http://www.modernstatisticswithr.com/data.zip)
+
+I have opted not to put the datasets in an R package, because I want you to practice loading data from files, as this is what you'll be doing whenever you use R for real work.
+
+This book will be available both in print and as an open access online book. The digital version of the book is offered under the Creative Commons [CC BY-NC-SA 4.0.](https://creativecommons.org/licenses/by-nc-sa/4.0/) license, meaning that you are free to redistribute and build upon the material for noncommercial purposes, as long as appropriate credit is given to the author.
+
+I am indebted to the numerous readers who have provided feedback on drafts of this book. My sincerest thanks go out to all of you. Any remaining misprints are, obviously, entirely my own fault.
+
+Finally, there are countless packages and statistical methods that deserve a mention but aren't included in the book. Like any author, I've had to draw the line somewhere. If you feel that something is missing, feel free to [contact me](mailto:mans@statistikkonsult.com), and I'll gladly consider it for future revisions. <!-- Or even better, write a section on it and submit it on the book's GitHub page. -->
+
+\vfill

@@ -1,0 +1,6 @@
+```{r pressureplot, fig.cap = "Plot of the pressure data."}
+plot(pressure)
+```
+
+As we can see in Figure \@ref(fig:cars-plot), the relationship between
+temperature and pressure resembles a banana.

@@ -1,0 +1,14 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+google_analytics.html
+Bokomslag/
+_book/
+_bookdown_files/
+temp/
+Tempdata/
+_main.log
+_main.pdf.xoj
+Rprof.out
+Rprofmem.out

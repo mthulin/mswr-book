@@ -1,0 +1,158 @@
+<!-- `r if (knitr::is_html_output()) '# References {-}'` -->
+
+# Bibliography {-#references}
+
+## Further reading {-#references1}
+Below is a list of some highly recommended books, that either partially overlap with the content in this book or serve as a natural next step after you finish reading this book. All of these are available for free online.
+
+* _The R Cookbook_ (https://rc2e.com/) by Long & Teetor (2019) contains tons of examples of how to perform common tasks in R.
+* _R for Data Science_ (https://r4ds.had.co.nz/) by Wickham & Grolemund (2017) is similar in scope to Chapters 2-6 of this book, but with less focus on statistics and greater focus on tidyverse functions.
+* _Advanced R_ (http://adv-r.had.co.nz/) by Wickham (2019) deals with advanced R topics, delving further into object-oriented programming, functions, and increasing the performance of your code.
+* _R Packages_ (https://r-pkgs.org/) by Wickham and Bryan describes how to create your own R packages.
+* _ggplot2: Elegant Graphics for Data Analysis_ (https://ggplot2-book.org/) by Wickham, Navarro & Lin Pedersen is an in-depth treatise of `ggplot2`.
+* _Fundamentals of Data Visualization_ (https://clauswilke.com/dataviz/) by Wilke (2019) is a software-agnostic text on data visualisation, with tons of useful advice.
+* _R Markdown: the definitive guide_ (https://bookdown.org/yihui/rmarkdown/) by Xie et al. (2018) describes how to use R Markdown for reports, presentations, dashboards, and more.
+* _An Introduction to Statistical Learning with Applications in R_ (https://www.statlearning.com/) by James et al. (2013) provides an introduction to methods for regression and classification, with examples in R (but not using `caret`).
+* _Hands-On Machine Learning with R_ (https://bradleyboehmke.github.io/HOML/) by Boehmke & Greenwell (2019) covers a large number of machine learning methods.
+* _Forecasting: principles and practice_ (https://otexts.com/fpp2/) by Hyndman & Athanasopoulos, G. (2018) deals with forecasting and time series models in R.
+* _Deep Learning with R_ (https://livebook.manning.com/book/deep-learning-with-r/) by Chollet & Allaire (2018) delves into neural networks and deep learning, including computer vision and generative models.
+
+
+## Online resources {-#references2}
+* A number of reference cards cards, or cheat sheets, can be found online. I like the one at https://cran.r-project.org/doc/contrib/Short-refcard.pdf
+* R-bloggers (https://www.r-bloggers.com/) collects blog posts related to R. A great place to discover new tricks and see how others are using R.
+* RSeek (http://rseek.org/) provides a custom Google search with the aim of only returning pages related to R.
+* Stack Overflow (https://stackoverflow.com/questions/tagged/r) and its sister-site Cross Validated (https://stats.stackexchange.com/) are questions-and-answers sites. They are great places for asking questions, and in addition they already contain a ton of useful information about all things R-related. The RStudio Community (https://community.rstudio.com/) is another good option.
+* The R Journal (https://journal.r-project.org/) is an open access peer-reviewed journal containing papers on R, mainly describing new add-on packages and their functionality.
+
+## References {-#references3}
+
+Agresti, A. (2013). _Categorical Data Analysis_. Wiley.
+
+Bates, D., Mächler, M., Bolker, B., Walker, S. (2015). Fitting linear mixed-effects models using lme4. _Journal of Statistical Software_, 67, 1.
+
+Boehmke, B., Greenwell, B. (2019). _Hands-On Machine Learning with R_. CRC Press.
+
+Box, G.E., Cox, D.R. (1964). An analysis of transformations. _Journal of the Royal Statistical Society: Series B (Methodological)_, 26(2), 211-243.
+
+Breiman, L., Friedman, J., Stone, C.J., Olshen, R.A. (1984). _Classification and Regression Trees_. CRC press.
+
+Breiman, L. (2001). Random forests. _Machine Learning_, 45(1), 5-32.
+
+Brown, L.D., Cai, T.T., DasGupta, A. (2001). Interval estimation for a binomial proportion. _Statistical Science_, 16(2), 101-117.
+
+Buolamwini, J., Gebru, T. (2018). Gender shades: Intersectional accuracy disparities in commercial gender classification. _Proceedings of Machine Learning Research_, 81, 1-15.
+
+Cameron, A.C., Trivedi, P.K. (1990). Regression-based tests for overdispersion in the Poisson model. _Journal of Econometrics_, 46(3), 347-364.
+
+Casella, G., Berger, R.L. (2002). _Statistical Inference_. Brooks/Cole.
+
+Charytanowicz, M.,  Niewczas, J., Kulczycki, P., Kowalski, P.A., Lukasik, S. & Zak, S. (2010). A Complete Gradient Clustering Algorithm for Features Analysis of X-ray Images. In: _Information Technologies in Biomedicine_, Ewa Pietka, Jacek Kawa (eds.), Springer-Verlag, Berlin-Heidelberg, 15-24.
+
+Chollet, F., Allaire, J.J. (2018). _Deep Learning with R_. Manning.
+
+Committee on Professional Ethics of the American Statistical Association. (2018). _Ethical Guidelines for Statistical Practice_. https://www.amstat.org/ASA/Your-Career/Ethical-Guidelines-for-Statistical-Practice.aspx
+
+Cook, R.D., & Weisberg, S. (1982). _Residuals and Influence in Regression_. Chapman and Hall.
+
+Cortez, P., Cerdeira, A., Almeida, F., Matos, T., Reis, J. (2009). Modeling wine preferences by data mining from physicochemical properties. _Decision Support Systems_, 47(4), 547-553.
+
+Costello, A.B., Osborne, J. (2005). Best practices in exploratory factor analysis: Four recommendations for getting the most from your analysis. _Practical Assessment, Research, and Evaluation_, 10(1), 7.
+
+Cox, D. R. (1972). Regression models and life‐tables. _Journal of the Royal Statistical Society: Series B (Methodological)_, 34(2), 187-202.
+
+Dastin, J. (2018). Amazon scraps secret AI recruiting tool that showed bias against women. Reuters.
+
+Davison, A.C., Hinkley, D.V. (1997). _Bootstrap Methods and their Application_. Cambridge University Press.
+
+Eck, K., Hultman, L. (2007). One-sided violence against civilians in war: Insights from new fatality data. _Journal of Peace Research_, 44(2), 233-246.
+
+Eddelbuettel, D., Balamuta, J.J. (2018). Extending R with C++: a brief introduction to Rcpp. _The American Statistician_, 72(1), 28-36.
+
+Efron, B. (1983). Estimating the error rate of a prediction rule: improvement on cross-validation. _Journal of the American Statistical Association_, 78(382), 316-331.
+
+Elston, D.A., Moss, R.,  Boulinier, T., Arrowsmith, C., Lambin, X. (2001). Analysis of aggregation, a worked example: numbers of ticks on red grouse chicks. _Parasitology_, 122(05), 563-569.
+
+Fleming, G., Bruce, P.C. (2021). _Responsible Data Science: Transparency and Fairness in Algorithms_. Wiley.
+
+Franks, B. (Ed.) (2020). _97 Things About Ethics Everyone in Data Science Should Know_. O'Reilly Media.
+
+Friedman, J.H. (2002). Stochastic Gradient Boosting, _Computational Statistics and Data Analysis_, 38(4), 367-378.
+
+Gao, L.L, Bien, J., Witten, D. (2020). Selective inference for hierarchical clustering. Pre-print, arXiv:2012.02936.
+
+Groll, A., Tutz, G. (2014). Variable selection for generalized linear mixed models by L1-penalized estimation. _Statistics and Computing_, 24(2), 137-154.
+
+Hall, P. (1992). _The Bootstrap and Edgeworth Expansion_. Springer Science & Business Media.
+
+Hartigan, J.A., Wong, M.A. (1979). Algorithm AS 136: A k-means clustering algorithm. _Journal of the Royal Statistical Society: Series C (Applied Statistics)_, 28(1), 100-108.
+
+Henderson, H.V., Velleman, P.F. (1981). Building multiple regression models interactively. _Biometrics_, 37, 391–411.
+
+Herr, D.G. (1986). On the history of ANOVA in unbalanced, factorial designs: the first 30 years. _The American Statistician_, 40(4), 265-270.
+
+Hoerl, A.E., Kennard, R.W. (1970). Ridge regression: Biased estimation for nonorthogonal problems. _Technometrics_, 12(1), 55-67.
+
+Hyndman, R. J., Athanasopoulos, G. (2018). _Forecasting: Principles and Practice_. OTexts.
+
+James, G., Witten, D., Hastie, T., Tibshirani, R. (2013). _An Introduction to Statistical Learning with Applications in R_. Springer.
+
+Kuznetsova, A., Brockhoff, P. B., Christensen, R. H. (2017). lmerTest package: tests in linear mixed effects models. _Journal of Statistical Software_, 82(13), 1-26.
+
+Liero, H., Zwanzig, S. (2012). _Introduction to the Theory of Statistical Inference_. CRC Press.
+
+Long, J.D., Teetor, P. (2019). _The R Cookbook_. O'Reilly Media.
+
+Moen, A., Lind, A.L., Thulin, M., Kamali–Moghaddamd, M., Roe, C., Gjerstad, J., Gordh, T. (2016). Inflammatory serum protein profiling of patients with lumbar radicular pain one year after disc herniation. _International Journal of Inflammation_, 2016, Article ID 3874964.
+
+Petterson, T., Högbladh, S., Öberg, M. (2019). Organized violence, 1989-2018 and peace agreements. _Journal of Peace Research_, 56(4), 589-603.
+
+Picard, R.R., Cook, R.D. (1984). Cross-validation of regression models. _Journal of the American Statistical Association_, 79(387), 575–583.
+
+Recht, B., Roelofs, R., Schmidt, L., Shankar, V. (2019). Do imagenet classifiers generalize to imagenet?. arXiv preprint arXiv:1902.10811.
+
+Schoenfeld, D. (1982). Partial residuals for the proportional hazards regression model. _Biometrika_, 69(1), 239-241.
+
+Scrucca, L., Fop, M., Murphy, T.B., Raftery, A.E. (2016). mclust 5: clustering, classification and density estimation using Gaussian finite mixture models. _The R Journal_, 8(1), 289.
+
+Smith, G. (2018). Step away from stepwise. _Journal of Big Data_, 5(1), 32.
+
+Tibshirani, R. (1996). Regression shrinkage and selection via the lasso. _Journal of the Royal Statistical Society: Series B (Methodological)_, 58(1), 267-288.
+
+Tibshirani, R., Walther, G., Hastie, T. (2001). Estimating the number of clusters in a data set via the gap statistic. _Journal of the Royal Statistical Society: Series B (Statistical Methodology)_, 63(2), 411-423.
+
+Thulin, M. (2014a). The cost of using exact confidence intervals for a binomial proportion. _Electronic Journal of Statistics_, 8, 817-840.
+
+Thulin, M. (2014b). _On Confidence Intervals and Two-Sided Hypothesis Testing_. PhD thesis. Department of Mathematics, Uppsala University.
+
+Thulin, M. (2014c). Decision-theoretic justifications for Bayesian hypothesis testing using credible sets. _Journal of Statistical Planning and Inference_, 146, 133-138.
+
+Thulin, M. (2016). Two‐sample tests and one‐way MANOVA for multivariate biomarker data with nondetects. _Statistics in Medicine_, 35(20), 3623-3644.
+
+Thulin, M., Zwanzig, S. (2017). Exact confidence intervals and hypothesis tests for parameters of discrete distributions. _Bernoulli_, 23(1), 479-502.
+
+Tobin, J. (1958). Estimation of relationships for limited dependent variables. _Econometrica_, 26, 24-36.
+
+Wasserstein, R.L., Lazar, N.A. (2016). The ASA statement on p-values: context, process, and purpose. _The American Statistician_, 70(2), 129-133.
+
+Wei, L.J. (1992). The accelerated failure time model: a useful alternative to the Cox regression model in survival analysis. _Statistics in Medicine_, 11(14‐15), 1871-1879.
+
+Wickham, H. (2019). _Advanced R_. CRC Press.
+
+Wickham, H., Bryan, J. (forthcoming). _R Packages_.
+
+Wickham, H., Grolemund, G. (2017). _R for Data Science_. O'Reilly Media.
+
+Wickham, H., Navarro, D., Lin Pedersen, T. (forthcoming). _ggplot2: Elegant Graphics for Data Analysis_.
+
+Wilke, C.O. (2019). _Fundamentals of Data Visualization_. O'Reilly Media.
+
+Xie, Y., Allaire, J.J., Grolemund, G. (2018). _R Markdown: the definitive guide_ Chapman & Hall.
+
+Zeileis, A., Hothorn, T., Hornik, K. (2008). Model-based recursive partitioning. _Journal of Computational and Graphical Statistics_, 17(2), 492-514.
+
+Zhang, D., Fan, C., Zhang, J., Zhang, C.-H. (2009). Nonparametric methods for measurements below detection limit. _Statistics in Medicine_, 28, 700–715.
+
+Zhang, Y., Yang, Y. (2015). Cross-validation for selecting a model selection procedure. _Journal of Econometrics_, 187(1), 95-112.
+
+Zou, H., Hastie, T. (2005). Regularization and variable selection via the elastic net. _Journal of the Royal Statistical Society: Series B (Methodological)_, 67(2), 301-320.
