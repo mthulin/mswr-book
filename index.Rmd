@@ -94,6 +94,6 @@ This book will be available both in print and as an open access online book. The
 
 I am indebted to the numerous readers who have provided feedback on drafts of this book. My sincerest thanks go out to all of you. Any remaining misprints are, obviously, entirely my own fault.
 
-Finally, there are countless packages and statistical methods that deserve a mention but aren't included in the book. Like any author, I've had to draw the line somewhere. If you feel that something is missing, feel free to [contact me](mailto:mans@statistikkonsult.com), and I'll gladly consider it for future revisions. <!-- Or even better, write a section on it and submit it on the book's GitHub page. -->
+Finally, there are countless packages and statistical methods that deserve a mention but aren't included in the book. Like any author, I've had to draw the line somewhere. If you feel that something is missing, feel free to post an issue on the book's GitHub page (https://github.com/mthulin/mswr-book), and I'll gladly consider it for future revisions.
 
 \vfill
