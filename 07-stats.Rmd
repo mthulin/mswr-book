@@ -1,10 +1,10 @@
 # Modern classical statistics {#modchapter}
-"Modern classical" may sound like a contradiction, but is in fact anything but. Classical statistics covers topics like estimation, quantification of uncertainty, and hypothesis testing - all of which are at the heart of data analysis. Since the advent of modern computers, much has happened in this field that has yet to make it to the standard textbooks of introductory courses in statistics. This chapter is an attempt to bridge part of that gap by dealing with those classical topics, but with a modern approach that makes use of more recent advances in statistical theory and computational methods. Particular focus is put on how simulation can be used for analyses and for evaluating the properties of statistical procedures.
+"Modern classical" may sound like a contradiction, but it is in fact anything but. Classical statistics covers topics like estimation, quantification of uncertainty, and hypothesis testing - all of which are at the heart of data analysis. Since the advent of modern computers, much has happened in this field that has yet to make it to the standard textbooks of introductory courses in statistics. This chapter attempts to bridge part of that gap by dealing with those classical topics, but with a modern approach that uses more recent advances in statistical theory and computational methods. Particular focus is put on how simulation can be used for analyses and for evaluating the properties of statistical procedures.
 
 Whenever it is feasible, our aim in this chapter and the next is to:
 
-* Use hypothesis tests that are based on permutations or the bootstrap rather than tests based on strict assumptions about the distribution of the data or on asymptotic distributions,
-* To complement estimates and hypothesis tests with compute confidence intervals based on sound methods (including the bootstrap),
+* Use hypothesis tests that are based on permutations or the bootstrap rather than tests based on strict assumptions about the distribution of the data or asymptotic distributions,
+* To complement estimates and hypothesis tests with computing confidence intervals based on sound methods (including the bootstrap),
 * Offer easy-to-use Bayesian methods as an alternative to frequentist tools.
 
 
@@ -18,7 +18,7 @@ After reading this chapter, you will be able to use R to:
 * Report statistical results.
 
 ## Simulation and distributions {#simulation}
-A _random variable_\index{random variable} is a variable whose value describes the outcome of a random phenomenon. A (probability) _distribution_\index{distribution} is a mathematical function that describes the probability of different outcomes for a random variable. Random variables and distributions are the key components of probability theory and most, if not all, statistical models.
+A _random variable_\index{random variable} is a variable whose value describes the outcome of a random phenomenon. A (probability) _distribution_\index{distribution} is a mathematical function that describes the probability of different outcomes for a random variable. Random variables and distributions are at the heart of probability theory and most, if not all, statistical models.
 
 As we shall soon see, they are also invaluable tools when evaluating statistical methods. A key component of modern statistical work is _simulation_\index{simulation}, in which we generate artificial data that can be used both in the analysis of real data (e.g. in permutation tests and bootstrap confidence intervals, topics that we'll explore in this chapter) and for assessing different methods. Simulation is possible only because we can generate random numbers, so let's begin by having a look at how we can generate random numbers in R.
 
@@ -29,7 +29,7 @@ The function `sample`\index{\texttt{sample}} can be used to randomly draw a numb
 sample(1:10, 2)
 ```
 
-Try running the above code multiple times. You'll get different results each time, because each time it runs the random number generator is in a different _state_. In most cases, this is desirable (if the results was that same each time we used `sample` then it wouldn't be random), but not if we want to replicate a result at some later stage.
+Try running the above code multiple times. You'll get different results each time, because each time it runs the random number generator is in a different _state_. In most cases, this is desirable (if the results were the same each time we used `sample`, it wouldn't be random), but not if we want to replicate a result at some later stage.
 
 When we are concerned about reproducibility, we can use `set.seed`\index{\texttt{set.seed}} to fix the state of the random number generator:
 
@@ -261,7 +261,7 @@ ggplot(generated_data, aes(sample = normal_data)) +
         geom_qq_line(distribution = qlnorm)
 ```
 
-Q-Q-plots can be a little difficult to read. There will always be points deviating from the line - in fact, that's expected. So how much must they deviate before we rule out a distributional assumption? Particularly when working with real data, I like to compare the Q-Q-plot of my data to Q-Q-plots of simulated samples from the assumed distribution, to get a feel for what kind of deviations that can appear if the distributional assumption holds. Here's an example of how to do this, for the normal distribution:
+Q-Q-plots can be a little difficult to read. There will always be points deviating from the line - in fact, that's expected. So how much must they deviate before we rule out a distributional assumption? Particularly when working with real data, I like to compare the Q-Q-plot of my data to Q-Q-plots of simulated samples from the assumed distribution, to get a feel for what kind of deviations can appear if the distributional assumption holds. Here's an example of how to do this, for the normal distribution:
 
 ```{r eval=FALSE}
 # Look at solar radiation data for May from the airquality
@@ -292,7 +292,7 @@ library(patchwork)
   (qqplots[[7]] + qqplots[[8]] + qqplots[[9]])
 ```
 
-You can run the code several times, to get more examples of what Q-Q-plots can look like when the distributional assumption holds. In this case, the tail points in the Q-Q-plot for the solar radiation data deviate from the line more than the tail points in most simulated examples do, and personally I'd be reluctant to assume that the data comes from a normal distribution.
+You can run the code several times, to get more examples of what Q-Q-plots can look like when the distributional assumption holds. In this case, the tail points in the Q-Q-plot for the solar radiation data deviate from the line more than the tail points in most simulated examples do, and personally, I'd be reluctant to assume that the data comes from a normal distribution.
 
 $$\sim$$
 ```{exercise, label="ch7exc3"}
@@ -318,7 +318,7 @@ Another approach to assessing distributional assumptions for real data is to use
 
 
 ### Monte Carlo integration
-In this chapter, we will use simulation to compute p-values and confidence intervals, to compare different statistical methods, and to perform sample size computations. Another important use of simulation is in _Monte Carlo integration_, in which random numbers are used for numerical integration. It plays and important role in for instance statistical physics, computational biology, computational linguistics, and Bayesian statistics; fields that require the computation of complicated integrals.
+In this chapter, we will use simulation to compute p-values and confidence intervals, to compare different statistical methods, and to perform sample size computations. Another important use of simulation is in _Monte Carlo integration_, in which random numbers are used for numerical integration. It plays an important role in for instance statistical physics, computational biology, computational linguistics, and Bayesian statistics; fields that require the computation of complicated integrals.
 
 To create an example of Monte Carlo integration, let's start by writing a function, `circle`, that defines a quarter-circle on the unit square. We will then plot it using the geom `geom_function`\index{\texttt{geom\_function}}:
 
@@ -379,7 +379,7 @@ For decades teachers all over the world have been telling the story of William S
 Gosset's work was hugely important, but the passing of time has rendered at least parts of it largely obsolete. His distributional formulas were derived out of necessity: lacking the computer power that we have available to us today, he was forced to impose the assumption of normality on the data, in order to derive the formulas he needed to be able to carry out his analyses. Today we can use simulation to carry out analyses with fewer assumptions. As an added bonus, these simulation techniques often happen to result in statistical methods with better performance than Student's t-test and other similar methods.
 
 ### The old-school t-test {#oldschoolt}
-The _really_ old-school way of performing a t-test - the way statistical pioneers like Gosset and Fisher would have done it - is to look up p-values using tables covering several pages. There haven't really been any excuses for doing that since the advent of the personal computer though, so let's not go further into that. The "modern" version of the old-school t-test uses numerical evaluation of the formulas for Student's t-distribution to compute p-values and confidence intervals. Before we delve into more modern approaches, let's have a look at how we can run an old-school t-test in R.\index{hypothesis test!t-test}
+The _really_ old-school way of performing a t-test - the way statistical pioneers like Gosset and Fisher would have done it - is to look up p-values using tables covering several pages. There haven't really been any excuses for doing that since the advent of the personal computer though, so let's not go further into that. The "modern" version of the old-school t-test uses numerical evaluation of the formulas for Student's t-distribution to compute p-values and confidence intervals. Before we delve into more modern approaches, let's look at how we can run an old-school t-test in R.\index{hypothesis test!t-test}
 
 In Section \@ref(firstttest) we used `t.test`\index{\texttt{t.test}} to run a t-test to see if there is a difference in how long carnivores and herbivores sleep, using the `msleep` data from `ggplot2`^[Note that this is not a random sample of mammals, and so one of the fundamental assumptions behind the t-test isn't valid in this case. For the purpose of showing how to use the t-test, the data is good enough though.]. First, we subtracted a subset of the data corresponding to carnivores and herbivores, and then we ran the test. There are in fact several different ways of doing this, and it is probably a good idea to have a look at them.
 
@@ -417,7 +417,7 @@ msleep %>% filter(vore == "carni" | vore == "herbi") %$%
         t.test(sleep_total ~ vore)
 ```
 
-There are even more options than this - the point that I'm trying to make here is that like most functions in R, you can use functions for classical statistics in many different ways. In what follows I will show you one or two of these, but don't hesitate to try out other approaches if they seem better to you.
+There are even more options than this - the point that I'm trying to make here is that like most functions in R, you can use functions for classical statistics in many different ways. In what follows, I will show you one or two of these, but don't hesitate to try out other approaches if they seem better to you.
 
 What we just did above was a two-sided t-test, where the null hypothesis was that there was no difference in means between the groups, and the alternative hypothesis that there was a difference. We can also perform one-sided tests using the `alternative` argument. `alternative = "greater"` means that the alternative is that the first group has a greater mean, and `alternative = "less"` means that the first group has a smaller mean. Here is an example with the former:
 
@@ -441,7 +441,7 @@ In addition to two-sample t-tests, `t.test` can also be used for one-sample test
 t.test(msleep$sleep_total, mu = 7)
 ```
 
-As we can see from the output, your average mammal sleeps for 10.4 hours per day. Moreover, the p-value is quite low - apparently I sleep unusually little for a mammal!
+As we can see from the output, your average mammal sleeps for 10.4 hours per day. Moreover, the p-value is quite low - apparently, I sleep unusually little for a mammal!
 
 As for paired t-tests, we can perform them by supplying two vectors (where element 1 of the first vector corresponds to element 1 of the second vector, and so on) and the argument `paired = TRUE`. For instance, using the `diamonds` data from `ggplot2`, we could run a test to see if the length `x` of diamonds with a fair quality of the cut on average equals the width `y`:
 
@@ -469,9 +469,9 @@ t.test(sleep_total ~ vore, data =
          subset(msleep, vore == "carni" | vore == "herbi"))
 ```
 
-There are 19 carnivores and 32 herbivores - 51 animals in total. If there are no differences between the two groups, the `vore` labels offer no information about how long the animals sleep each day. Under the null hypothesis, the assignment of `vore` labels to different animals is therefore for all intents and purposes random. To find the distribution of the test statistic under the null hypothesis, we could therefore look at all possible ways to assign 19 animals the label `carnivore` and 32 animals the label `herbivore`. That is, look at all permutations of the labels. The probability of a result at least as extreme as that obtained in our sample (in the direction of the alternative), i.e. the p-value, would then be the proportion of permutations that yield a result at least extreme as that in our sample. This is known as a permutation test.
+There are 19 carnivores and 32 herbivores - 51 animals in total. If there are no differences between the two groups, the `vore` labels offer no information about how long the animals sleep each day. Under the null hypothesis, the assignment of `vore` labels to different animals is therefore for all intents and purposes random. To find the distribution of the test statistic under the null hypothesis, we could look at all possible ways to assign 19 animals the label `carnivore` and 32 animals the label `herbivore`. That is, look at all permutations of the labels. The probability of a result at least as extreme as that obtained in our sample (in the direction of the alternative), i.e. the p-value, would then be the proportion of permutations that yield a result at least extreme as that in our sample. This is known as a permutation test.
 
-Permutation tests were known to the likes of Gosset and Fisher (Fisher's exact test is a common example), but because the number of permutations of labels often tend to become quite large (76,000 billion, in our carnivore-herbivore example) they lacked the means to actually use them. 76,000 billion permutations may be too many even today, but we can obtain very good approximations of the p-values of permutation tests using simulation.
+Permutation tests were known to the likes of Gosset and Fisher (Fisher's exact test is a common example), but because the number of permutations of labels often tend to become quite large (76,000 billion, in our carnivore-herbivore example), they lacked the means actually to use them. 76,000 billion permutations may be too many even today, but we can obtain very good approximations of the p-values of permutation tests using simulation.
 
 The idea is that we look at a large number of randomly selected permutations, and check for how many of them we obtain a test statistic that is more extreme than the sample test statistic. The law of large number guarantees that this proportion will converge to the permutation test p-value as the number of randomly selected permutations increases.
 
@@ -536,7 +536,7 @@ perm.t.test(sleep_total ~ vore, data =
 
 Note that two p-values and confidence intervals are presented: one set from the permutations and one from the old-school approach - so make sure that you look at the right ones!
 
-You may ask how many permutations we need to look at to get an accurate approximation of the permutation test p-value. By default, `perm.t.test` uses 9,999 permutations (you can change that number using the argument `R`), which is widely considered to be a reasonable number. If you are running a permutation test with a much more complex (and computationally intensive) statistic, you may have to use a lower number, but avoid that if you can.
+You may ask how many randomly selected permutations we need to get an accurate approximation of the permutation test p-value. By default, `perm.t.test` uses 9,999 permutations (you can change that number using the argument `R`), which is widely considered to be a reasonable number. If you are running a permutation test with a much more complex (and computationally intensive) statistic, you may have to use a lower number, but avoid that if you can.
 
 ### The bootstrap
 A popular method for computing p-values and confidence intervals that resembles the permutation approach is the bootstrap. Instead of drawing permuted samples, new observations are drawn with replacement from the original sample, and then labels are randomly allocated to them. That means that each randomly drawn sample will differ not only in the permutation of labels, but also in what observations are included - some may appear more than once and some not at all.
@@ -632,7 +632,7 @@ If you are interested in comparing the means of several variables for two groups
 install.packages("Hotelling")
 ```
 
-As an example, consider the `airquality` data. Let's say that we want to test whether the mean ozone, solar radiation, wind speed, and temperature differ between June and July. We could use four separate t-test to test this, but we could also use Hotelling's $T^2$ to test the null hypothesis that the mean vector, i.e. the vector containing the four means, is the same for both months. The function used for this is `hotelling.test`\index{\texttt{hotelling.test}}:
+As an example, consider the `airquality` data. Let's say that we want to test whether the mean ozone, solar radiation, wind speed, and temperature differ between June and July. We could use four separate t-tests to test this, but we could also use Hotelling's $T^2$ to test the null hypothesis that the mean vector, i.e. the vector containing the four means, is the same for both months. The function used for this is `hotelling.test`\index{\texttt{hotelling.test}}:
 
 ```{r eval=FALSE}
 # Subset the data:
@@ -652,7 +652,7 @@ t2
 
 
 ### Sample size computations for the t-test
-In any study, it is important to collect enough data for the inference that we wish to make. If we want to use a t-test for a test about a mean or the difference of two means, what constitutes "enough data" is usually measured by the power of the test. The sample is large enough when the test achieves high enough power. If we are comfortable with assuming normality (and we may well be, especially as the main goal with sample size computations is to get a ballpark figure), we can use `power.t.test`\index{\texttt{power.t.test}} to compute what power our test would achieve under different settings. For a two-sample test with unequal variances, we can use `power.welch.t.test`\index{\texttt{power.welch.t.test}} from `MKpower`\index{\texttt{MKpower}} instead. Both functions can be used to either find the sample size required for a certain power, or to find out what power will be obtained from a given sample size.
+In any study, it is important to collect enough data for the inference that we wish to make. If we want to use a t-test for a test about a mean or the difference of two means, what constitutes "enough data" is usually measured by the power of the test. The sample is large enough when the test achieves high enough power. If we are comfortable assuming normality (and we may well be, especially as the main goal with sample size computations is to get a ballpark figure), we can use `power.t.test`\index{\texttt{power.t.test}} to compute what power our test would achieve under different settings. For a two-sample test with unequal variances, we can use `power.welch.t.test`\index{\texttt{power.welch.t.test}} from `MKpower`\index{\texttt{MKpower}} instead. Both functions can be used to either find the sample size required for a certain power, or to find out what power will be obtained from a given sample size.
 
 First of all, let's install `MKpower`:
 
@@ -660,7 +660,7 @@ First of all, let's install `MKpower`:
 install.packages("MKpower")
 ```
 
-`power.t.test` and `power.welch.t.test` both use `delta` to denote the mean difference under the alternative hypothesis. In addition, we must supply the the standard deviation`sd` of the distribution. Here are some examples:
+`power.t.test` and `power.welch.t.test` both use `delta` to denote the mean difference under the alternative hypothesis. In addition, we must supply the standard deviation`sd` of the distribution. Here are some examples:
 
 ```{r eval=FALSE}
 library(MKpower)
@@ -700,7 +700,7 @@ The Bayesian paradigm differs in many ways from the frequentist approach that we
 
 In many situations, we don't have access to data that can be used to create an _informative_ prior distribution. In such cases, we can use a so-called weakly informative prior instead. These act as a sort of "default priors", representing large uncertainty about the values of the coefficients.
 
-The `rstanarm` package contains methods for using Bayesian estimation to fit a number of common statistical models. It takes a while to install, but is well worth it:
+The `rstanarm` package contains methods for using Bayesian estimation to fit some common statistical models. It takes a while to install, but it is well worth it:
 
 ```{r eval=FALSE}
 install.packages("rstanarm")
@@ -732,7 +732,7 @@ posterior_interval(m,
         prob = 0.95)
 ```
 
-p-values are not a part of Bayesian statistics, so don't expect any. It is however possible to perform a kind of Bayesian test of whether there is a difference by checking whether the credible interval for the difference contains 0. If not, there is evidence that there is an difference (Thulin, 2014c). In this case, 0 is contained in the interval and there is no evidence of a difference.
+p-values are not a part of Bayesian statistics, so don't expect any. It is however possible to perform a kind of Bayesian test of whether there is a difference by checking whether the credible interval for the difference contains 0. If not, there is evidence that there is a difference (Thulin, 2014c). In this case, 0 is contained in the interval, and there is no evidence of a difference.
 
 In most cases, Bayesian estimation is done using Monte Carlo integration (specifically, a class of methods known as Markov Chain Monte Carlo, MCMC). To check that the model fitting has converged, we can use a measure called $\hat{R}$. It should be less than 1.1 if the fitting has converged:
 
@@ -805,7 +805,7 @@ library(ggplot2)
 table(diamonds$cut, diamonds$color)
 ```
 
-The null hypothesis of our test is that quality of the cut (`cut`) and the colour of the diamond (`color`) are independent, with the alternative being that they are dependent. We use `chisq.test`\index{\texttt{chisq.test}}\index{hypothesis test!independence}\index{hypothesis test!chi-squared} with the contingency table as input to run the $\chi^2$ test of independence:
+The null hypothesis of our test is that the quality of the cut (`cut`) and the colour of the diamond (`color`) are independent, with the alternative being that they are dependent. We use `chisq.test`\index{\texttt{chisq.test}}\index{hypothesis test!independence}\index{hypothesis test!chi-squared} with the contingency table as input to run the $\chi^2$ test of independence:
 
 ```{r eval=FALSE}
 chisq.test(table(diamonds$cut, diamonds$color))
@@ -897,35 +897,35 @@ The function `binomDiffCI`\index{\texttt{binomDiffCI}}\index{confidence interval
 
 
 ## Ethical issues in statistical inference {#ethicsinference}
-The use and misuse of statistical inference offer a number of ethical dilemmas. Some common issues related to ethics and good statistical practice are discussed below. As you read them and work with the associated exercises, consider consulting the ASA's ethical guidelines, presented in Section \@ref(ethicalguidelines).
+The use and misuse of statistical inference offer many ethical dilemmas. Some common issues related to ethics and good statistical practice are discussed below. As you read them and work with the associated exercises, consider consulting the ASA's ethical guidelines, presented in Section \@ref(ethicalguidelines).
 
 ### p-hacking and the file-drawer problem
-Hypothesis tests are easy to misuse. If you run enough tests on your data, you are almost guaranteed to end up with significant results - either due to chance or because some of the null hypotheses that you test are false. The process of trying lots of different tests (different methods, different hypotheses, different sub-groups) in search of significant results is known as _p-hacking_ or _data dredging_\index{p-hacking}. This greatly increases the risk of false findings, and can often produce misleading results.
+Hypothesis tests are easy to misuse. If you run enough tests on your data, you are almost guaranteed to end up with significant results - either due to chance or because some of the null hypotheses you test are false. The process of trying lots of different tests (different methods, different hypotheses, different sub-groups) in search of significant results is known as _p-hacking_ or _data dredging_\index{p-hacking}. This greatly increases the risk of false findings, and can often produce misleading results.
 
 Many practitioners inadvertently resort to p-hacking, by mixing exploratory data analysis and hypothesis testing, or by coming up with new hypotheses to test as they work with their data. This can be avoided by planning your analyses in advance, a practice that in fact is required in medical trials.
 
-On the other end of the spectrum there is the _file-drawer problem_, in which studies with negative (i.e. not statistically significant) results aren't published or reported, but instead are stored in the researcher's file-drawers. There are many reasons for this, one being that negative results usually are seen as less important and less worthy of spending time on. Simply put, negative results just aren't news. If your study shows that eating kale every day significantly reduces the risk of cancer, then that is news, something that people are interested in learning, and something that can be published in a prestigious journal. However, if your study shows that a daily serving of kale has no impact on the risk of cancer, that's not news, people aren't really interested in hearing it, and it may prove difficult to publish your findings.
+On the other end of the spectrum, there is the _file-drawer problem_, in which studies with negative (i.e. not statistically significant) results aren't published or reported, but instead are stored in the researcher's file-drawers. There are many reasons for this, one being that negative results usually are seen as less important and less worthy of spending time on. Simply put, negative results just aren't news. If your study shows that eating kale every day significantly reduces the risk of cancer, then that is news, something that people are interested in learning, and something that can be published in a prestigious journal. However, if your study shows that a daily serving of kale has no impact on the risk of cancer, that's not news, people aren't really interested in hearing it, and it may prove difficult to publish your findings.
 
 But what if 100 different researchers carried out the same study? If eating kale doesn't affect the risk of cancer, then we can still expect 5 out of these researchers to get significant results (using a 5 % significance level). If only those researchers publish their results, that may give the impressions that there is strong evidence of the cancer-preventing effect of kale backed up by several papers, even though the majority of studies actually indicated that there was no such effect.
 
 $$\sim$$
 
 ```{exercise, label="ch7ethics1"}
-_Discuss the following._ You are helping a research team with statistical analysis of data that they have collected. You agree on five hypotheses to test. None of the tests turn out significant. Fearing that all their hard work won't lead anywhere, your collaborators then ask you to carry out five new tests. Neither turn out significant. Your collaborators closely inspect the data and then ask you to carry out ten more tests, two of which are significant. The team wants to publish these significant results in a scientific journal. Should you agree to publish them? If so, what results should be published? Should you have put your foot down and told them not to run more tests? Does you answer depend on how long it took the research team to collect the data? What if the team won't get funding for new projects unless they publish a paper soon? What if other research teams competing for the same grants do their analyses like this?
+_Discuss the following._ You are helping a research team with statistical analysis of data that they have collected. You agree on five hypotheses to test. None of the tests turns out significant. Fearing that all their hard work won't lead anywhere, your collaborators then ask you to carry out five new tests. Neither turns out significant. Your collaborators closely inspect the data and then ask you to carry out ten more tests, two of which are significant. The team wants to publish these significant results in a scientific journal. Should you agree to publish them? If so, what results should be published? Should you have put your foot down and told them not to run more tests? Does your answer depend on how long it took the research team to collect the data? What if the team won't get funding for new projects unless they publish a paper soon? What if other research teams competing for the same grants do their analyses like this?
   
 ```
 
 <br>
 
 ```{exercise, label="ch7ethics2"}
-_Discuss the following._ You are working for a company that is launching a new product, a hair-loss treatment. In a small study, the product worked for 19 out of 22 participants (86 %). You compute a 95 % Clopper-Pearson confidence interval (Section \@ref(confprop)) for the proportion of successes and find that it is (0.65, 0.97). Based on this, the company wants to market the product as being 97 % effective. Is that acceptable to you? If not, how should it be marketed? Would your answer change if the product was something else (new running shoes that make you faster, a plastic film that protects smartphone screens from scratches, or a contraceptive)? What if the company wanted to market it as being 86 % effective instead?
+_Discuss the following._ You are working for a company that is launching a new product, a hair-loss treatment. In a small study, the product worked for 19 out of 22 participants (86 %). You compute a 95 % Clopper-Pearson confidence interval (Section \@ref(confprop)) for the proportion of successes and find that it is (0.65, 0.97). Based on this, the company wants to market the product as being 97 % effective. Is that acceptable to you? If not, how should it be marketed? Would your answer change if the product was something else (new running shoes that make you faster, a plastic film that protects smartphone screens from scratches, or contraceptives)? What if the company wanted to market it as being 86 % effective instead?
 
 ```
 
 <br>
 
 ```{exercise, label="ch7ethics3"}
-_Discuss the following._ You have worked long and hard on a project. In the end, to see if the project was a success you run a hypothesis test to see if two variables are correlated. You find that they are not (p = 0.15). However, if you remove three outliers, they two variables are significantly correlated (p = 0.03). What should you do? Does your answer change if you only have to remove one outlier to get the significant result? If you have to remove ten outliers? 100 outliers? What if the p-value is 0.051 before removing the outliers and 0.049 after removing the outliers?
+_Discuss the following._ You have worked long and hard on a project. In the end, to see if the project was a success, you run a hypothesis test to check if two variables are correlated. You find that they are not (p = 0.15). However, if you remove three outliers, the two variables are significantly correlated (p = 0.03). What should you do? Does your answer change if you only have to remove one outlier to get a significant result? If you have to remove ten outliers? 100 outliers? What if the p-value is 0.051 before removing the outliers and 0.049 after removing the outliers?
 
 ```
 
@@ -941,7 +941,7 @@ An analysis is _reproducible_\index{reproducibility} if it can be reproduced by 
 
 In order to make an analysis reproducible, we need to provide at least two things. First, _the data_ - all unedited data files in their original format. This also includes _metadata_ with information required to understand the data (e.g. codebooks explaining variable names and codes used for categorical variables). Second, _the computer code_ used to prepare and analyse the data. This includes any wrangling and preliminary testing performed on the data.
 
-As long as we save our data files and code, data wrangling and analyses in R are inherently reproducible, in contrast to the same tasks carried out in menu-based software such as Excel. However, if reports are created using a word processor, there is always a risk that something is lost along the way. Perhaps numbers are copied by hand (which may introduce errors), or perhaps the wrong version of a figure is pasted into the document. R Markdown (Section \@ref(rmarkdown)) is a great tool for creating completely reproducible reports, as it allows you to integrate R code for data wrangling, analyses, and graphics in your report-writing. This reduces the risk of manually inserting errors, and allows you to easily share your work with others.
+As long as we save our data files and code, data wrangling and analyses in R are inherently reproducible, in contrast to the same tasks carried out in menu-based software such as Excel. However, if reports are created using a word processor, there is always a risk that something will be lost along the way. Perhaps numbers are copied by hand (which may introduce errors), or maybe the wrong version of a figure is pasted into the document. R Markdown (Section \@ref(rmarkdown)) is a great tool for creating completely reproducible reports, as it allows you to integrate R code for data wrangling, analyses, and graphics in your report-writing. This reduces the risk of manually inserting errors, and allows you to share your work with others easily.
 
 $$\sim$$
 
@@ -988,7 +988,7 @@ x_mma <- max_min_avg(x)
 x_mean; x_median; x_mma
 ```
 
-As you can see, the estimates given by the different approaches differ, so clearly the choice of estimator matters. We can't determine which to use based on a single sample though. Instead, we typically compare long-run properties of estimators, such as their _bias_ and _variance_. The bias is the difference between the mean of the estimator and the parameter it seeks to estimate. An estimator is _unbiased_ if its bias is 0, which is considered desirable at least in this setting. Among unbiased estimators, we prefer the one that has the smallest variance. So how can we use simulation to compute the bias and variance of estimators?\index{simulation!bias and variance}
+As you can see, the estimates given by the different approaches differ, so clearly the choice of estimator matters. We can't determine which to use based on a single sample though. Instead, we typically compare the long-run properties of estimators, such as their _bias_ and _variance_. The bias is the difference between the mean of the estimator and the parameter it seeks to estimate. An estimator is _unbiased_ if its bias is 0, which is considered desirable at least in this setting. Among unbiased estimators, we prefer the one that has the smallest variance. So how can we use simulation to compute the bias and variance of estimators?\index{simulation!bias and variance}
 
 The key to using simulation here is to realise that `x_mean` is an observation of the random variable $\bar{X}= \frac{1}{25}(X_1+X_2+\cdots+X_{25})$ where each $X_i$ is $N(0, 1)$-distributed. We can generate observations of $X_i$ (using `rnorm`), and can therefore also generate observations of $\bar{X}$. That means that we can obtain an arbitrarily large sample of observations of $\bar{X}$, which we can use to estimate its mean and variance. Here is an example:
 
@@ -1025,7 +1025,7 @@ apply(res, 2, var) # Variances
 
 All three estimators appear to be unbiased (even if the simulation results aren't exactly 0, they are very close). The sample mean has the smallest variance (and is therefore preferable!), followed by the median. The $\frac{x_{max}+x_{min}}{2}$ estimator has the worst performance, which is unsurprising as it ignores all information not contained in the extremes of the dataset.
 
-In Section \@ref(simadvice) we'll discuss how to choose the number of simulated samples to use in your simulations. For now, we'll just note that the estimate of the estimators' biases becomes more stable as the number of simulated samples increase, as can be seen from this plot, which utilises `cumsum`, described in Section \@ref(rle):
+In Section \@ref(simadvice) we'll discuss how to choose the number of simulated samples to use in your simulations. For now, we'll just note that the estimate of the estimators' biases becomes more stable as the number of simulated samples increases, as can be seen from this plot, which utilises `cumsum`, described in Section \@ref(rle):
 
 ```{r eval=FALSE}
 # Compute estimates of the bias of the sample mean for each
@@ -1069,7 +1069,7 @@ Repeat the simulation in \@ref(exr:ch7exc9), but with a $t(3)$ distribution inst
 
 
 ### Type I error rate of hypothesis tests {#simtypeI}
-In the same vein that we just compared estimators, we can also compare hypothesis tests or confidence intervals. Let's have a look at the former, and evaluate how well the old-school two-sample t-test fares in comparison to a permutation t-test and the Wilcoxon-Mann-Whitney test.
+In the same vein that we just compared estimators, we can also compare hypothesis tests or confidence intervals. Let's have a look at the former, and evaluate how well the old-school two-sample t-test fares compared to a permutation t-test and the Wilcoxon-Mann-Whitney test.
 
 For our first comparison, we will compare the type I error rate of the three tests, i.e. the risk of rejecting the null hypothesis if the null hypothesis is true.\index{hypothesis test!simulate type I error rate}\index{simulation!type I error rate} Nominally, this is the significance level $\alpha$, which we set to be 0.05.
 
@@ -1123,7 +1123,7 @@ First, let's try it with normal data. The simulation takes a little while to run
 simulate_type_I(20, 20, rnorm, B = 9999)
 ```
 
-Next, let's try it with a lognormal distribution, both with balanced and imbalanced sample sizes. Increasing the value of the parameter $\sigma$ (`sdlog`) increases the skewness of the lognormal distribution (i.e. makes it _more_ asymmetric and therefore less similar to the normal distribution), so let's try that to. In case you are in a rush, the results from my run of this code block can be found below it.
+Next, let's try it with a lognormal distribution, both with balanced and imbalanced sample sizes. Increasing the parameter $\sigma$ (`sdlog`) increases the skewness of the lognormal distribution (i.e. makes it _more_ asymmetric and therefore less similar to the normal distribution), so let's try that to. In case you are in a rush, the results from my run of this code block can be found below it.
 
 ```{r eval=FALSE}
 simulate_type_I(20, 20, rlnorm, B = 9999, sdlog = 1)
@@ -1252,7 +1252,7 @@ Repeat the simulation study of type I error rate and power for the old school t-
 
 
 ### Power of some tests of location {#powerlocation}
-The `MKpower` package contains functions for quickly performing power simulations for the old-school t-test and Wilcoxon-Mann-Whitney test in different settings. The arguments `rx` and `ry` are used to pass functions that are used to generate the random numbers, in line with the `simulate_power` function that we created above.
+The `MKpower` package contains functions for quickly performing power simulations for the old-school t-test and Wilcoxon-Mann-Whitney test in different settings. The arguments `rx` and `ry` are used to pass functions used to generate the random numbers, in line with the `simulate_power` function that we created above.
 
 For the t-test, we can use `sim.power.t.test`\index{\texttt{sim.power.t.test}}:
 
@@ -1293,7 +1293,7 @@ ssize.propCI(prop = 0.8, width = 0.01, method = "wilson")
 In this case, you'd need 24,592 iterations to obtain the desired accuracy.
 
 ## Sample size computations using simulation {#sscus}
-Using simulation to compare statistical methods is a key tool in methodological statistical research, and when assessing new methods. In applied statistics, a use of simulation that is just as important is sample size computations. In this sections we'll have a look at how simulations can be useful in determining sample sizes.
+Using simulation to compare statistical methods is a key tool in methodological statistical research and when assessing new methods. In applied statistics, a use of simulation that is just as important is sample size computations. In this section we'll have a look at how simulations can be useful in determining sample sizes.
 
 ### Writing your own simulation {#simcorpower}
 Suppose that we want to perform a correlation test and want to know how many observations we need to collect. As in the previous section, we can write a function to compute the power of the test:
@@ -1324,7 +1324,7 @@ simulate_power <- function(n, distr, level = 0.05, B = 999, ...)
 }
 ```
 
-Under the null hypothesis of no correlation, the correlation coefficient is 0. We want to find a sample size that will give us 90 % power at the 5 % significance level, for different hypothesized correlations. We will generate data from a bivariate normal distribution, because it allows to to easily set the correlation of the generated data. Note that the mean and variance of the marginal normal distributions are nuisance variables, which can be set to 0 and 1 respectively, without loss of generality (because the correlation test is invariant under scaling and shifts in location).
+Under the null hypothesis of no correlation, the correlation coefficient is 0. We want to find a sample size that will give us 90 % power at the 5 % significance level, for different hypothesised correlations. We will generate data from a bivariate normal distribution, because it allows us to easily set the correlation of the generated data. Note that the mean and variance of the marginal normal distributions are nuisance variables, which can be set to 0 and 1, respectively, without loss of generality (because the correlation test is invariant under scaling and shifts in location).
 
 First, let's try our power simulation function:
 
@@ -1406,13 +1406,13 @@ In Section \@ref(confprop) we had a look at some confidence intervals for propor
 
 
 ## Bootstrapping {#bootstrap}
-The bootstrap can be used for a number of things, most notably for constructing confidence intervals and for running hypothesis tests.\index{bootstrap}\index{bootstrap!inference}\index{hypothesis test!bootstrap}\index{confidence interval!bootstrap} These tend to perform better than traditional parametric methods, such as the old-school t-test and its associated confidence interval, when the distributional assumptions of the parametric methods aren't met.
+The bootstrap can be used formany things, most notably for constructing confidence intervals and running hypothesis tests.\index{bootstrap}\index{bootstrap!inference}\index{hypothesis test!bootstrap}\index{confidence interval!bootstrap} These tend to perform better than traditional parametric methods, such as the old-school t-test and its associated confidence interval, when the distributional assumptions of the parametric methods aren't met.
 
-Confidence intervals and hypothesis tests are always based on some _statistics_, i.e. a quantity that we compute from the samples. The statistic could be the sample mean, a proportion, the Pearson correlation coefficient, or something else. In traditional parametric methods, we start by assuming that our data follows some distribution. For different reasons, including mathematical tractability, a common assumption is that the data is normally distributed. Under that assumption, we can then derive the distribution of the statistic that we are interested in analytically, like Gosset did for the t-test. That distribution can then be used to compute confidence intervals and p-values.
+Confidence intervals and hypothesis tests are always based on a _statistic_, i.e. a quantity that we compute from the samples. The statistic could be the sample mean, a proportion, the Pearson correlation coefficient, or something else. In traditional parametric methods, we start by assuming that our data follows some distribution. For different reasons, including mathematical tractability, a common assumption is that the data is normally distributed. Under that assumption, we can then derive the distribution of the statistic that we are interested in analytically, like Gosset did for the t-test. That distribution can then be used to compute confidence intervals and p-values.
 
-When using a bootstrap method, we follow the same steps, but use the observed data and simulation instead. Rather than making assumptions about the distribution^[Well, sometimes we make assumptions about the distribution _and_ use the bootstrap. This is known as the parametric bootstrap, and is discussed in Section \@ref(parametricbootstrap).], we use the empirical distribution of the data. Instead of analytically deriving a formula that describes the distribution of the statistic, we find a good approximation of the distribution of the statistic by using simulation. We can then use that distribution to obtain confidence intervals and p-values, just as in the parametric case.
+When using a bootstrap method, we follow the same steps, but use the observed data and simulation instead. Rather than making assumptions about the distribution^[Well, sometimes we make assumptions about the distribution _and_ use the bootstrap. This is known as the parametric bootstrap, and is discussed in Section \@ref(parametricbootstrap).], we use the empirical distribution of the data. Instead of analytically deriving a formula that describes the statistic's distribution, we find a good approximation of the distribution of the statistic by using simulation. We can then use that distribution to obtain confidence intervals and p-values, just as in the parametric case.
 
-The simulation step is important. We use a process known as _resampling_, where we repeatedly draw new observations _with replacement_ from the original sample. We draw $B$ samples this way, each with the same size $n$ as the original sample. Each randomly drawn sample - called a _bootstrap sample_ - will include different observations. Some observations from the original sample may appear more than once in a specific bootstrap sample, and some not at all. For each bootstrap sample, we compute the statistic that we are interested in. This gives us $B$ observations of this statistic, which together form what is called the _bootstrap distribution_ of the statistic.
+The simulation step is important. We use a process known as _resampling_, where we repeatedly draw new observations _with replacement_ from the original sample. We draw $B$ samples this way, each with the same size $n$ as the original sample. Each randomly drawn sample - called a _bootstrap sample_ - will include different observations. Some observations from the original sample may appear more than once in a specific bootstrap sample, and some not at all. For each bootstrap sample, we compute the statistic in which we are interested. This gives us $B$ observations of this statistic, which together form what is called the _bootstrap distribution_ of the statistic. I recommend using $B=9,999$ or greater, but we'll use smaller $B$ in some examples, to speed up the computations.
 
 ### A general approach
 The Pearson correlation test is known to be sensitive to deviations from normality. We can construct a more robust version of it using the bootstrap. To illustrate the procedure, we will use the `sleep_total` and `brainwt` variables from the `msleep` data. Here is the result from the traditional parametric Pearson correlation test:
@@ -1450,13 +1450,13 @@ ggplot(data.frame(statistic), aes(statistic)) +
          geom_histogram(colour = "black")
 ```
 
-Because this is such a common procedure, there are R packages that let's us do resampling without having to write a `for` loop. In the remainder of the section, we will use the `boot` package\index{\texttt{boot}} to draw bootstrap samples. It also contains convenience functions that allows us to quickly get confidence intervals from the bootstrap distribution. Let's install it:
+Because this is such a common procedure, there are R packages that let's us do resampling without having to write a `for` loop. In the remainder of the section, we will use the `boot` package\index{\texttt{boot}} to draw bootstrap samples. It also contains convenience functions that allows us to get confidence intervals from the bootstrap distribution quickly. Let's install it:
 
 ```{r eval=FALSE}
 install.packages("boot")
 ```
 
-The most important function in this package is `boot`, which does the resampling. As input, it takes the original data, the number $B$ of bootstrap samples to draw, and a function that computes the statistic of interest. This function should take the original data (`mydata` in our example above) and the row numbers of the sampled observation for a particular bootstrap sample (`row_numbers` in our example) as input.
+The most important function in this package is `boot`, which does the resampling. As input, it takes the original data, the number $B$ of bootstrap samples to draw (called `R` here), and a function that computes the statistic of interest. This function should take the original data (`mydata` in our example above) and the row numbers of the sampled observation for a particular bootstrap sample (`row_numbers` in our example) as input.
 
 For the correlation coefficient, the function that we input can look like this:
 
@@ -1507,7 +1507,7 @@ The next step is to use `boot.ci`\index{\texttt{boot.ci}} to compute bootstrap c
 boot.ci(boot_res)
 ```
 
-Four intervals are presented: normal, basic, percentile and BCa. The details concerning how these are computed based on the bootstrap distribution are presented in Section \@ref(bootstrapcimaths). It is generally agreed that the percentile and BCa intervals are preferable to the normal and basic intervals; see e.g. Davison & Hinkley (1997) and Hall (1992).
+Four intervals are presented: normal, basic, percentile and BCa. The details concerning how these are computed based on the bootstrap distribution are presented in Section \@ref(bootstrapcimaths). It is generally agreed that the percentile and BCa intervals are preferable to the normal and basic intervals; see e.g. Davison & Hinkley (1997) and Hall (1992); but which performs the best varies.
 
 We also receive a warning message:
 
@@ -1548,7 +1548,7 @@ boot.ci(boot_res)
 
 While theoretically appealing (Hall, 1992), studentised intervals can be a little erratic in practice. I prefer to use percentile and BCa intervals instead.
 
-For two-sample problems, we need to make sure that the number of observations drawn from each sample are the same as in the original data. The `strata` argument in `boot` is used to achieve this. Let's return to the example studied in Section \@ref(ttest), concerning the difference in how long carnivores and herbivores sleep. Let's say that we want a confidence interval for the difference of two means, using the `msleep` data. The simplest approach is to create a Welch-type interval, where we allow the two populations to have different variances. We can then resample from each population separately:
+For two-sample problems, we need to make sure that the number of observations drawn from each sample is the same as in the original data. The `strata` argument in `boot` is used to achieve this. Let's return to the example studied in Section \@ref(ttest), concerning the difference in how long carnivores and herbivores sleep. Let's say that we want a confidence interval for the difference of two means, using the `msleep` data. The simplest approach is to create a Welch-type interval, where we allow the two populations to have different variances. We can then resample from each population separately:
 
 ```{r eval=FALSE}
 # Function that computes the mean for each group:
@@ -1647,19 +1647,27 @@ while(in_interval)
 alpha
 ```
 
+The `boot.pval`\index{\texttt{boot.pval}} package contains a function computing p-values through inversion of bootstrap confidence intervals. We can use it to obtain a bootstrap p-value without having to write a `while` loop. It works more or less analogously to `boot.ci`. The arguments to the `boot.pval` function is the `boot` object (`boot_res`), the type of interval to use (`"stud"`), and the value of the parameter under the null hypothesis (`-0.2`):
+
+```{r eval=FALSE}
+install.packages("boot.pval")
+library(boot.pval)
+boot.pval(boot_res, type = "stud", theta_null = -0.2)
+```
+
 Confidence interval inversion fails in spectacular ways for certain tests for parameters of discrete distributions (Thulin & Zwanzig, 2017), so be careful if you plan on using this approach with count data.
 
 $$\sim$$
 
 ```{exercise, label="ch7exc14"}
-Use the percentile confidence interval you created in Exercise \@ref(exr:ch7exc13) to compute the p-value of the corresponding test of the null hypothesis that there is no difference in means. What are the results?
+With the data from Exercise \@ref(exr:ch7exc13), invert a percentile confidence interval to compute the p-value of the corresponding test of the null hypothesis that there is no difference in means. What are the results?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch7solutions14)
 
 
 ### The parametric bootstrap {#parametricbootstrap}
-In some cases we may be willing to make distributional assumptions about our data. We can then use the _parametric bootstrap_\index{bootstrap!parametric}, in which the resampling is done not from the original sample, but from the theorised distribution (with parameters estimated from the original sample). Here is an example for the bootstrap correlation test, where we assume a multivariate normal distribution for the data. Note that we no longer include an index as an argument in the function `cor_boot`, because the bootstrap samples won't be drawn directly from the original data:
+In some cases, we may be willing to make distributional assumptions about our data. We can then use the _parametric bootstrap_\index{bootstrap!parametric}, in which the resampling is done not from the original sample, but the theorised distribution (with parameters estimated from the original sample). Here is an example for the bootstrap correlation test, where we assume a multivariate normal distribution for the data. Note that we no longer include an index as an argument in the function `cor_boot`, because the bootstrap samples won't be drawn directly from the original data:
 
 ```{r eval=FALSE}
 cor_boot <- function(data, method = "pearson")
@@ -1692,7 +1700,7 @@ plot(boot_res)
 boot.ci(boot_res, type = "perc")
 ```
 
-The BCa interval implemented in `boot.ci` is not valid for parametric bootstrap samples, and so running `boot.ci(boot_res)` without specifying the interval `type` will render an error^[If you really need a BCa interval for the parametric bootstrap, you can find the formulas for it in Davison & Hinkley (1997).]. Percentile intervals work just fine though.
+The BCa interval implemented in `boot.ci` is not valid for parametric bootstrap samples, so running `boot.ci(boot_res)` without specifying the interval `type` will render an error^[If you really need a BCa interval for the parametric bootstrap, you can find the formulas for it in Davison & Hinkley (1997).]. Percentile intervals work just fine, though.
 
 
 ## Reporting statistical results
@@ -1726,7 +1734,7 @@ or
 
 Although common, this isn't a very good practice. Standard errors/deviations are included to give some indication of the uncertainty of the estimate, but are very difficult to interpret. In most cases, they will probably cause the reader to either overestimate or underestimate the uncertainty in your estimate. A much better option is to present the estimate with a confidence interval, which quantifies the uncertainty in the estimate in an interpretable manner:
 
-> **GOOD:** The mean sleeping time of mammals was found to be 10.3 (95 % percentile boostrap confidence interval: 9.5-11.4).
+> **GOOD:** The mean sleeping time of mammals was found to be 10.3 (95 % percentile bootstrap confidence interval: 9.5-11.4).
 
 Similarly, it is common to include error bars representing standard deviations and standard errors e.g. in bar charts. This questionable practice becomes even more troublesome because a lot of people fail to indicate what the error bars represent. If you wish to include error bars in your figures, they should always represent confidence intervals, unless you have a very strong reason for them to represent something else. In the latter case, make sure that you clearly explain what the error bars represent.
 
@@ -1734,10 +1742,10 @@ If the purpose of your study is to describe differences between groups, you shou
 
 > **BAD:** There was no significant difference between the sleeping times of carnivores (mean 10.4, 95 % percentile bootstrap confidence interval: 8.4-12.5) and herbivores (mean 9.5, 95 % percentile bootstrap confidence interval: 8.1-12.6).
 
-> **GOOD:** There was no significant difference between the sleeping times of carnivores (mean 10.4) and herbivores (mean 9.5), with the 95 % percentile boostrap confidence interval for the difference being (-1.8, 3.5).
+> **GOOD:** There was no significant difference between the sleeping times of carnivores (mean 10.4) and herbivores (mean 9.5), with the 95 % percentile bootstrap confidence interval for the difference being (-1.8, 3.5).
 
 ### Citing R packages
-In statistical reports, it is often a good idea to specify what version of a particular software or package that you used, for the sake of reproducibility (indeed, this is a requirement in some scientific journals). To get the citation information for the version of R that you are running, simply type `citation()`\index{\texttt{citation}}. To get the version number, you can use `R.Version`\index{\texttt{R.Version}} as follows:
+In statistical reports, it is often a good idea to specify what version of a software or a package that you used, for the sake of reproducibility (indeed, this is a requirement in some scientific journals). To get the citation information for the version of R that you are running, simply type `citation()`\index{\texttt{citation}}. To get the version number, you can use `R.Version`\index{\texttt{R.Version}} as follows:
 
 ```{r eval=FALSE}
 citation()
@@ -2141,7 +2149,7 @@ It turns out that the bootstrap performs better if we resample not from the orig
 $$r_i=\frac{e_i}{\sqrt{1-h_i}},$$
 see Chapter 6 of Davison & Hinkley (1997) for details. The leverages can be computed using `lm.influence`\index{lm.influence}.
 
-In the code below, we implement this procedure. It makes use of `formula`\index{\texttt{formula}}, which can be used to extract the model formula from regression models:
+We implement this procedure in the code below (and will then have a look at convenience functions that help us achieve the same thing more easily). It makes use of `formula`\index{\texttt{formula}}, which can be used to extract the model formula from regression models:
 
 ```{r eval=FALSE}
 library(boot)
@@ -2185,15 +2193,17 @@ Clearly, the above code is a little unwieldy. Fortunately, the `car` package con
 ```{r eval=FALSE}
 library(car)
 
-boot_res <- Boot(m, method = "residual")
+boot_res <- Boot(m, method = "residual", R = 9999)
 
-# Compute 95 % confidence intervals using boot.ci:
-boot.ci(boot_res, type = "perc", index = 1) # Intercept
-boot.ci(boot_res, type = "perc", index = 2) # hp
-boot.ci(boot_res, type = "perc", index = 3) # wt
-
-# Alternatively, use confint instead:
+# Compute 95 % confidence intervals:
 confint(boot_res, type = "perc")
+```
+
+Finally, the most convenient approach is to use `boot_summary`\index{\texttt{boot\_summary}} from the `boot.pval` package. It provides a data frame with estimates, bootstrap confidence intervals, and bootstrap p-values for the model coefficients. The arguments specify what interval type and resampling strategy to use (more on the latter in Exercise \@ref(exr:ch7exc20b)):
+
+```{r eval=FALSE}
+library(boot.pval)
+boot_summary(m, type = "perc", method = "residual", R = 9999)
 ```
 
 $$\sim$$
@@ -2210,7 +2220,7 @@ Refit your model from Exercise \@ref(exr:ch7exc16) using a robust regression est
 ```{exercise, label="ch7exc20b"}
 In an alternative bootstrap scheme for regression models, often refered to as _case resampling_, the observations (or cases) $(y_i, x_{i1},\ldots,x_{ip})$ are resampled, instead of the residuals. This approach can be applicable when the explanatory variables can be treated as being random (but measured without error) rather than fixed. It can also be useful for models with heteroscedasticity, as it doesn't rely on assumptions about constant variance (which on the other hand makes it less efficient if the errors actually are homoscedastic).
 
-Read the documentation for `Boot` to see how you can compute confidence intervals for the coefficients in the model `m <- lm(mpg ~ hp + wt, data = mtcars)` using case resampling. Do they differ substantially from those obtained using residual resampling in this case?
+Read the documentation for `boot_summary` to see how you can compute confidence intervals for the coefficients in the model `m <- lm(mpg ~ hp + wt, data = mtcars)` using case resampling. Do they differ substantially from those obtained using residual resampling in this case?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch7solutions20b)
@@ -2250,6 +2260,14 @@ mtcars %>%
     p.adjust(p.value, method = "bonferroni")
 ```
 
+If you prefer bootstrap p-values, you can use `boot_summary` from `boot.pval` similarly. That function also includes an argument for adjusting the p-values for multiplicity:
+
+```{r eval=FALSE}
+library(boot.pval)
+lm(mpg ~ hp + wt, data = mtcars) %>%
+    boot_summary(adjust.method = "bonferroni")
+```
+
 Another useful function in `broom` is `glance`\index{\texttt{glance}}, which lets us get some summary statistics about the model:
 
 ```{r eval=FALSE}
@@ -2277,7 +2295,7 @@ mtcars %>%
 ### Variable selection {#stepwise}
 A common question when working with linear models is what variables to include in your model. Common practices for variable selection include stepwise regression methods, where variables are added to or removed from the model depending on p-values, $R^2$ values, or information criterions\index{linear regression!variable selection} like AIC or BIC.
 
-**Don't ever do this if your main interest is p-values.** Stepwise regression increases the risk of type I errors, renders the p-values of your final model invalid, and can lead to over-fitting^["But I want to do stepwise regression, and I want to do it in R", you say? Granted, there are plenty of functions for doing stepwise regression in R. If you really want to use them, I'm sure that you can find some other way to look them up - but not in this book, as I don't want to be an accomplice in your data dredging. Besides, this chapter is supposed to be about modern statistics, and stepwise regression is about as far away from that as you can come.]; see e.g. Smith (2018). Instead, you should let your research hypothesis guide your choice of variables, or base your choice on a pilot study.
+**Don't ever do this if your main interest is p-values.** Stepwise regression increases the risk of type I errors, renders the p-values of your final model invalid, and can lead to over-fitting; see e.g. Smith (2018). Instead, you should let your research hypothesis guide your choice of variables, or base your choice on a pilot study.
 
 If your main interest is prediction, then that is a completely different story. For predictive models, it is usually recommended that variable selection and model fitting should be done simultaneously. This can be done using regularised regression models, which Section \@ref(regularised) is devoted to.
 
@@ -2614,7 +2632,7 @@ The coefficients of a logistic regression model aren't as straightforward to int
 
 * If $\beta$ is positive, then $\pi_i$ increases when $x_i$ increases.
 * If $\beta$ is negative, then $\pi_i$ decreases when $x_i$ increases.
-* $e^\beta$ is the _odds ratio_, of $x_i+1$ to $x$, which shows how much the odds $\frac{\pi_i}{1-\pi_1}$ change when $x_i$ is increased 1 step.
+* $e^\beta$ is the _odds ratio_, which shows how much the odds $\frac{\pi_i}{1-\pi_1}$ change when $x_i$ is increased 1 step.
 
 We can extract the coefficients and odds ratios using `coef`:
 
@@ -2698,17 +2716,14 @@ boot.ci(boot_res, type = "perc", index = 2) # pH
 boot.ci(boot_res, type = "perc", index = 3) # Alcohol
 ```
 
-To use case resampling instead, we can use `Boot` from `car`:
+To use case resampling instead, we can use `boot_summary` from `boot.pval`:
 
 ```{r eval=FALSE}
-library(car)
+library(boot.pval)
 
 m <- glm(type ~ pH + alcohol, data = wine, family = binomial)
 
-boot_res <- Boot(m, method = "case")
-
-# Compute confidence intervals:
-confint(boot_res, type = "perc")
+boot_summary(m, type = "perc", method = "case")
 ```
 
 $$\sim$$
@@ -2716,9 +2731,9 @@ $$\sim$$
 ```{exercise, label="ch7excGLM2"}
 Use the model that you fitted to the `sharks.csv` data in Exercise \@ref(exr:ch7excGLM1) for the following:
 
-1. When `MASS` package is loaded, you can use `confint` to obtain (asymptotic) confidence intervals for the parameters of a GLM. Use it to compute confidence intervals for the parameters of your model for the `sharks.csv` data. 
+1. When the `MASS` package is loaded, you can use `confint` to obtain (asymptotic) confidence intervals for the parameters of a GLM. Use it to compute confidence intervals for the parameters of your model for the `sharks.csv` data. 
 
-2. Compute parametric bootstrap confidence intervals for the parameters of your logistic regression model for the `sharks.csv` data. Do they differ from the intervals obtained using `confint`? Note that there are a lot of missing values for the response variable. Think about how that will affect your bootstrap intervals and adjust your code accordingly.
+2. Compute parametric bootstrap confidence intervals and p-values for the parameters of your logistic regression model for the `sharks.csv` data. Do they differ from the intervals obtained using `confint`? Note that there are a lot of missing values for the response variable. Think about how that will affect your bootstrap intervals and adjust your code accordingly.
 
 3. Use the confidence interval inversion method of Section \@ref(intervalinversion) to compute bootstrap p-values for the effect of age.
 
@@ -2942,14 +2957,11 @@ ggplot(attacks, aes(Year, Type)) +
                 colour = "blue", linetype = "dashed")
 ```
 
-Finally, we can obtain bootstrap confidence intervals e.g. using case resampling, using `Boot`:
+Finally, we can obtain bootstrap confidence intervals e.g. using case resampling, using `boot_summary`:
 
 ```{r eval=FALSE}
-library(car)
-boot_res <- Boot(m_nb, method = "case")
-
-# Compute confidence intervals:
-confint(boot_res, type = "perc")
+library(boot.pval)
+boot_summary(m_nb, type = "perc", method = "case")
 ```
 
 $$\sim$$ 
@@ -3291,7 +3303,14 @@ Return to your mixed model for the `Oxboys` data from Exercise \@ref(exr:ch7excL
 
 
 ### Bootstrapping {#lmmbootstrap}
-To get bootstrap confidence intervals for the fixed effects, we can use `bootMer`\index{\texttt{bootMer}}\index{bootstrap!mixed model}\index{mixed model!bootstrap}, which performs semi-parametric resampling from the model, and `fixef` (which extracts the fixed effects):
+Summary tables, including p-values, for the fixed effects are available through `boot_summary`:
+
+```{r eval=FALSE}
+library(boot.pval)
+boot_summary(m4, type = "perc")
+```
+
+`boot_summary` calls a function called `bootMer`\index{\texttt{bootMer}}\index{bootstrap!mixed model}\index{mixed model!bootstrap}, which performs parametric resampling from the model. In case you want to call it directly, you can do as follows:
 
 ```{r eval=FALSE}
 boot_res <- bootMer(m4, fixef, nsim = 999)
@@ -3300,6 +3319,8 @@ library(boot)
 boot.ci(boot_res, type = "perc", index = 1) # Intercept
 boot.ci(boot_res, type = "perc", index = 2) # Days
 ```
+
+
 
 ### Nested random effects and multilevel/hierarchical models
 In many cases, a random factor is _nested_ within another\index{mixed model!nested}. To see an example of this, consider the `Pastes`\index{data!\texttt{Pastes}} data from `lme4`:
@@ -3423,15 +3444,10 @@ summary(m, correlation = FALSE)
 Finally, we'd like to obtain bootstrap confidence intervals for fixed effects. Because this is a fairly large dataset ($n=7,584$) this can take a looong time to run, so go stretch your legs and grab a cup of coffee or two while you wait:
 
 ```{r eval=FALSE}
-boot_res <- bootMer(m, fixef, nsim = 100)
-# Ideally, nsim should be greater, but for the sake of
+library(boot.pval)
+boot_summary(m, type = "perc", R = 100)
+# Ideally, R should be greater, but for the sake of
 # this example, we'll use a low number.
-
-library(boot)
-boot.ci(boot_res, type = "perc", index = 1) # Intercept
-boot.ci(boot_res, type = "perc", index = 2) # Anger
-boot.ci(boot_res, type = "perc", index = 3) # Gender
-boot.ci(boot_res, type = "perc", index = 4) # situ
 ```
 
 $$\sim$$ 
@@ -3528,7 +3544,7 @@ To print the values for the survival curves at different time points, we can use
 summary(m)
 ```
 
-To test for differences between two groups, we can use the logrank test\index{survival analysis!logrank test} (also known as Mantel-Cox test), given by `survfit`:
+To test for differences between two groups, we can use the logrank test\index{survival analysis!logrank test} (also known as the Mantel-Cox test), given by `survfit`:
 
 ```{r eval=FALSE}
 survdiff(Surv(time, status) ~ sex, data = lung)
@@ -3599,7 +3615,17 @@ exp(coef(m))
 
 In this case, the hazard increases with age (multiply the hazard by 1.017 for each additional year that the person has lived), and is lower for women (`sex=2`) than for men (`sex=1`).
 
-To obtain bootstrap confidence intervals for the exponentiated coefficients, we can use the `censboot`\index{\texttt{censboot}} function from `boot` as follows:
+The `censboot_summary`\index{\texttt{censboot\_summary}} function from `boot.pval` provides a table of estimates, bootstrap confidence intervals, and bootstrap p-values for the model coefficients. The `coef` argument can be used to specify whether to print confidence intervals for the coefficients or for the exponentiated coeffientes (i.e. the hazard ratios):
+
+```{r eval=FALSE}
+library(boot.pval)
+# Original coefficients:
+censboot_summary(m, type = "perc", coef = "raw")
+# Exponentiated coefficients:
+censboot_summary(m, type = "perc", coef = "exp")
+```
+
+To manually obtain bootstrap confidence intervals for the exponentiated coefficients, we can use the `censboot`\index{\texttt{censboot}} function from `boot` as follows:
 
 ```{r eval=FALSE}
 # Function to get the bootstrap replicates of the exponentiated
@@ -3611,10 +3637,8 @@ boot_fun <- function(data, formula) {
 
 # Run the resampling:
 library(boot)
-# We use strata = lung$sex to get the same number of females and
-# males in each bootstrap sample:
 boot_res <- censboot(lung[,c("time", "status", "age", "sex")],
-                     boot_fun, R = 999, strata = lung$sex,
+                     boot_fun, R = 999, 
                      formula = 
                        formula(Surv(time, status) ~ age + sex))
 
@@ -3687,7 +3711,17 @@ exp(coef(m_ll))
 
 In this case, according to the log-logistic model, the expected survival time decreases by 1.4 % (i.e. multiply by $0.986$) for each additional year that the patient has lived. The expected survival time for females (`sex=2`) is 61.2 % higher than for males (multiply by $1.612$).
 
-To obtain bootstrap confidence intervals for the effects, we follow the same procedure as for the Cox model.  Here is an example for the log-logistic model accelerated failure time model:
+To obtain bootstrap confidence intervals and p-values for the effects, we follow the same procedure as for the Cox model, using `censboot_summary`. Here is an example for the log-logistic accelerated failure time model:
+
+```{r eval=FALSE}
+library(boot.pval)
+# Original coefficients:
+censboot_summary(m_ll, type = "perc", coef = "raw")
+# Exponentiated coefficients:
+censboot_summary(m_ll, type = "perc", coef = "exp")
+```
+
+We can also use `censboot`:
 
 ```{r eval=FALSE}
 # Function to get the bootstrap replicates of the exponentiated
@@ -3699,10 +3733,8 @@ boot_fun <- function(data, formula, distr) {
 
 # Run the resampling:
 library(boot)
-# We use strata = lung$sex to get the same number of females and
-# males in each bootstrap sample:
 boot_res <- censboot(lung[,c("time", "status", "age", "sex")],
-                     boot_fun, R = 999, strata = lung$sex,
+                     boot_fun, R = 999, 
                      formula = 
                        formula(Surv(time, status) ~ age + sex),
                      distr = "loglogistic")

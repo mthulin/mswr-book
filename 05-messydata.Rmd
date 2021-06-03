@@ -1,7 +1,7 @@
 # Dealing with messy data {#messychapter}
 ...or, put differently, _welcome to the real world_. Real datasets are seldom as tidy and clean as those you have seen in the previous examples in this book. On the contrary, real data is messy. Things will be out of place, and formatted in the wrong way. You'll need to filter the rows to remove those that aren't supposed to be used in the analysis. You'll need to remove some columns and merge others. You will need to wrestle, clean, coerce, and coax your data until it finally has the right format. Only then will you be able to actually analyse it.
 
-This chapter contains a number of examples which serve as cookbook recipes for common data wrangling tasks. And as with any cookbook, you'll find yourself returning to some recipes more or less every day, until you know them by heart, while you never find the right time to use other recipes. You do definitely not have to know all of them by heart, and can always go back and look up a recipe that you need.
+This chapter contains a number of examples that serve as cookbook recipes for common data wrangling tasks. And as with any cookbook, you'll find yourself returning to some recipes more or less every day, until you know them by heart, while you never find the right time to use other recipes. You do definitely not have to know all of them by heart, and can always go back and look up a recipe that you need.
 
 After working with the material in this chapter, you will be able to use R to:
 
@@ -30,9 +30,9 @@ v2 <- c("One", 5)
 v2
 ```
 
-There is a hierarchy for data types in R: `logical` < `integer` < `numeric` < `character`\index{data type!hierarchy}. When variables of different types are somehow combined (with addition, put in the same vector, and so on) R will coerce both to the higher ranking type. That is why `v1` contained `numeric` variables (`numeric` is higher ranked than `logical`) and `v2` contained `character` values (`character` is higher ranked than `numeric`).
+There is a hierarchy for data types in R: `logical` < `integer` < `numeric` < `character`\index{data type!hierarchy}. When variables of different types are somehow combined (with addition, put in the same vector, and so on), R will coerce both to the higher ranking type. That is why `v1` contained `numeric` variables (`numeric` is higher ranked than `logical`) and `v2` contained `character` values (`character` is higher ranked than `numeric`).
 
-The automatic coercion is often useful, but will sometimes cause problems. As an example, a vector of numbers may accidentally be converted to a `character` vector, which will confuse plotting functions. Luckily it is possible to convert objects to other data types. The functions most commonly used for this are `as.logical`, `as.numeric` and `as.character`\index{\texttt{as.logical}}\index{\texttt{as.numeric}}\index{\texttt{as.character}}. Here are some examples of how they can be used:
+Automatic coercion is often useful, but will sometimes cause problems. As an example, a vector of numbers may accidentally be converted to a `character` vector, which will confuse plotting functions. Luckily it is possible to convert objects to other data types. The functions most commonly used for this are `as.logical`, `as.numeric` and `as.character`\index{\texttt{as.logical}}\index{\texttt{as.numeric}}\index{\texttt{as.character}}. Here are some examples of how they can be used:
 
 ```{r eval=FALSE}
 as.logical(1)           # Should be TRUE
@@ -71,7 +71,7 @@ The following tasks are concerned with converting and checking data types:
 
 
 ## Working with lists {#lists2}
-A data structure that is very convenient for storing data of different types is `list`\index{\texttt{list}}\index{list}. You can think of a `list` as a data frame where you can put different types of objects in each column: like a `numeric` vector of length 5 in the first, a data frame in the second and a single `character` in the third^[In fact, the opposite is true: under the hood a data frame is a list of vectors of equal length.]. Here is an example of how to create a `list` using the function of the same name:
+A data structure that is very convenient for storing data of different types is `list`\index{\texttt{list}}\index{list}. You can think of a `list` as a data frame where you can put different types of objects in each column: like a `numeric` vector of length 5 in the first, a data frame in the second and a single `character` in the third^[In fact, the opposite is true: under the hood, a data frame is a list of vectors of equal length.]. Here is an example of how to create a `list` using the function of the same name:
 
 ```{r eval=FALSE}
 my_list <- list(my_numbers = c(86, 42, 57, 61, 22),
@@ -104,7 +104,7 @@ my_list$my_numbers[2]
 
 
 ### Splitting vectors into lists {#splitvector}
-Consider the `airquality` dataset, which among other things describe the temperature on each day during a five month period. Suppose that we wish to split the `airquality$Temp` vector into five separate vectors: one for each month. We could do this by repeated filtering, e.g.
+Consider the `airquality` dataset, which among other things describe the temperature on each day during a five-month period. Suppose that we wish to split the `airquality$Temp` vector into five separate vectors: one for each month. We could do this by repeated filtering, e.g.
 
 ```{r eval=FALSE}
 temp_may <- airquality$Temp[airquality$Month == 5]
@@ -127,7 +127,7 @@ names(temps) <- c("May", "June", "July", "August", "September")
 temps$June
 ```
 
-Note that, in breach of the rules for variable names in R, the original variable names here were numbers (actually `character` variables, that happened to contain numeric characters). When accessing them using `$` notation, you need to put them between backticks (`` ` ``), e.g. `` temps$`6` ``, to make it clear that `6` is a variable name and not a number.
+Note that, in breach of the rules for variable names in R, the original variable names here were numbers (actually `character` variables that happened to contain numeric characters). When accessing them using `$` notation, you need to put them between backticks (`` ` ``), e.g. `` temps$`6` ``, to make it clear that `6` is a variable name and not a number.
 
 ### Collapsing lists into vectors
 Conversely, there are times where you want to collapse a list into a vector. This can be done using `unlist`\index{\texttt{unlist}}\index{list!collapse to vector}:
@@ -146,7 +146,7 @@ Load the `vas.csv` data from Exercise \@ref(exr:ch3exc4). Split the `VAS` vector
 
 
 ## Working with numbers
-A lot of data analysis involve numbers, which typically are represented as `numeric` values in R. We've already seen in Section \@ref(maths) that there are numerous mathematical operators that can be applied to numbers in R. But there are also other functions that come in handy when working with numbers.
+A lot of data analyses involve numbers, which typically are represented as `numeric` values in R. We've already seen in Section \@ref(maths) that there are numerous mathematical operators that can be applied to numbers in R. But there are also other functions that come in handy when working with numbers.
 
 ### Rounding numbers
 At times you may want to round numbers, either for presentation purposes or for some other reason. There are several functions that can be used for this\index{\texttt{round}}\index{\texttt{signif}}\index{\texttt{ceiling}}\index{\texttt{floor}}\index{\texttt{trunc}}:
@@ -217,7 +217,7 @@ upp_temp <- c(5.3, 3.2, -1.4, -3.4, -0.6, -0.6, -0.8, 2.7, 4.2, 5.7,
               6.1, 4.4, 1.0, -0.4, -0.5, -1.5, -1.2, 0.6)
 ```
 
-It could be interesting to look at runs of sub-zero days, i.e. consecutive days with sub-zero temperatures. The `rle`\index{\texttt{rle}} function counts the lengths of runs of equal values in a vector. Top find the length of runs of temperatures below or above zero, we can use the vector defined by the condition `upp_temp < 0`, the values of which are `TRUE` on sub-zero days and `FALSE` when the temperature is 0 or higher. When we apply `rle` to this vector, it returns the length and value of the runs:
+It could be interesting to look at runs of sub-zero days, i.e. consecutive days with sub-zero temperatures. The `rle`\index{\texttt{rle}} function counts the lengths of runs of equal values in a vector. To find the length of runs of temperatures below or above zero we can use the vector defined by the condition `upp_temp < 0`, the values of which are `TRUE` on sub-zero days and `FALSE` when the temperature is 0 or higher. When we apply `rle` to this vector, it returns the length and value of the runs:
 
 ```{r eval=FALSE}
 rle(upp_temp < 0)
@@ -261,12 +261,12 @@ options(scipen = 0)
 exp(30)
 ```
 
-Note that this option only affects how R prints numbers, and not how they are treated in computations.
+Note that this option only affects how R _prints_ numbers, and not how they are treated in computations.
 
 ### Floating point arithmetics {#floatingpoints}
 Some numbers cannot be written in finite decimal forms. Take $1/3$ for example, the decimal form of which is $$0.33333333333333333333333333333333\ldots.$$
 
-Clearly, the computer cannot store this number exactly, as that would require an infinite memory^[This is not strictly speaking true; if we use base 3, $1/3$ is written as $0.1$ which can be stored in a finite memory. But then other numbers become problematic instead.]. Because of this, numbers in computers are stored as _floating point numbers_\index{floating point numbers}, which aim to strike a balance between _range_ (being able to store both very small and very large numbers) and _precision_ (being able to accurately represent numbers). Most of the time, calculations with floating points yield exactly the results that we'd expect, but sometimes these non-exact representations of numbers will cause unexpected problems. If we wish to compute $1.5-0.2$ and $1.1-0.2$, say, we could of course use R for that. Let's see if it gets the answers right:
+Clearly, the computer cannot store this number exactly, as that would require an infinite memory^[This is not strictly speaking true; if we use base 3, $1/3$ is written as $0.1$ which can be stored in a finite memory. But then other numbers become problematic instead.]. Because of this, numbers in computers are stored as _floating point numbers_\index{floating point numbers}, which aim to strike a balance between _range_ (being able to store both very small and very large numbers) and _precision_ (being able to represent numbers accurately). Most of the time, calculations with floating points yield exactly the results that we'd expect, but sometimes these non-exact representations of numbers will cause unexpected problems. If we wish to compute $1.5-0.2$ and $1.1-0.2$, say, we could of course use R for that. Let's see if it gets the answers right:
 
 ```{r eval=FALSE}
 1.5 - 0.2
@@ -357,12 +357,12 @@ You could use `table` to get a summary of how many answers of each type that you
 table(smoke)
 ```
 
-But the categories are not presented in the right order! There is a clear order between the different categories, _Never_ < _Occasionally_ < _Regularly_ < _Heavy_, but `table` doesn't present the results in that way. Moreover, R didn't recognise that `No` was an invalid answer, and treats it just the same as the other categories.
+But the categories are not presented in the correct order! There is a clear order between the different categories, _Never_ < _Occasionally_ < _Regularly_ < _Heavy_, but `table` doesn't present the results in that way. Moreover, R didn't recognise that `No` was an invalid answer, and treats it just the same as the other categories.
 
 This is where `factor` variables come in. They allow you to specify which values your variable can take, and the ordering between them (if any). 
 
 ### Creating factors
-When creating a `factor` variable, you typically start with a `character`, `numeric` or `logical` variable, the values of which are turned into categories. To turn the the `smoke` vector that you created in the previous section into a `factor`, you can use the `factor`\index{\texttt{factor}} function: 
+When creating a `factor` variable, you typically start with a `character`, `numeric` or `logical` variable, the values of which are turned into categories. To turn the `smoke` vector that you created in the previous section into a `factor`, you can use the `factor`\index{\texttt{factor}} function: 
 
 ```{r eval=FALSE}
 smoke2 <- factor(smoke)
@@ -388,13 +388,13 @@ levels(smoke2)
 table(smoke2)
 ```
 
-You can control the order in which the levels are presented by choosing which order we write them in in the `levels` argument. The `ordered = TRUE` argument specifies that the order of the variables is _meaningful_, and can be excluded in cases where you wish to specify the order in which the categories should be presented purely for presentation purposes (e.g. when specifying whether to use the order `Male/Female/Other` or `Female/Male/Other`). Also note that the `No` answer now became an `NA`, which in the case of `factor` variables represents both missing observations and invalid observations. To find the values of `smoke` that became `NA` in `smoke2` you can use `which` and `is.na`:
+You can control the order in which the levels are presented by choosing which order we write them in in the `levels` argument. The `ordered = TRUE` argument specifies that the order of the variables is _meaningful_. It can be excluded in cases where you wish to specify the order in which the categories should be presented purely for presentation purposes (e.g. when specifying whether to use the order `Male/Female/Other` or `Female/Male/Other`). Also note that the `No` answer now became an `NA`, which in the case of `factor` variables represents both missing observations and invalid observations. To find the values of `smoke` that became `NA` in `smoke2` you can use `which` and `is.na`:
 
 ```{r eval=FALSE}
 smoke[which(is.na(smoke2))]
 ```
 
-By checking the original values of the `NA` elements, you can see if they should be excluded from the analysis or recoded into a proper category (`No` could for instance be recoded into `Never`). In Section \@ref(regexp) you'll learn how to automatically replace values in larger datasets using regular expressions.
+By checking the original values of the `NA` elements, you can see if they should be excluded from the analysis or recoded into a proper category (`No` could for instance be recoded into `Never`). In Section \@ref(regexp) you'll learn how to replace values in larger datasets automatically using regular expressions.
 
 ### Changing factor levels {#factorlevels}
 When we created `smoke2`, one of the elements became an `NA`. `NA` was however not included as a level of the `factor`. Sometimes it is desirable to include `NA` as a level, for instance when you want to analyse rows with missing data. This is easily done using the `addNA`\index{\texttt{addNA}}\index{\texttt{factor}!add `NA` level} function:
@@ -502,7 +502,7 @@ R has put backslash characters, `\`, before the double quotes. The backslash is 
 text2_success <- "Another example of a so-called \"string\"."
 ```
 
-There are a number of other special character that can be included using a backslash: `\n` for a line break (new line) and `\t` for a tab (a long whitespace) being the most important^[See `?Quotes` for a complete list.]:
+There are a number of other special characters that can be included using a backslash: `\n` for a line break (a new line) and `\t` for a tab (a long whitespace) being the most important^[See `?Quotes` for a complete list.]:
 
 ```{r eval=FALSE}
 text3 <- "Text...\n\tWith indented text on a new line!"
@@ -597,7 +597,7 @@ months
 ```
 
 ### Finding patterns using regular expressions {#regexp}
-_Regular expressions_, or regexps for short, are special strings that describe patterns\index{regular expression}. They are extremely useful if you need to find, replace or otherwise manipulate a number of strings depending on whether or not a certain pattern exists in each one of them. For instance, you may want to find all strings containing only numbers and convert them to `numeric`, or find all strings that contain an email address and remove said addresses (for censoring purposes, say). Regular expressions are incredibly useful, but can be daunting. Not everyone will need them, and if this all seems a bit too much to you you can safely skip this section, or just skim through it, and return to it at a later point.
+_Regular expressions_, or regexps for short, are special strings that describe patterns\index{regular expression}. They are extremely useful if you need to find, replace or otherwise manipulate a number of strings depending on whether or not a certain pattern exists in each one of them. For instance, you may want to find all strings containing only numbers and convert them to `numeric`, or find all strings that contain an email address and remove said addresses (for censoring purposes, say). Regular expressions are incredibly useful, but can be daunting. Not everyone will need them, and if this all seems a bit too much to you can safely skip this section, or just skim through it, and return to it at a later point.
 
 To illustrate the use of regular expressions we will use a sheet from the `projects-email.xlsx` file from the books' web page. In Exercise \@ref(exr:ch3exc5), you explored the second sheet in this file, but here we'll use the third instead. Set `file_path` to the path to the file, and then run the following code to import the data\index{data!\texttt{contacts}}:
 
@@ -615,9 +615,9 @@ contacts$Address
 
 You can find loads of guides on regular expressions online, but few of them are easy to use with R, the reason being that regular expressions in R sometimes require escape characters that aren't needed in some other programming languages. In this section we'll take a look at regular expressions, _as they are written in R_.
 
-The basic building blocks of regular expressions are patterns consisting of one or more characters. If, for instance, we wish to find all occurrences of the letter `y` in a vector of strings, the regular expression describing that "pattern" is simply `"y"`. The functions used to find occurrences of patterns are called `grep` and `grepl`. They differ only in the output that they return: `grep` returns the indices of the strings containing the pattern, and `grepl` returns a `logical` vector with `TRUE` at indices matching the patterns and `FALSE` at other indices.
+The basic building blocks of regular expressions are patterns consisting of one or more characters. If, for instance, we wish to find all occurrences of the letter `y` in a vector of strings, the regular expression describing that "pattern" is simply `"y"`. The functions used to find occurrences of patterns are called `grep` and `grepl`. They differ only in the output they return: `grep` returns the indices of the strings containing the pattern, and `grepl` returns a `logical` vector with `TRUE` at indices matching the patterns and `FALSE` at other indices.
 
-To find all addresses containing a lowercase `y` we use `grep` and `grepl` as follows:
+To find all addresses containing a lowercase `y`, we use `grep` and `grepl` as follows:
 
 ```{r eval=FALSE}
 grep("y", contacts$Address)
@@ -737,7 +737,7 @@ Finally, there are some other operators that you can use to create even more com
 
 * `|` alteration, picks one of multiple possible patterns. For example, `ab|bc` matches `ab` or `bc`.
 * `()` parentheses are used to denote a subset of an expression that should be evaluated separately. For example, `colo|our` matches `colo` or `our` while `col(o|ou)r` matches `color` or `colour`.
-* `^` when used outside of brackets `[]` means that the match should be found at the start of the string. For example, `^a` matches strings beginning with `a`, but not `"dad"`.
+* `^`, when used outside of brackets `[]`, means that the match should be found at the start of the string. For example, `^a` matches strings beginning with `a`, but not `"dad"`.
 * `$` means that the match should be found at the end of the string. For example, `a$` matches strings ending with `a`, but not `"dad"`.
 * `\\` escape character that can be used to match special characters like `.`, `^` and `$` (`\\.`, `\\^`, `\\$`).
 
@@ -753,9 +753,9 @@ grep("[[:alnum:]._-]+@[[:alnum:]._-]+[.][[:alpha:]]+",
      contacts$Address)
 ```
 
-The first two of these both specify the same pattern: _any number of any characters, followed by an `@`, followed by any number of any characters, followed by a period `.`, followed by any number of characters_. This will match email addresses, but would also match strings like `"?=)(/x@!.a??"`, which isn't a valid email address. In this case that's not a big issue, as our goal was to find addresses that looked like email addresses, and not to verify that the addresses were valid.
+The first two of these both specify the same pattern: _any number of any characters, followed by an `@`, followed by any number of any characters, followed by a period `.`, followed by any number of characters_. This will match email addresses, but would also match strings like `"?=)(/x@!.a??"`, which isn't a valid email address. In this case, that's not a big issue, as our goal was to find addresses that looked like email addresses, and not to verify that the addresses were valid.
 
-The third alternative has a slightly different pattern: _any numbers of letters, digits, and punctuation characters, followed by an `@`, followed by  any numbers of letters, digits, and punctuation characters, followed by a period `.`, followed by any number of letters_. This too would match `"?=)(/x@!.a??"` as it allows punctuation characters that don't usually occur in email addresses. The fourth alternative, however, won't match `"?=)(/x@!.a??"` as it only allows letters, digits and the symbols `.`, `_` and `-` in the name and domain name of the address.
+The third alternative has a slightly different pattern: _any number of letters, digits, and punctuation characters, followed by an `@`, followed by  any number of letters, digits, and punctuation characters, followed by a period `.`, followed by any number of letters_. This too would match `"?=)(/x@!.a??"` as it allows punctuation characters that don't usually occur in email addresses. The fourth alternative, however, won't match `"?=)(/x@!.a??"` as it only allows letters, digits and the symbols `.`, `_` and `-` in the name and domain name of the address.
 
 ### Substitution {#sub}
 An important use of regular expressions is in substitutions, where the parts of strings that match the pattern in the expression are replaced by another string. There are two email addresses in our data that contain `(a)` instead of `@`:
@@ -773,9 +773,9 @@ gsub("[(]a[])]", "@", contacts$Address) # Replace all occurrences
 ```
 
 ### Splitting strings
-At times you want to extract only a part of string, for example if measurements recorded in a column contains units, e.g. `66.8 kg` instead of `66.8`. To split a string into different parts, we can use `strsplit`\index{\texttt{strsplit}}.
+At times you want to extract only a part of a string, for example if measurements recorded in a column contains units, e.g. `66.8 kg` instead of `66.8`. To split a string into different parts, we can use `strsplit`\index{\texttt{strsplit}}.
 
-As an example, consider the email addresses in our `contacts` data. Suppose that we want to extract the user names from all email addresses, i.e. remove the `@domain.topdomain` part. First we store all email addresses from the data in a new vector, and then we split them at the `@` sign:
+As an example, consider the email addresses in our `contacts` data. Suppose that we want to extract the user names from all email addresses, i.e. remove the `@domain.topdomain` part. First, we store all email addresses from the data in a new vector, and then we split them at the `@` sign:
 
 ```{r eval=FALSE}
 emails <- contacts$Address[grepl(
@@ -814,7 +814,7 @@ grep("[aA]", names(contacts))
 $$\sim$$
 
 ```{exercise, label="ch5exc6"}
-[Download the file `handkerchief.csv`\index{data!\texttt{handkerchiefs.csv}} from the book's web page](http://www.modernstatisticswithr.com/data.zip). It contain a short list of prices of Italian handkerchiefs from the [1769 publication](https://books.google.se/books?id=rUxiAAAAcAAJ) _Prices in those branches of the weaving manufactory, called, the black branch, and, the fancy branch_. Load the data in a data frame in R and then do the following:
+[Download the file `handkerchief.csv`\index{data!\texttt{handkerchiefs.csv}} from the book's web page](http://www.modernstatisticswithr.com/data.zip). It contains a short list of prices of Italian handkerchiefs from the [1769 publication](https://books.google.se/books?id=rUxiAAAAcAAJ) _Prices in those branches of the weaving manufactory, called, the black branch, and, the fancy branch_. Load the data in a data frame in R and then do the following:
 
 1. Read the documentation for the function `nchar`\index{\texttt{nchar}}. What does it do? Apply it to the `Italian.handkerchief` column of your data frame.
 
@@ -829,7 +829,7 @@ $$\sim$$
 <br>
 
 ```{exercise, label="ch5exc65"}
-[Download the `oslo-biomarkers.xlsx`\index{data!\texttt{oslo-biomarkers.xlsx}} data from the book's web page](http://www.modernstatisticswithr.com/data.zip). It contains data from a medical study about patients with disc herniations, performed at the Oslo University Hospital, Ullevål (this is a modified^[For patient confidentiality purposes.] version of the data analysed by Moen et al. (2016)). Blood samples were collected from a number of patients with disc herniations at three timepoints: 0 weeks (first visit at the hospital), 6 weeks and 12 months. The levels of some biomarkers related to inflammation were measured in each blood sample. The first column in the spreadsheet contains information about the patient ID and the timepoint of sampling. Load the data and check its structure. Each patient is uniquely identified by their ID number. How many patients were included in the study?
+[Download the `oslo-biomarkers.xlsx`\index{data!\texttt{oslo-biomarkers.xlsx}} data from the book's web page](http://www.modernstatisticswithr.com/data.zip). It contains data from a medical study about patients with disc herniations, performed at the Oslo University Hospital, Ullevål (this is a modified^[For patient confidentiality purposes.] version of the data analysed by Moen et al. (2016)). Blood samples were collected from a number of patients with disc herniations at three time points: 0 weeks (first visit at the hospital), 6 weeks and 12 months. The levels of some biomarkers related to inflammation were measured in each blood sample. The first column in the spreadsheet contains information about the patient ID and the time point of sampling. Load the data and check its structure. Each patient is uniquely identified by their ID number. How many patients were included in the study?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch5solutions65)
@@ -855,7 +855,7 @@ What patterns do the following regular expressions describe? Apply them to the `
 <br>
 
 ```{exercise, label="ch5exc7b"}
-Write code that that, given a string, creates a vector containing all words from the string, with one word in each element and no punctuation marks. Apply it to the following string to check that it works:
+Write code that, given a string, creates a vector containing all words from the string, with one word in each element and no punctuation marks. Apply it to the following string to check that it works:
   
 ```{r eval=FALSE}
 x <- "This is an example of a sentence, with 10 words. Here are 4 more!"
@@ -872,7 +872,7 @@ The default in R is to use the ISO8601 standards, meaning that dates are written
 Dates in R are represented as `Date`\index{\texttt{Date}} objects, and dates with times as `POSIXct`\index{\texttt{POSIXct}} objects. The examples below are concerned with `Date` objects, but you will explore `POSIXct` too, in Exercise \@ref(exr:ch5exc8).
 
 ### Date formats
-The `as.Date`\index{\texttt{as.Date}} function tries to coerce a `character` string to a date. For some formats, it will automatically succeed, whereas for others you have to manually provide the format of the date. To complicate things further, what formats work automatically will depend on your system settings. Consequently, the safest option is to always specify the format of your dates, to make sure that the code still will run if you at some point have to execute it on a different machine. To help describe date formats, R has a number of tokens to describe days, months and years:
+The `as.Date`\index{\texttt{as.Date}} function tries to coerce a `character` string to a date. For some formats, it will automatically succeed, whereas for others, you have to provide the format of the date manually. To complicate things further, what formats work automatically will depend on your system settings. Consequently, the safest option is always to specify the format of your dates, to make sure that the code still will run if you at some point have to execute it on a different machine. To help describe date formats, R has a number of tokens to describe days, months and years:
 
 * `%d` - day of the month as a number (01-31).
 * `%m` - month of the year as a number (01-12).
@@ -918,7 +918,7 @@ However, if I translate it to Swedish, it runs just fine:
 as.Date("Onsdag 1 april 2020", format = "%A %d %B %Y")
 ```
 
-You may at times need to make similar translations of dates. One option is to use `gsub` to translate names of months and weekdays into the correct language (see Section \@ref(sub)). Alternatively, you can change the locale settings. On most systems, the following setting\index{\texttt{Sys.setlocale}} will allow you to read English months and days properly:
+You may at times need to make similar translations of dates. One option is to use `gsub` to translate the names of months and weekdays into the correct language (see Section \@ref(sub)). Alternatively, you can change the locale settings. On most systems, the following setting\index{\texttt{Sys.setlocale}} will allow you to read English months and days properly:
 
 ```{r eval=FALSE}
 Sys.setlocale("LC_TIME", "C")
@@ -1080,14 +1080,14 @@ In the remainder of this chapter, we will use three packages that contain functi
 install.packages(c("dplyr", "tidyr", "data.table"))
 ```
 
-There is almost always more than one way to solve a problem in R. We now know how to access vectors and elements in data frames, e.g. to compute means. We also know how to modify and add variables to data frames. Indeed, you can do just about anything using the functions in base R. Sometimes, however, those solutions become rather cumbersome, as they can require a fair amount of programming and verbose code. `data.table` and the tidyverse packages offer simpler solutions and speed up the workflow for these types of problems. Both can be used for the same tasks. You can learn one of them or both. The syntax used for `data.table` is often more concise and arguably more consistent than that in `dplyr` (it is in essence an extension of the `[i, j]` notation that we have already used for data frames). Second, it is fast and memory efficient, which makes a huge difference if you are working with big data (you'll see this for yourself in Section \@ref(measureperformance)). On the other hand, many people prefer the syntax in `dplyr` and `tidyr`, which lends itself extremely well for usage with pipes, and if you work with small or medium-sized datasets, the difference in performance between the two packages is negligible. `dplyr` is also much better suited for working directly with databases, which is a huge selling point if your data already is in a\index{\texttt{dtplyr}} database^[There is also a package called `dtplyr`, which allows you to use the fast functions from `data.table` with `dplyr` syntax. It is useful if you are working with big data, already know `dplyr` and don't want to learn `data.table`. If that isn't an accurate description of you, you can safely ignore `dtplyr` for now.].
+There is almost always more than one way to solve a problem in R. We now know how to access vectors and elements in data frames, e.g. to compute means. We also know how to modify and add variables to data frames. Indeed, you can do just about anything using the functions in base R. Sometimes, however, those solutions become rather cumbersome, as they can require a fair amount of programming and verbose code. `data.table` and the tidyverse packages offer simpler solutions and speed up the workflow for these types of problems. Both can be used for the same tasks. You can learn one of them or both. The syntax used for `data.table` is often more concise and arguably more consistent than that in `dplyr` (it is in essence an extension of the `[i, j]` notation that we have already used for data frames). Second, it is fast and memory-efficient, which makes a huge difference if you are working with big data (you'll see this for yourself in Section \@ref(measureperformance)). On the other hand, many people prefer the syntax in `dplyr` and `tidyr`, which lends itself exceptionally well for usage with pipes. If you work with small or medium-sized datasets, the difference in performance between the two packages is negligible. `dplyr` is also much better suited for working directly with databases, which is a huge selling point if your data already is in a\index{\texttt{dtplyr}} database^[There is also a package called `dtplyr`, which allows you to use the fast functions from `data.table` with `dplyr` syntax. It is useful if you are working with big data, already know `dplyr` and don't want to learn `data.table`. If that isn't an accurate description of you, you can safely ignore `dtplyr` for now.].
 
-In the sections below, we will see how to perform different operations using both packages `data.table` and the tidyverse packages. Perhaps you already know which one that you want to use (`data.table` if performance is important to you, `dplyr`+`tidyr` if you like to use pipes or will be doing a lot of work with databases). If not, you can use these examples to guide your choice. Or not choose at all! I regularly use both packages myself, to harness the strength of both. There is no harm in knowing how to use both a hammer and a screwdriver.
+In the sections below, we will see how to perform different operations using both `data.table` and the tidyverse packages. Perhaps you already know which one that you want to use (`data.table` if performance is important to you, `dplyr`+`tidyr` if you like to use pipes or will be doing a lot of work with databases). If not, you can use these examples to guide your choice. Or not choose at all! I regularly use both packages myself, to harness the strength of both. There is no harm in knowing how to use both a hammer and a screwdriver.
 
 ### `data.table` and tidyverse syntax basics {#dtbasics}
-`data.table` relies heavily on the `[i, j]` notation that is used for data frames in R. It also adds a third element: `[i, j, by]`. Using this, R selects the rows indicated by `i`, the columns indicated by `j` and groups them by `by`. This makes it easy to e.g. compute grouped summaries.
+`data.table` relies heavily on the `[i, j]` notation that is used for data frames in R. It also adds a third element: `[i, j, by]`. Using this, R selects the rows indicated by `i`, the columns indicated by `j` and groups them by `by`. This makes it easy e.g. to compute grouped summaries.
 
-With the tidyverse packages you will instead use new functions with names like `filter` and `summarise` to perform operations on your data. These are typically combined using the pipe operator, `%>%`, which makes the code flow nicely from the left to the right.
+With the tidyverse packages you will instead use new functions with names like `filter` and `summarise` to perform operations on your data. These are typically combined using the pipe operator, `%>%`, which makes the code flow nicely from left to right.
 
 It's almost time to look at some examples of what this actually looks like in practice. First though, now that you've installed `data.table` and `dplyr`, it's time to load them (we'll get to `tidyr` a little later). We'll also create a `data.table` version of the `airquality` data, which we'll use in the examples below. This is required in order to use `data.table` syntax, as it only works on `data.table` objects. Luckily, `dplyr` works perfectly when used on `data.table` objects, so we can use the same object for the examples for both packages.
 
@@ -1125,7 +1125,7 @@ aq %>% mutate(Wind =
 
 Note that when using `data.table`, there is not an explicit assignment. We don't use `<-` to assign the new data frame to `aq` - instead the assignment happens automatically. This means that you have to be a little bit careful, so that you don't inadvertently make changes to your data when playing around with it.
 
-In this case, using `data.table` or `dplyr` doesn't really make anything easier. Where these packages really shine is when we attempt more complicated operations. Before that though, let's look at a few more simple examples.
+In this case, using `data.table` or `dplyr` doesn't make anything easier. Where these packages really shine is when we attempt more complicated operations. Before that though, let's look at a few more simple examples.
 
 ### Computing a new variable based on existing variables
 What if we wish to create new variables based on other variables in the data frame? For instance, maybe we want to create a _dummy variable_ called `Hot`, containing a `logical` that describes whether a day was hot (temperature above 90 - `TRUE`) or not (`FALSE`). That is, we wish to check the condition `Temp > 90` for each row, and put the resulting `logical` in the new variable `Hot`.
@@ -1574,7 +1574,7 @@ aq <- data.table(airquality)
 ```
 
 ### Filtering using row numbers
-If you know the row numbers of the rows that you wish remove (perhaps you've found them using `which`, as in Section \@ref(conditionsintro)?) you can use those numbers for filtering\index{filter!using row numbers}. Here are four examples.
+If you know the row numbers of the rows that you wish to remove (perhaps you've found them using `which`, as in Section \@ref(conditionsintro)?), you can use those numbers for filtering\index{filter!using row numbers}. Here are four examples.
 
 To select the third row\index{\texttt{slice}}:
 
@@ -1876,11 +1876,11 @@ dogs %>% filter(grepl("[pP]layful",
 $$\sim$$
 
 ```{exercise, label="ch5exc15"}
-[Download the `ucdp-onesided-191.csv`\index{data!\texttt{ucdp-onesided-191.csv}} data file from the book's web page](http://www.modernstatisticswithr.com/data.zip). It contains data about international attacks on civilians by governments and formally organised armed groups during the period 1989-2018, collected as part of the Uppsala Conflict Data Program (Eck & Hultman, 2007; Petterson et al., 2019). Among other things, it contains information about the actor (attacker), the fatality rate and the location of the attack. Load the data and check its structure.
+[Download the `ucdp-onesided-191.csv`\index{data!\texttt{ucdp-onesided-191.csv}} data file from the book's web page](http://www.modernstatisticswithr.com/data.zip). It contains data about international attacks on civilians by governments and formally organised armed groups during the period 1989-2018, collected as part of the Uppsala Conflict Data Program (Eck & Hultman, 2007; Petterson et al., 2019). Among other things, it contains information about the actor (attacker), the fatality rate, and attack location. Load the data and check its structure.
 
 1. Filter the rows so that only conflicts that took place in Colombia are retained. How many different actors were responsible for attacks in Colombia during the period?
 
-2. Using the `best_fatality_estimate` column to estimate fatalities, calculate the number of world-wide fatalities caused by government attacks on civilians during 1989-2018.
+2. Using the `best_fatality_estimate` column to estimate fatalities, calculate the number of worldwide fatalities caused by government attacks on civilians during 1989-2018.
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch5solutions15)
@@ -2226,14 +2226,14 @@ Afghanistan    Asia         28.8        30.2        32.0       ...
 Albania        Europe       55.2        59.3        64.8       ...
 ```
 
-Sometimes it makes sense to spread an observation over multiple rows (long format), and sometimes it makes more sense to spread a variable across multiple columns (wide format). Some analyses require long data, whereas other require wide data. And if you're unlucky, data will arrive in the wrong format for the analysis you need to do. In this section, you'll learn how to transform your data from long to wide, and back again.
+Sometimes it makes sense to spread an observation over multiple rows (long format), and sometimes it makes more sense to spread a variable across multiple columns (wide format). Some analyses require long data, whereas others require wide data. And if you're unlucky, data will arrive in the wrong format for the analysis you need to do. In this section, you'll learn how to transform your data from long to wide, and back again.
 
 ### From long to wide
 When going from a long format to a wide format, you choose columns to group the observations by (in the `gapminder` case: `country` and maybe also `continent`), columns to take values names from (`lifeExp`, `pop` and `gdpPercap`), and columns to create variable names from (`year`).
 
 In `data.table`, the transformation from long to wide is done using the `dcast`\index{\texttt{dcast}} function. `dplyr` does not contain functions for such transformations, but its sibling, the tidyverse package `tidyr`, does.
 
-The `tidyr` the function used for long-to-wide formatting is `pivot_wider`\index{\texttt{pivot\_wider}}. First, we convert the `gapminder` data frame to a `data.table` object\index{data frame!from long to wide}:
+The `tidyr` function used for long-to-wide formatting is `pivot_wider`\index{\texttt{pivot\_wider}}. First, we convert the `gapminder` data frame to a `data.table` object\index{data frame!from long to wide}:
 
 ```{r, eval=F}
 library(data.table)
@@ -2486,7 +2486,7 @@ Suppose that we want to study how weather affects the revenue of the business. I
 tail(cbind(rev_data, weather_data))
 ```
 
-Clearly, this is not the desired output! We need a way to connect the rows in `rev_data` with the right rows in `weather_data`. Put differently, we need something that allows us to connect the observations in one table to those in another. Variables used to connect tables are known as _keys_\index{key}, and must in some way uniquely identify observations. In this case the `DATE` column gives us the key - each observation is uniquely determined by it's `DATE`. So to combine the two tables, we can combine rows from `rev_data` with the rows from `weather_data` that have the same `DATE` values. In the following sections, we'll have a look at different ways of merging tables using `data.table` and `dplyr`.
+Clearly, this is not the desired output! We need a way to connect the rows in `rev_data` with the right rows in `weather_data`. Put differently, we need something that allows us to connect the observations in one table to those in another. Variables used to connect tables are known as _keys_\index{key}, and must in some way uniquely identify observations. In this case the `DATE` column gives us the key - each observation is uniquely determined by it's `DATE`. So to combine the two tables, we can combine rows from `rev_data` with the rows from `weather_data` that have the same `DATE` values. In the following sections, we'll look at different ways of merging tables using `data.table` and `dplyr`.
 
 But first, a word of warning: finding the right keys for merging tables is not always straightforward. For a more complex example, consider the `nycflights13` package, which contains five separate but connected datasets:
 
@@ -2500,7 +2500,7 @@ library(nycflights13)
 ?weather   # Hourly meteorological data for airports.
 ```
 
-Perhaps you want to include weather information with the flight data, to study how weather affects delays. Or perhaps you wish to include information about longitude and latitude of airports (from `airports`) in the `weather` dataset. In `airports`\index{data!\texttt{airports}}, each observation can be uniquely identified in three different ways: either by its airport code `faa`, its name `name` or its latitude and longitude, `lat` and `lon`:
+Perhaps you want to include weather information with the flight data, to study how weather affects delays. Or perhaps you wish to include information about the longitude and latitude of airports (from `airports`) in the `weather` dataset. In `airports`\index{data!\texttt{airports}}, each observation can be uniquely identified in three different ways: either by its airport code `faa`, its name `name` or its latitude and longitude, `lat` and `lon`:
 
 ```{r, eval=F}
 ?airports
@@ -2516,14 +2516,14 @@ The `weather`\index{data!\texttt{weather}} data requires no less than four varia
 head(weather)
 ```
 
-It is not perfectly clear from the documentation, but the `origin` variable is actually the FAA airport code of the airport corresponding to the weather measurements. If we wish to add longitude and latitude to the weather data, we could therefore use `faa` from `aiports` as a key.
+It is not perfectly clear from the documentation, but the `origin` variable is actually the FAA airport code of the airport corresponding to the weather measurements. If we wish to add longitude and latitude to the weather data, we could therefore use `faa` from `airports` as a key.
 
 ### Inner and outer joins
 An operation that combines columns from two tables is called a _join_\index{join}. There are two main types of joins: _inner joins_ and _outer joins_.
 
-* _Inner joins_: create a table containing all observations for which the key appeared in both tables. So if we perform an inner join on the `rev_data` and `weather_data` tables using `DATE` as key, it won't contain data for the days that are missing from either the revenue table or the weather table.
+* _Inner joins_: create a table containing all observations for which the key appeared in both tables. So if we perform an inner join on the `rev_data` and `weather_data` tables using `DATE` as the key, it won't contain data for the days that are missing from either the revenue table or the weather table.
 
-In contrast, outer joins create a table retaining rows, even if there doesn't exist a match in the other table. There are three types of outer joins:
+In contrast, outer joins create a table retaining rows, even if there is no match in the other table. There are three types of outer joins:
 
 * _Left join_: retains all rows from the first table. In the revenue example, this means all dates present in `rev_data`.
 * _Right join_: retains all rows from the second table. In the revenue example, this means all dates present in `weather_data`.
@@ -2539,7 +2539,7 @@ rev_data <- as.data.table(rev_data)
 weather_data <- as.data.table(weather_data)
 ```
 
-Remember that revenue data for 2020-03-01 is missing, and weather data for 2020-02-05, 2020-02-06, 2020-03-10, and 2020-03-29 are missing. This means that out of the 91 days in the period, only 86 have full data. If we perform an inner join, the resulting table should therefore have 86 rows.
+Remember that revenue data for 2020-03-01 is missing, and weather data for 2020-02-05, 2020-02-06, 2020-03-10, and 2020-03-29 are missing. This means that out of the 91 days in the period, only 86 have complete data. If we perform an inner join, the resulting table should therefore have 86 rows.
 
 To perform and inner join of `rev_data` and `weather_data` using `DATE` as key\index{\texttt{merge}}\index{\texttt{setkey}}\index{\texttt{inner\_join}}\index{join!inner}:
 
@@ -2722,7 +2722,7 @@ Then do the following using `data.table` and/or `dplyr`/`tidyr`:
 
 
 ## Scraping data from websites
-_Web scraping_ is the process of extracting data from a webpage. For instance, let's say that we'd like to download the list of Nobel laureates from the Wikipedia page https://en.wikipedia.org/wiki/List_of_Nobel_laureates. As with most sites, the text and formatting of the page is stored in an HTML file. In most browsers you can view the HTML code by right-clicking on the page and choosing _View page source_. As you can see, all the information from the table can be found there, albeit in a format that is only just human readable:
+_Web scraping_ is the process of extracting data from a webpage. For instance, let's say that we'd like to download the list of Nobel laureates from the Wikipedia page https://en.wikipedia.org/wiki/List_of_Nobel_laureates. As with most sites, the text and formatting of the page is stored in an HTML file. In most browsers, you can view the HTML code by right-clicking on the page and choosing _View page source_. As you can see, all the information from the table can be found there, albeit in a format that is only just human-readable:
 
 ```{html, eval=F}
 ...
@@ -2834,7 +2834,7 @@ rm(my_variable)
 my_variable
 ```
 
-This can be useful for instance if you have loaded a data frame that no longer is needed and takes up a lot of memory. If you for some reason want to wipe all your variables, you can use `ls`\index{\texttt{ls}}, which returns a vector containing the names of all variables, in combination with `rm`:
+This can be useful for instance if you have loaded a data frame that no longer is needed and takes up a lot of memory. If you, for some reason, want to wipe all your variables, you can use `ls`\index{\texttt{ls}}, which returns a vector containing the names of all variables, in combination with `rm`:
 
 ```{r, eval=F}
 # Use this at your own risk! This deletes all currently loaded
@@ -2844,13 +2844,13 @@ This can be useful for instance if you have loaded a data frame that no longer i
 # rm(list = ls())
 ```
 
-Variables are automatically deleted when you exit R (unless you choose to save your workspace). One the rare occasions where I want to wipe all variables from memory, I usually do a restart instead of using `rm`.
+Variables are automatically deleted when you exit R (unless you choose to save your workspace). On the rare occasions where I want to wipe all variables from memory, I usually do a restart instead of using `rm`.
 
 ### Importing data from other statistical packages {#foreign}
 The `foreign`\index{\texttt{foreign}} library contains functions for importing data from other statistical packages, such as Stata\index{Stata} (`read.dta`\index{\texttt{read.dta}}), Minitab\index{Minitab} (`read.mtp`\index{\texttt{read.mtp}}), SPSS\index{SPSS} (`read.spss`\index{\texttt{read.spss}}), and SAS\index{SAS} (XPORT files, `read.xport`\index{\texttt{read.xport}}). They work just like `read.csv` (see Section \@ref(paths)), with additional arguments specific to the file format used for the statistical package in question.
 
 ### Importing data from databases
-R and RStudio has excellent support for connecting to databases\index{data!import from database}. However, this requires some knowledge about databases and topics like ODBC drivers, and is therefore beyond the scope of the book. More information about using databases with R can be found at https://db.rstudio.com/.
+R and RStudio have excellent support for connecting to databases\index{data!import from database}. However, this requires some knowledge about databases and topics like ODBC drivers, and is therefore beyond the scope of the book. More information about using databases with R can be found at https://db.rstudio.com/.
 
 ### Importing data from JSON files
 JSON is a common file format for transmitting data between different systems. It is often used in web server systems where users can request data. One example of this is found in the JSON file at

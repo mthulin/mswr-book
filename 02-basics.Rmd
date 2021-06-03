@@ -23,9 +23,9 @@ Choose a _download mirror_, i.e. a server to download the software from. I recom
 
 The version of R that you should download is called the (base) binary. Download and run it to install R. You may see mentions of 64-bit and 32-bit versions of R; if you have a modern computer (which in this case means a computer from 2010 or later), you should go with the 64-bit version.
 
-You have now installed the R programming language. Working with it is easier with an _integrated development environment_, or IDE for short, which allows you to easily write, run and debug your code. This books is written for use with the RStudio\index{\texttt{RStudio}} IDE, but 99.9 % of it will work equally well with other IDE's, like Emacs with ESS or Jupyter notebooks.
+You have now installed the R programming language. Working with it is easier with an _integrated development environment_, or IDE for short, which allows you to easily write, run and debug your code. This book is written for use with the RStudio\index{\texttt{RStudio}} IDE, but 99.9 % of it will work equally well with other IDE's, like Emacs with ESS or Jupyter notebooks.
 
-To download RStudio, go the the RStudio download page
+To download RStudio, go to the RStudio download page
 
 https://rstudio.com/products/rstudio/download/#download
 
@@ -41,7 +41,7 @@ When you launch RStudio, you will see three or four panels:
 3. The _Console_ panel, used for running code. This is where we'll start with the first few examples.
 4. The _Script_ panel, used for writing code. This is where you'll spend most of your time working.
 
-If you launch RStudio by opening an file with R code, the _Script_ panel will appear, otherwise it won't. Don't worry if you don't see it at this point - you'll learn how to open it soon enough.
+If you launch RStudio by opening a file with R code, the _Script_ panel will appear, otherwise it won't. Don't worry if you don't see it at this point - you'll learn how to open it soon enough.
 
 The _Console_ panel will contain R's startup message, which shows information about which version of R you're running:
 
@@ -67,13 +67,13 @@ Type 'q()' to quit R.
 
 You can resize the panels as you like, either by clicking and dragging their borders or using the minimise/maximise buttons in the upper right corner of each panel.
 
-When you exit RStudio, you will be asked if you wish to _save your workspace_, meaning that the data that you're worked with will be stored so that it is available the next time you run R. That might sound like a good idea, but in general I recommend that you don't save your workspace, as that often turns out to cause problems down the line. It is almost invariably a much better idea to simply rerun the code you worked with in your next R session.
+When you exit RStudio, you will be asked if you wish to _save your workspace_, meaning that the data that you've worked with will be stored so that it is available the next time you run R. That might sound like a good idea, but in general, I recommend that you don't save your workspace, as that often turns out to cause problems down the line. It is almost invariably a much better idea to simply rerun the code you worked with in your next R session.
 
 
 ## Running R code {#runningcode}
 Everything that we do in R revolves around _code_\index{code}. The code will contain instructions for how the computer should treat, analyse and manipulate^[The word manipulate has different meanings. Just to be perfectly clear: whenever I speak of _manipulating data_ in this book, I will mean _handling and transforming the data_, not tampering with it.] data\index{manipulating data}. Thus each line of code tells R to do something: compute a mean value, create a plot, sort a dataset, or something else.
 
-Throughout the text, there will be code chunks that you can paste into the Console panel. Here is a first example of such a code chunk. Type or copy the code into the console and press Enter on your keyboard:
+Throughout the text, there will be code chunks that you can paste into the Console panel. Here is the first example of such a code chunk. Type or copy the code into the Console and press Enter on your keyboard:
 
 ```{r eval=FALSE}
 1+1
@@ -116,16 +116,16 @@ In the Script panel, when you press Enter, you insert a new line instead of runn
 
 To run the entire script do one of the following\index{scripts!running}:
 
-* Press the Source button at the upper right corner of the Script panel.
+* Press the Source button in the upper right corner of the Script panel.
 * Press Ctrl+Shift+Enter on your keyboard.
-* Press Ctrl+Alt+Enter on your keyboard to run the code without printing the code and its output in the console.
+* Press Ctrl+Alt+Enter on your keyboard to run the code without printing the code and its output in the Console.
 
-To run a part of the script, first select the lines that you wish to run, e.g. by highlighting them using your mouse. Then do one of the following:
+To run a part of the script, first select the lines you wish to run, e.g. by highlighting them using your mouse. Then do one of the following:
 
 * Press the Run button at the upper right corner of the Script panel.
 * Press Ctrl+Enter on your keyboard (this is how I usually do it!).
 
-To save your script, click the Save icon, choose _File > Save_ in the menu or press Ctrl+S. R script files should have the file extension `.R`, e.g. `My first R script.R`. Remember to save you work often, and to save your code for all the examples and exercises in this book - you will likely want to revisit old examples in the future, to see how something was done.
+To save your script, click the Save icon, choose _File > Save_ in the menu or press Ctrl+S. R script files should have the file extension `.R`, e.g. `My first R script.R`. Remember to save your work often, and to save your code for all the examples and exercises in this book - you will likely want to revisit old examples in the future, to see how something was done.
 
 
 
@@ -143,7 +143,7 @@ x <- 4
 
 is used to _assign_ the value `4` to the _variable_ `x`\index{assignment}\index{\texttt{<-}}. It is read as "assign `4` to `x`". The `<-` part is made by writing a less than sign (`<`) and a hyphen (`-`) with no space between them^[In RStudio, you can also create the assignment operator `<-` by using the keyboard shortcut Alt+- (i.e. press Alt and the - button at the same time).].
 
-If we now type `x` in the console, R will return the answer `4`, or, rather, R returns the rather cryptic output:
+If we now type `x` in the Console, R will return the answer `4`. Well, almost. In fact, R returns the following rather cryptic output:
 
 ```{eval=FALSE}
 [1] 4
@@ -166,7 +166,7 @@ The left-hand side of the assignment `x <- 4` is always the name of a variable, 
 x <- 1 + 2 + 3 + 4
 ```
 
-R first evaluates the entire right-hand side, which in this case amounts to computing 1+2+3+4, and then assigns the result (10) to `x`. Note that the previous value assigned to `x` (i.e. `4`) now has been replaced by `10`. After a piece of code has been run, the values of the variables affected by it will have changed. There is no way to revert the run and get that `4` back, save to rerun the code that generated it in the first place.
+R first evaluates the entire right-hand side, which in this case amounts to computing 1+2+3+4, and then assigns the result (10) to `x`. Note that the value previously assigned to `x` (i.e. `4`) now has been replaced by `10`. After a piece of code has been run, the values of the variables affected by it will have changed. There is no way to revert the run and get that `4` back, save to rerun the code that generated it in the first place.
 
 You'll notice that in the code above, I've added some spaces, for instance between the numbers and the plus signs. This is simply to improve readability. The code works just as well without spaces:
 
@@ -211,7 +211,7 @@ Do the following using R:
 
 
 ### What's in a name?
-You now know how to assign values to variables. But what should you call your variables? Of course, you can follow the examples in the previous section and give your variables names like `x`, `y`, `a` and `b`. However, you don't have to use single-letter names, and for the sake of readability it is often preferable to give your variables more informative names. Compare the following two code chunks:
+You now know how to assign values to variables. But what should you call your variables? Of course, you can follow the examples in the previous section and give your variables names like `x`, `y`, `a` and `b`. However, you don't have to use single-letter names, and for the sake of readability, it is often preferable to give your variables more informative names. Compare the following two code chunks:
 
 ```{r eval=FALSE}
 y <- 100
@@ -231,7 +231,7 @@ Both chunks will run without any errors and yield the same results, and yet ther
 
 So, what's in a name? Shakespeare's balcony-bound Juliet\index{Juliet} would have us believe that that which we call a rose by any other name would smell as sweet. Translated to R practice, this means that your code will run just fine no matter what names you choose for your variables. But when you or somebody else reads your code, it will help greatly if you call a rose a rose and not `x` or `my_new_variable_5`.
 
-You should note that R is case-sensitive, meaning that `my_variable`, `MY_VARIABLE`, `My_Variable` and `mY_VariABle` all are treated as different variables. To access the data stored in a variable, you must use its exact name - including lower- and uppercase letters in the right places. Writing the wrong variable name is one of the most common errors in R programming. \index{variable!name}
+You should note that R is case-sensitive, meaning that `my_variable`, `MY_VARIABLE`, `My_Variable`, and `mY_VariABle` are treated as different variables. To access the data stored in a variable, you must use its exact name - including lower- and uppercase letters in the right places. Writing the wrong variable name is one of the most common errors in R programming. \index{variable!name}
 
 You'll frequently find yourself wanting to compose variable names out of multiple words, as we did with `net_income`. However, R does not allow spaces in variable names, and so `net income` would not be a valid variable name. There are a few different naming conventions that can be used to name your variables\index{naming conventions}:
 
@@ -303,7 +303,7 @@ income2 <- taxes2 <- 100
 
 
 ### Vectors and data frames
-Almost invariably, a data scientist deals with more than one figure at a time. For instance, we may have a list of the ages of customers at a bookstore:
+Almost invariably, you'll deal with more than one figure at a time in your analyses. For instance, we may have a list of the ages of customers at a bookstore:
 
 $$28, 48, 47, 71, 22, 80, 48, 30, 31$$
 Of course, we could store each observation in a separate variable:
@@ -337,7 +337,7 @@ First, let's store this data in a vector:
 purchase <- c(20, 59, 2, 12, 22, 160, 34, 34, 29)
 ```
 
-It would be nice to be able to combine these two vectors into a table, like we would do in a spreadsheet software such as Excel. That would allow us to look at relationships between the two vectors - perhaps we could find some interesting patterns? In R, tables of vectors are called _data frames_. We can combine the two vectors into a data frame as follows\index{\texttt{data.frame}}\index{\texttt{bookstore}}:
+It would be nice to combine these two vectors into a table, like we would do in a spreadsheet software such as Excel. That would allow us to look at relationships between the two vectors - perhaps we could find some interesting patterns? In R, tables of vectors are called _data frames_. We can combine the two vectors into a data frame as follows\index{\texttt{data.frame}}\index{\texttt{bookstore}}:
 
 ```{r eval=FALSE}
 bookstore <- data.frame(age, purchase)
@@ -380,8 +380,7 @@ distances <- c(687, 5076, 7270, 967, 6364, 1683, 9394, 5712, 5206,
 distances
 ```
 
-Depending on the size of your Console panel, R will require different number of rows to display the data in `distances`. The output will look something like this:
-
+Depending on the size of your Console panel, R will require a different number of rows to display the data in `distances`. The output will look something like this:
 ```{r eval=FALSE}
 > distances
  [1]  687 5076 7270  967 6364 1683 9394 5712 5206 4317 9411 5625 9725
@@ -400,7 +399,7 @@ or, if you have a narrower panel,
 [29] 5532 9623
 ```
 
-The numbers within the square brackets - `[1]`, `[8]`, `[15]`, and so on - tells us which _elements_ of the vector that are printed first on each row. So in the latter example, the first element in the vector is `687`, the 8th element is `5712`, the 15th element is `2730`, and so forth. Those numbers, called the _indices_\index{index} of the elements, aren't exactly part of your data, but as we'll see later they are useful for keeping track of it.
+The numbers within the square brackets - `[1]`, `[8]`, `[15]`, and so on - tell us which _elements_ of the vector that are printed first on each row. So in the latter example, the first element in the vector is `687`, the 8th element is `5712`, the 15th element is `2730`, and so forth. Those numbers, called the _indices_\index{index} of the elements, aren't exactly part of your data, but as we'll see later they are useful for keeping track of it.
 
 This also tells you something about the inner workings of R. The fact that 
 
@@ -416,7 +415,7 @@ renders the output
 [1] 4
 ```
 
-tells us that `x` in fact is a vector, albeit with a single element. In fact, almost everything in R is a vector, in one way or another.
+tells us that `x` in fact is a vector, albeit with a single element. Almost everything in R is a vector, in one way or another.
 
 Being able to put data on multiple lines when creating vectors is hugely useful, but can also cause problems if you forget to include the closing bracket `)`. Try running the following code, where the final bracket is missing, in your Console panel:
 
@@ -459,7 +458,7 @@ Try creating a vector using `x <- 1:5`. What happens? What happens if you use `5
 ### Functions
 You have some data. Great. But simply having data is not enough - you want to _do_ something with it. Perhaps you want to draw a graph, compute a mean value or apply some advanced statistical model to it. To do so, you will use a _function_\index{function}.
 
-A function is a ready-made set of instructions - code - that tells R to do something. There are thousands of functions in R. Typically, you insert a variable into the function and it returns an answer. The code for doing this follows the pattern `function_name(variable_name)`. As a first example, consider the function `mean`, which computes the mean of a variable\index{\texttt{mean}}\index{mean}:
+A function is a ready-made set of instructions - code - that tells R to do something. There are thousands of functions in R. Typically, you insert a variable into the function, and it returns an answer. The code for doing this follows the pattern `function_name(variable_name)`. As a first example, consider the function `mean`, which computes the mean of a variable\index{\texttt{mean}}\index{mean}:
 
 ```{r eval=FALSE}
 # Compute the mean age of bookstore customers
@@ -467,7 +466,7 @@ age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
 mean(age)
 ```
 
-Note that the code follows the pattern `function_name(variable_name)`: the name of the function is `mean` and the name of the variable is `age`.
+Note that the code follows the pattern `function_name(variable_name)`: the function's name is `mean` and the variable's name is `age`.
 
 Some functions take more than one variable as input, and may also have additional _arguments_\index{function!arguments/parameters/input} (or _parameters_) that you can use to control the behaviour of the function. One such example is `cor`\index{\texttt{cor}}\index{correlation}, which computes the correlation between two variables:
 
@@ -478,7 +477,7 @@ purchase <- c(20, 59, 2, 12, 22, 160, 34, 34, 29)
 cor(age, purchase)
 ```
 
-The answer, $0.59$ means that there appears to be a fairly strong positive correlation between age and the size of the purchase, which implies that older customers tend to spend more. On the other hand, just by looking at the data we can see that the oldest customer - aged 80 - spent much more than anybody else - 160 monetary units. It can happen that such _outliers_ strongly influence the computation of the correlation. By default, `cor` uses the Pearson correlation formula, which is known to be sensitive to outliers. It is therefore of interest to also perform the computation using a formula that is more robust to outliers, such as the Spearman correlation. This can be done by passing and additional _argument_ to `cor`, telling it which method to use for the computation:
+The answer, $0.59$ means that there appears to be a fairly strong positive correlation between age and the purchase size, which implies that older customers tend to spend more. On the other hand, just by looking at the data we can see that the oldest customer - aged 80 - spent much more than anybody else - 160 monetary units. It can happen that such _outliers_ strongly influence the computation of the correlation. By default, `cor` uses the Pearson correlation formula, which is known to be sensitive to outliers. It is therefore of interest to also perform the computation using a formula that is more robust to outliers, such as the Spearman correlation. This can be done by passing an additional _argument_ to `cor`, telling it which method to use for the computation:
 
 ```{r eval=FALSE}
 cor(age, purchase, method = "spearman")
@@ -506,7 +505,7 @@ The documentation for R functions all follow the same pattern:
 
 The first time that you look at the documentation for an R function, all this information can be a bit overwhelming. Perhaps even more so for `cor`, which is a bit unusual in that it shares its documentation page with three other (heavily related) functions: `var`, `cov` and `cov2cor`. Let the section headlines guide you when you look at the documentation. What information are you looking for? If you're just looking for an example of how the function is used, scroll down to Examples. If you want to know what arguments are available, have a look at Usage and Arguments.
 
-Finally, there are a few functions which don't require any input at all, because they don't do anything with your variables. One such example is `Sys.time()`\index{\texttt{Sys.time()}} which prints the current time on your system:
+Finally, there are a few functions that don't require any input at all, because they don't do anything with your variables. One such example is `Sys.time()`\index{\texttt{Sys.time()}} which prints the current time on your system:
 
 ```{r eval=FALSE}
 Sys.time()
@@ -546,7 +545,7 @@ Do the following:
 ### Mathematical operations {#maths}
 To perform addition, subtraction, multiplication and division in R, we can use the standard symbols `+`, `-`, `*`, `/`. As in mathematics, expressions within parentheses are evaluated first, and multiplication is performed before addition. So `1 + 2*(8/2)` is $1+2\cdot(8/2)=1+2\cdot 4=1+8=9$.
 
-In addition to these basic arithmethic operators, R has a number of mathematical functions that you can apply to your variables, including square roots, logarithms and trigonometric functions. Below is an incomplete list, showing the syntax for using the functions on a variable `x`. Throughout, `a` is supposed to be a number.\index{mathematical operators}\index{\texttt{abs}}\index{\texttt{sqrt}}\index{\texttt{log}}\index{\texttt{exp}}\index{\texttt{sin}}\index{\texttt{sum}}\index{\texttt{prod}}\index{\texttt{pi}}\index{\texttt{factorial}}\index{\texttt{choose}}\index{\texttt{\%\%}}
+In addition to these basic arithmetic operators, R has a number of mathematical functions that you can apply to your variables, including square roots, logarithms and trigonometric functions. Below is an incomplete list, showing the syntax for using the functions on a variable `x`. Throughout, `a` is supposed to be a number.\index{mathematical operators}\index{\texttt{abs}}\index{\texttt{sqrt}}\index{\texttt{log}}\index{\texttt{exp}}\index{\texttt{sin}}\index{\texttt{sum}}\index{\texttt{prod}}\index{\texttt{pi}}\index{\texttt{factorial}}\index{\texttt{choose}}\index{\texttt{\%\%}}
 
 * `abs(x)`: computes the absolute value $|x|$.
 * `sqrt(x)`: computes $\sqrt{x}$.

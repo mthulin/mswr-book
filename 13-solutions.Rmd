@@ -4082,7 +4082,14 @@ The resulting percentile interval is close to that which we obtained without ass
 `r if (knitr::is_html_output()) '[(Click here to return to the exercise.)]' else '[]'`(#exr:ch7exc13)
 
 #### Exercise \@ref(exr:ch7exc14) {-#ch7solutions14}
-We use the percentile confidence interval from the previous exercise to compute p-values as follows:
+We use the percentile confidence interval from the previous exercise to compute p-values as follows (the null hypothesis is that the parameter is 0):
+
+```{r eval=FALSE}
+library(boot.pval)
+boot.pval(boot_res, type = "perc", theta_null = 0)
+```
+
+A more verbose solution would be to write a `while` loop:
 
 ```{r eval=FALSE}
 # The null hypothesis is there the difference is 0:
@@ -4107,7 +4114,7 @@ while(in_interval)
 alpha
 ```
 
-The p-value is 0.529, and we can not reject the null hypothesis.
+The p-value is approximately 0.52, and we can not reject the null hypothesis.
 
 `r if (knitr::is_html_output()) '[(Click here to return to the exercise.)]' else '[]'`(#exr:ch7exc14)
 
@@ -4299,14 +4306,21 @@ The main effects are still significant at the 5 % level.
 `r if (knitr::is_html_output()) '[(Click here to return to the exercise.)]' else '[]'`(#exr:ch7exc19)
 
 #### Exercise \@ref(exr:ch7exc20) {-#ch7solutions20}
-The easiest way to do this is to use `Boot`:
+The easiest way to do this is to use `boot_summary`:
 
 ```{r eval=FALSE}
 library(MASS)
 m <- rlm(TEMPERATURE ~ SUN_HOURS*prec_dummy, data = weather)
 
+library(boot.pval)
+boot_summary(m, type = "perc", method = "residual")
+```
+
+We can also use `Boot`:
+
+```{r eval=FALSE}
 library(car)
-boot_res <- Boot(m, method = "case")
+boot_res <- Boot(m, method = "residual")
 
 # Compute 95 % confidence intervals using confint
 confint(boot_res, type = "perc")
@@ -4362,16 +4376,14 @@ Using the connection between hypothesis tests and confidence intervals, to see w
 `r if (knitr::is_html_output()) '[(Click here to return to the exercise.)]' else '[]'`(#exr:ch7exc20)
 
 #### Exercise \@ref(exr:ch7exc20b) {-#ch7solutions20b}
-We fit the model and then use `Boot` with `method = "case"`:
+We fit the model and then use `boot_summary` with `method = "case"`:
 
 ```{r eval=FALSE}
 m <- lm(mpg ~ hp + wt, data = mtcars)
 
-library(car)
-boot_res <- Boot(m, method = "case")
-
-# Compute 95 % confidence intervals using confint
-confint(boot_res, type = "perc")
+library(boot.pval)
+boot_summary(m, type = "perc", method = "case", R = 9999)
+boot_summary(m, type = "perc", method = "residual", R = 9999)
 ```
 
 In this case, the resulting confidence intervals are similar to what we obtained with residual resampling.
@@ -4535,7 +4547,7 @@ augment(m)
 `r if (knitr::is_html_output()) '[(Click here to return to the exercise.)]' else '[]'`(#exr:ch7excGLM1b)
 
 #### Exercise \@ref(exr:ch7excGLM2) {-#ch7solutionsGLM2}
-Using the model `m` from the previous exercise, we can now do the following.
+Using the model `m` from the other exercise, we can now do the following.
 
 1. Compute asymptotic confidence intervals:
 
@@ -4544,7 +4556,22 @@ library(MASS)
 confint(m)
 ```
 
-2. Compute bootstrap confidence intervals. In this case, the response variable is missing for a lot of observations. In order to use the same number of observations in our bootstrapping as when fitting the original model, we need to add a line to remove those observation (as in Section \@ref(conditions2)).
+2. Next, we compute bootstrap confidence intervals and p-values. In this case, the response variable is missing for a lot of observations. In order to use the same number of observations in our bootstrapping as when fitting the original model, we need to add a line to remove those observation (as in Section \@ref(conditions2)).
+
+```{r eval=FALSE}
+library(boot.pval)
+# Try fitting the model without removing missing values:
+boot_summary(m, type = "perc", method = "case")
+
+# Remove missing values, refit the model, and then run
+# boot_summary again:
+sharks2 <- na.omit(sharks, "Fatal..Y.N.")
+m <- glm(Fatal..Y.N. ~ Age + Sex., data = sharks2,
+         family = binomial)
+boot_summary(m, type = "perc", method = "case")
+```
+
+If you prefer writing your own bootstrap code, you could proceed as follows:
 
 ```{r eval=FALSE}
 library(boot)
@@ -4577,11 +4604,9 @@ boot_res <- boot(data = sharks, statistic = coefficients,
 boot.ci(boot_res, type = "perc", index = 1) # Intercept
 boot.ci(boot_res, type = "perc", index = 2) # Age
 boot.ci(boot_res, type = "perc", index = 3) # Sex.M
-```
 
-3. Compute a p-value for the effect of age using the confidence interval inversion method of Section \@ref(intervalinversion):
+# Compute p-values:
 
-```{r eval=FALSE}
 # The null hypothesis is that the effect (beta coefficient)
 # is 0:
 beta_null <- 0
@@ -4713,14 +4738,15 @@ The difference between the models is tiny. We'd probably need to include more va
 `r if (knitr::is_html_output()) '[(Click here to return to the exercise.)]' else '[]'`(#exr:ch7excGLM4)
 
 #### Exercise \@ref(exr:ch7excGLM5) {-#ch7solutionsGLM5}
-We can get confidence intervals for the $\beta_j$ using `Boot` and `confint`, as in previous sections. To get bootstrap confidence intervals for the rate ratios $e^{\beta_j}$, we exponentiate the confidence intervals for the $\beta_j$:
+We can get confidence intervals for the $\beta_j$ using `boot_summary`, as in previous sections. To get bootstrap confidence intervals for the rate ratios $e^{\beta_j}$, we exponentiate the confidence intervals for the $\beta_j$:
 
 ```{r eval=FALSE}
-library(car)
-boot_res <- Boot(m, method = "case")
+library(boot.pval)
+boot_table <- boot_summary(m, type = "perc", method = "case")
+boot_table
 
-# Compute confidence intervals:
-exp(confint(boot_res, type = "perc"))
+# Confidence intervals for rate ratios:
+exp(boot_table[, 2:3])
 ```
 
 `r if (knitr::is_html_output()) '[(Click here to return to the exercise.)]' else '[]'`(#exr:ch7excGLM5)
@@ -4908,13 +4934,11 @@ m <- glmer(TICKS ~ YEAR + HEIGHT + (1|BROOD) + (1|INDEX) + (1|LOCATION),
 summary(m, correlation = FALSE)
 ```
 
-To compute the bootstrap confidence interval for the effect of `HEIGHT`, we use `bootMer` and `boot.ci`:
+To compute the bootstrap confidence interval for the effect of `HEIGHT`, we use `boot_summary`:
 
 ```{r eval=FALSE}
-boot_res <- bootMer(m, fixef, nsim = 100)
-
-library(boot)
-boot.ci(boot_res, type = "perc", index = 4)
+library(boot.pval)
+boot_summary(m, type = "perc", R = 100)
 ```
 
 `r if (knitr::is_html_output()) '[(Click here to return to the exercise.)]' else '[]'`(#exr:ch7excLMM3)

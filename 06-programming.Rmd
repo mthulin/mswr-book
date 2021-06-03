@@ -1,6 +1,6 @@
 # R programming {#progchapter}
 
-The tools in Chapters \@ref(thebasics)-\@ref(messychapter) will allow you to manipulate, summarise and visualise your data in all sorts of ways. But what if you need to compute some statistic that there isn't a function for? What if you need automatic checks of your data and results? What if you need to repeat the same analysis for a large number of files? This is where the programming tools that you'll learn about in this chapter, like loops and conditional statements, come in handy. And this is where you take the step from being able to use R for routine analyses to being able to use R for _any_ analysis.
+The tools in Chapters \@ref(thebasics)-\@ref(messychapter) will allow you to manipulate, summarise and visualise your data in all sorts of ways. But what if you need to compute some statistic that there isn't a function for? What if you need automatic checks of your data and results? What if you need to repeat the same analysis for a large number of files? This is where the programming tools you'll learn about in this chapter, like loops and conditional statements, come in handy. And this is where you take the step from being able to use R for routine analyses to being able to use R for _any_ analysis.
 
 After working with the material in this chapter, you will be able to use R to:
 
@@ -34,7 +34,7 @@ sum(y)/length(y)
 sum(z)/length(x)
 ```
 
-But wait! I made a mistake when I copied the code to compute the mean of `z` - I forgot to change `length(x)` to `length(z)`! This is any easy mistake to make when you repeatedly copy and paste code. In addition, repeating the same code multiple times just doesn't look good. In this case, it would be much more convenient to have a single function for computing the means. Fortunately, such a function exists - `mean`:
+But wait! I made a mistake when I copied the code to compute the mean of `z` - I forgot to change `length(x)` to `length(z)`! This is an easy mistake to make when you repeatedly copy and paste code. In addition, repeating the same code multiple times just doesn't look good. It would be much more convenient to have a single function for computing the means. Fortunately, such a function exists - `mean`:
 
 ```{r eval=FALSE}
 # Compute means
@@ -43,12 +43,12 @@ mean(y)
 mean(z)
 ```
 
-As you can see, using `mean` makes the code shorter and easier to read, and reduces the risk of errors induced by copying and pasting code (we only have to change the argument of one function instead of two).
+As you can see, using `mean` makes the code shorter and easier to read and reduces the risk of errors induced by copying and pasting code (we only have to change the argument of one function instead of two).
 
-You've already used a ton of different functions in R: functions for computing means, manipulating data, plotting graphics, and more. All these functions have been written by somebody who thought that they needed to repeat a task (e.g. computing a mean or plotting a bar chart) over and over again. And in such cases, it is much more convenient to have a function that does that task than to have to write or copy code every time you want to do it. This is true also for your own work - whenever you need to repeat the same task several times it is probably a good idea to write a function for it. It will reduce the amount of code that you have to write and lessen the risk of errors caused by copying and pasting old code. In this section, you will learn how to write your own functions.
+You've already used a ton of different functions in R: functions for computing means, manipulating data, plotting graphics, and more. All these functions have been written by somebody who thought that they needed to repeat a task (e.g. computing a mean or plotting a bar chart) over and over again. And in such cases, it is much more convenient to have a function that does that task than to have to write or copy code every time you want to do it. This is true also for your own work - whenever you need to repeat the same task several times, it is probably a good idea to write a function for it. It will reduce the amount of code you have to write and lessen the risk of errors caused by copying and pasting old code. In this section, you will learn how to write your own functions.
 
 ### Creating functions {#createfunctions}
-Let's say, for the sake of the example, that we wish to compute the mean of several vectors but that the function `mean` doesn't exist. We would therefore like to write our own function for computing the mean of a vector. An R function takes some variables as input (arguments or parameters) and returns an object. Functions are defined using `function`\index{function!define}\index{\texttt{function}}\index{\texttt{return}}. The definition follows a particular format:
+For the sake of the example, let's say that we wish to compute the mean of several vectors but that the function `mean` doesn't exist. We would therefore like to write our own function for computing the mean of a vector. An R function takes some variables as input (arguments or parameters) and returns an object. Functions are defined using `function`\index{function!define}\index{\texttt{function}}\index{\texttt{return}}. The definition follows a particular format:
 
 ```{r eval=FALSE}
 function_name <- function(argument1, argument2, ...)
@@ -116,7 +116,7 @@ add_to_y(1)
 y
 ```
 
-If you really need to change a global variable inside a function^[Do you _really_?], you can use an alternative assignment operator, `<<-`\index{\texttt{<<-}}, which assigns a value to the variable in the _parent environment_ to the current environment. If you use `<<-` for assignment inside a function that is called from the global environment, this means that the assignment takes place in the global environment. But if you use `<<-` in a function (function 1) that is called by another function (function 2), the assignment will take place in the environment for function 2, thus affecting a local variable in function 2. Here is an example of global assignment using `<<-`:
+Suppose you really need to change a global variable inside a function^[Do you _really_?]. In that case, you can use an alternative assignment operator, `<<-`\index{\texttt{<<-}}, which assigns a value to the variable in the _parent environment_ to the current environment. If you use `<<-` for assignment inside a function that is called from the global environment, this means that the assignment takes place in the global environment. But if you use `<<-` in a function (function 1) that is called by another function (function 2), the assignment will take place in the environment for function 2, thus affecting a local variable in function 2. Here is an example of a global assignment using `<<-`:
 
 ```{r eval=FALSE}
 add_to_y_global <- function(n)
@@ -152,7 +152,7 @@ average(data.frame(x = c(1, 5, 8), y = c("A", "B", "C"))) # Mixed type
 
 The first two of these render the desired output (the `logical` values being represented by 0's and 1's), but the rest don't. Many R functions include checks that the input is of the correct type, or checks to see which method should be applied depending on what data type the input is. We'll learn how to perform such checks in Section \@ref(conditions).
 
-As a side note, it is possible to write functions that don't end with `return`. In that case, the output (i.e. what would be written in the Console if you'd run the code there) from the last line of the function will automatically be returned. I prefer to (almost) always use `return` though, as it is easy to accidentally make the function return nothing by finishing it with a line that yields no output. Below are two examples of how we could have written `average` without a call to `return`. The first doesn't work as intended, because the final (and only) line of the function doesn't give any output.
+As a side note, it is possible to write functions that don't end with `return`. In that case, the output (i.e. what would be written in the Console if you'd run the code there) from the last line of the function will automatically be returned. I prefer to (almost) always use `return` though, as it is easy to accidentally make the function return nothing by finishing it with a line that yields no output. Below are two examples of how we could have written `average` without a call to `return`. The first doesn't work as intended, because the function's final (and only) line doesn't give any output.
 
 ```{r eval=FALSE}
 average_bad <- function(x)
@@ -170,7 +170,7 @@ average_ok(c(1, 5, 8))
 ```
 
 ### More on arguments
-It is possible to create functions with as many arguments as you like, but if the user has to supply to many arguments to your function, it will become quite unwieldy. It is therefore common to provide default values to arguments, which is done by setting a value in the `function` call\index{function!default value of argument}. Here is an example of a function that computes $x^n$, using $n=2$ as the default:
+It is possible to create functions with as many arguments as you like, but it will become quite unwieldy if the user has to supply too many arguments to your function. It is therefore common to provide default values to arguments, which is done by setting a value in the `function` call\index{function!default value of argument}. Here is an example of a function that computes $x^n$, using $n=2$ as the default:
 
 ```{r eval=FALSE}
 power_n <- function(x, n = 2)
@@ -210,7 +210,7 @@ However, if we only supply `n` we get an error, because there is no default valu
 power_n(n = 5)
 ```
 
-It is possible to pass a function as an argument\index{function!function as argument}. Here is a function that takes a vector and a function as input, and applies the function to the first two element of the vector:
+It is possible to pass a function as an argument\index{function!function as argument}. Here is a function that takes a vector and a function as input, and applies the function to the first two elements of the vector:
 
 ```{r eval=FALSE}
 apply_to_first2 <- function(x, func)
@@ -242,7 +242,7 @@ x <- c(4, NA, 6)
 apply_to_first2(x, sum)
 ```
 
-Perhaps we'd like to pass `na.rm = TRUE` to `sum` to make sure that we get a `numeric` result, if at all possible. This can be done by adding `...` to the list of arguments for both functions\index{function!\texttt{...} argument}\index{\texttt{...}}, which indicates additional parameters (to be supplied by the user) that will be passed to ` func`:
+Perhaps we'd like to pass `na.rm = TRUE` to `sum` to ensure that we get a `numeric` result, if at all possible. This can be done by adding `...` to the list of arguments for both functions\index{function!\texttt{...} argument}\index{\texttt{...}}, which indicates additional parameters (to be supplied by the user) that will be passed to ` func`:
 
 ```{r eval=FALSE}
 apply_to_first2 <- function(x, func, ...)
@@ -270,7 +270,7 @@ Write a function that converts temperature measurements in degrees Fahrenheit to
 ```{exercise, label="ch6exc2"}
 Practice writing functions by doing the following:
 
-1. Write a function that takes a vector as input and returns a vector containing its minimum and its maximum, without using `min` and `max`.
+1. Write a function that takes a vector as input and returns a vector containing its minimum and maximum, without using `min` and `max`.
 
 2. Write a function that computes the mean of the squared values of a vector using `mean`, and that takes additional arguments that it passes on to `mean` (e.g. `na.rm`).
 
@@ -280,7 +280,7 @@ Practice writing functions by doing the following:
 
 
 ### Namespaces
-It is possible, and even likely, that you will encounter functions in packages that have the same name as functions in other packages. Or, similarly, that there are functions in packages with the same names as those you have written yourself. This is of course a bit of a headache, but it's actually something that can be overcome without changing the names of the functions. Just like variables can live in different environments, R functions live in _namespaces_\index{namespace}\index{function!namespace}, usually corresponding either to the global environment or the package that they belong to. By specifying which namespace to look for the function in, you can use multiple functions that all have the same name.
+It is possible, and even likely, that you will encounter functions in packages with the same name as functions in other packages. Or, similarly, that there are functions in packages with the same names as those you have written yourself. This is of course a bit of a headache, but it's actually something that can be overcome without changing the names of the functions. Just like variables can live in different environments, R functions live in _namespaces_\index{namespace}\index{function!namespace}, usually corresponding to either the global environment or the package they belong to. By specifying which namespace to look for the function in, you can use multiple functions that all have the same name.
 
 For example, let's create a function called `sqrt`. There is already such a function in the `base`\index{\texttt{base}} package^[`base` is automatically loaded when you start R, and contains core functions such as `sqrt`.] (see `?sqrt`), but let's do it anyway:
 
@@ -325,18 +325,18 @@ Nothing.
 ### Sourcing other scripts
 If you want to reuse a function that you have written in a new script, you can of course copy it into that script. But if you then make changes to your function, you will quickly end up with several different versions of it. A better idea can therefore be to put the function in a separate script, which you then can call in each script where you need the function. This is done using `source`\index{\texttt{source}}. If, for instance, you have code that defines some functions in a file called `helper-functions.R` in your working directory, you can run it (thus defining the functions) when the rest of your code is run by adding `source("helper-functions.R")` to your code.
 
-Another option is to create an R package containing the function, but that is beyond the scope of this book.
+Another option is to create an R package containing the function, but that is beyond the scope of this book. Should you choose to go down that route, I highly recommend reading [_R Packages_](https://r-pkgs.org/index.html) by Wickham and Bryan.
 
 
 
 
 ## More on pipes {#morepipes}
-We have seen how the `magrittr` pipe `%>%` can be used to chain functions together. But there are also other pipe operators that are useful. In this section we'll have a look at some of them, and see how you can create functions using pipes.
+We have seen how the `magrittr` pipe `%>%` can be used to chain functions together. But there are also other pipe operators that are useful. In this section we'll look at some of them, and see how you can create functions using pipes.
 
 ### _Ce ne sont pas non plus des pipes_
 Although `%>%` is the most used pipe operator\index{\texttt{pipe}}, the `magrittr` package provides a number of other pipes that are useful in certain situations.
 
-One example is when you want to pass variables rather than an entire dataset to the next function. This is needed for instance if you want to use `cor` to compute the correlation between two variables, because `cor` takes two vectors as input instead of a data frame. You can do it uses ordinary `%>%` pipes:
+One example is when you want to pass variables rather than an entire dataset to the next function. This is needed for instance if you want to use `cor` to compute the correlation between two variables, because `cor` takes two vectors as input instead of a data frame. You can do it using ordinary `%>%` pipes:
 
 ```{r eval=FALSE}
 library(magrittr)
@@ -426,11 +426,11 @@ Note that we don't have to write `function(...)` when defining functions with pi
 We can now use this function just like any other:
 
 ```{r eval=FALSE}
-# With airquality data:
+# With the airquality data:
 airquality %>% plot_and_cor
 plot_and_cor(airquality)
 
-# With bookstore data:
+# With the bookstore data:
 age <- c(28, 48, 47, 71, 22, 80, 48, 30, 31)
 purchase <- c(20, 59, 2, 12, 22, 160, 34, 34, 29)
 bookstore <- data.frame(age, purchase)
@@ -448,7 +448,7 @@ Write a function that takes a data frame as input and uses pipes to print the nu
 <br>
 
 ```{exercise, label="ch6exc2c"}
-Pipes are operators, that is, functions that take two variables as input and can be written without parenthesis (other examples of operators are `+` and `*`). You can define your own operators just as you would any other function\index{function!operator}. For instance, we can define an operator called `quadratic` that takes two numbers `a` and `b` as input and computes the quadratic expression $(a+b)^2$:
+Pipes are operators, that is, functions that take two variables as input and can be written without parentheses (other examples of operators are `+` and `*`). You can define your own operators just as you would any other function\index{function!operator}. For instance, we can define an operator called `quadratic` that takes two numbers `a` and `b` as input and computes the quadratic expression $(a+b)^2$:
   
 ```{r eval=FALSE}
 `%quadratic%` <- function(a, b) { (a + b)^2 }
@@ -462,7 +462,7 @@ Create an operator called `%against%` that takes two vectors as input and draws 
 
 
 ## Checking conditions {#conditions}
-Sometimes you'd like your code to perform different operations depending on whether or not a certain condition is fulfilled. Perhaps you want it to do something differently if there is missing data, if the input is a `character` vector, or if the largest value in a `numeric` vector is greater than some number. In Section \@ref(conditionsintro) you learned how to filter data using conditions. In this section you'll learn how to use conditional statements for a number of other tasks.
+Sometimes you'd like your code to perform different operations depending on whether or not a certain condition is fulfilled. Perhaps you want it to do something different if there is missing data, if the input is a `character` vector, or if the largest value in a `numeric` vector is greater than some number. In Section \@ref(conditionsintro) you learned how to filter data using conditions. In this section, you'll learn how to use conditional statements for a number of other tasks.
 
 ### `if` and `else`
 The most important functions for checking whether a condition is fulfilled are `if` and `else`\index{\texttt{if}}\index{\texttt{else}}\index{if statements}. The basic syntax is
@@ -471,7 +471,7 @@ The most important functions for checking whether a condition is fulfilled are `
 if(condition) { do something } else { do something else }
 ```
 
-The condition should return a single `logical` value, so that is evaluates to either `TRUE` or `FALSE`. If the condition is fulfilled, i.e. if it is `TRUE`, the code inside the first pair of curly brackets will run, and if it's not (`FALSE`), the code within the second pair of curly brackets will run instead.
+The condition should return a single `logical` value, so that it evaluates to either `TRUE` or `FALSE`. If the condition is fulfilled, i.e. if it is `TRUE`, the code inside the first pair of curly brackets will run, and if it's not (`FALSE`), the code within the second pair of curly brackets will run instead.
 
 As a first example, assume that you want to compute the reciprocal of $x$, $1/x$, unless $x=0$, in which case you wish to print an error message:
 
@@ -506,7 +506,7 @@ if(x == 0)
 }
 ```
 
-You can also choose not to have an `else` part at all. In that case, the code inside the curly brackets will run if the condition is satisfied, and if not nothing will happen:
+You can also choose not to have an `else` part at all. In that case, the code inside the curly brackets will run if the condition is satisfied, and if not, nothing will happen:
 
 ```{r eval=FALSE}
 x <- 0
@@ -542,11 +542,11 @@ if(c(1, 2) == 2) { cat("The vector contains the number 2.\n") }
 if(c(2, 1) == 2) { cat("The vector contains the number 2.\n") }
 ```
 
-As you can see, only the first element of the `logical` vector is evaluated by `if`. Usually, if a condition evaluates to a vector it is because you've made an error in your code. Remember, if you really need to evaluate a condition regarding the elements in a vector, you can collapse the resulting `logical` vector to a single value using `any` or `all`.
+As you can see, only the first element of the `logical` vector is evaluated by `if`. Usually, if a condition evaluates to a vector, it is because you've made an error in your code. Remember, if you really need to evaluate a condition regarding the elements in a vector, you can collapse the resulting `logical` vector to a single value using `any` or `all`.
 
 Some texts recommend using the operators `&&` and `||`\index{\texttt{\&\&}}\index{\texttt{$\mid\mid$}} instead of `&` and `|` in conditional statements. These work almost like `&` and `|`, but force the condition to evaluate to a single `logical`. I prefer to use `&` and `|`, because I want to be notified if my condition evaluates to a vector - once again, that likely means that there is an error somewhere in my code!
 
-There is however one case where I much prefer `&&` and `||`. `&` and `|` always evaluate all the conditions that you're combining, while `&&` and `||` don't: `&&` stops as soon as it encounters a `FALSE` and `||` stops as soon as it encounters a `TRUE`. Consequently, you can put the conditions you wish to combine in a particular order to make sure that they can be evaluated. For instance, you may want to first check that a variable exists, and then check a property. This can be done using `exists`\index{\texttt{exists}} to check whether or not it exists - note that the variable name must be written within quotes:
+There is, however, one case where I much prefer `&&` and `||`. `&` and `|` always evaluate all the conditions that you're combining, while `&&` and `||` don't: `&&` stops as soon as it encounters a `FALSE` and `||` stops as soon as it encounters a `TRUE`. Consequently, you can put the conditions you wish to combine in a particular order to make sure that they can be evaluated. For instance, you may want first to check that a variable exists, and then check a property. This can be done using `exists`\index{\texttt{exists}} to check whether or not it exists - note that the variable name must be written within quotes:
 
 ```{r eval=FALSE}
 # a is a variable that doesn't exist
@@ -626,7 +626,7 @@ cor_xy
 ```
 
 ### Failing gracefully
-Conditional statements are useful for making sure that the input to a function you've written is of the correct type. In Section \@ref(willfunctionwork) we saw that our `average` function failed if we applied it to a `character` vector:
+Conditional statements are useful for ensuring that the input to a function you've written is of the correct type. In Section \@ref(willfunctionwork) we saw that our `average` function failed if we applied it to a `character` vector:
 
 ```{r eval=FALSE}
 average <- function(x)
@@ -698,12 +698,12 @@ if(exists(x)) { if(x > 0) { sqrt(x) } }
 
 
 ## Iteration using loops {#loopsection}
-We have already seen how you can use functions to make it easier to repeat the same task over and over. But there is still a part of the puzzle missing - what if, for example, you wish to apply a function to each column of a data frame? What if you wish to apply it to data from a number of files, one at a time? The solution to these problems is to use _iteration_\index{iteration}. In this section, we'll explore how to perform iteration using _loops_\index{loop}.
+We have already seen how you can use functions to make it easier to repeat the same task over and over. But there is still a part of the puzzle missing - what if, for example, you wish to apply a function to each column of a data frame? What if you want to apply it to data from a number of files, one at a time? The solution to these problems is to use _iteration_\index{iteration}. In this section, we'll explore how to perform iteration using _loops_\index{loop}.
 
 ### `for` loops {#forloops}
-`for` loops can be used to run the same code several times, with different settings, e.g. different data, in each iteration. Their use is perhaps best explained by some examples. We create the loop using `for`\index{\texttt{for}}\index{loop!\texttt{for}}, give the name of a _control variable_ and a vector containing its values; the control variable controls how many iterations to run; and then write the code that should be repeated in each iteration of the loop. In each iteration, a new value of the control variable is used in the code, and the loop stops when all values have been used.
+`for` loops can be used to run the same code several times, with different settings, e.g. different data, in each iteration. Their use is perhaps best explained by some examples. We create the loop using `for`\index{\texttt{for}}\index{loop!\texttt{for}}, give the name of a _control variable_ and a vector containing its values (the control variable controls how many iterations to run) and then write the code that should be repeated in each iteration of the loop. In each iteration, a new value of the control variable is used in the code, and the loop stops when all values have been used.
 
-As a first example, let's write a `for` loop that runs a block of code five time, where the block prints the current iteration number:
+As a first example, let's write a `for` loop that runs a block of code five times, where the block prints the current iteration number:
 
 ```{r eval=FALSE}
 for(i in 1:5)
@@ -722,7 +722,7 @@ cat("Iteration", 4, "\n")
 cat("Iteration", 5, "\n")
 ```
 
-The upside is that we didn't have to copy and edit the same code multiple times - and as you can imagine this benefit becomes even more pronounced if you have more complicated code blocks.
+The upside is that we didn't have to copy and edit the same code multiple times - and as you can imagine, this benefit becomes even more pronounced if you have more complicated code blocks.
 
 The values for the control variable are given in a vector, and the code block will be run once for each element in the vector - we say the we _loop over the values in the vector_. The vector doesn't have to be `numeric` - here is an example with a `character` vector:
 
@@ -759,7 +759,7 @@ rep(c(1, 2), 4)
 rep(c(1, 2), c(4, 2))
 ```
 
-Finally, `seq_along`\index{\texttt{seq\_along}} can be used to create a sequence of indices for a vector of data frame, which is useful if you wish to iterate some code for each element of a vector or each column of a data frame:
+Finally, `seq_along`\index{\texttt{seq\_along}} can be used to create a sequence of indices for a vector of a data frame, which is useful if you wish to iterate some code for each element of a vector or each column of a data frame:
 
 ```{r eval=FALSE}
 seq_along(airquality) # Gives the indices of all column of the data 
@@ -787,7 +787,7 @@ colMeans(airquality, na.rm = TRUE)
 
 The line inside the loop could have read `means[i] <- mean(airquality[,i], na.rm = TRUE)`, but that would have caused problems if we'd used it with a `data.table` or `tibble` object; see Section \@ref(subsetusingcn).
 
-Finally, we can also change the values of the data in each iteration of the loop. Some machine learning methods require that the data is _standardised_\index{data!standardise}, i.e. that all columns have mean 0 and standard deviation 1. This is achieved by subtracting the mean from each variable and dividing by the variable's standard deviation. We can write a function for this that uses a loop, changing the values of a column in each iteration:
+Finally, we can also change the values of the data in each iteration of the loop. Some machine learning methods require that the data is _standardised_\index{data!standardise}, i.e. that all columns have mean 0 and standard deviation 1. This is achieved by subtracting the mean from each variable and then dividing each variable by its standard deviation. We can write a function for this that uses a loop, changing the values of a column in each iteration:
 
 ```{r eval=FALSE}
 standardise <- function(df, ...)
@@ -861,7 +861,7 @@ Create a loop that goes through all `.csv` files in a folder and prints the name
 
 
 ### Loops within loops {#nestedloops}
-In some situations you'll want to put a loop inside another loop. Such loops are said to be _nested_\index{loop!nested}. An example is if we want to compute the correlation between all pairs of variables in `airquality`, and store the result in a matrix:
+In some situations, you'll want to put a loop inside another loop. Such loops are said to be _nested_\index{loop!nested}. An example is if we want to compute the correlation between all pairs of variables in `airquality`, and store the result in a matrix:
 
 ```{r eval=FALSE}
 cor_mat <- matrix(NA, nrow = ncol(airquality),
@@ -880,7 +880,7 @@ for(i in seq_along(airquality))
 cor_mat
 ```
 
-Once again, there is a vectorised solution to this problem, given by `cor(airquality, use = "pairwise.complete")`. As we will see in Section \@ref(measureperformance), vectorised solutions like this can be several times faster than solutions that use nested loops. In general, solutions involving nested loops tend to be fairly slow - but on the other hand they are often easy and straightforward to implement.
+Once again, there is a vectorised solution to this problem, given by `cor(airquality, use = "pairwise.complete")`. As we will see in Section \@ref(measureperformance), vectorised solutions like this can be several times faster than solutions that use nested loops. In general, solutions involving nested loops tend to be fairly slow - but on the other hand, they are often easy and straightforward to implement.
 
 ### Keeping track of what's happening {#beepr}
 Sometimes each iteration of your loop takes a long time to run, and you'll want to monitor its progress. This can be done using printed messages or a progress bar in the Console panel, or sound notifications. We'll showcase each of these using a loop containing a call to `Sys.sleep`\index{\texttt{Sys.sleep}}, which pauses the execution of R commands for a short time (determined by the user).
@@ -931,7 +931,7 @@ for(i in 1:11)
 ```
 
 ### Loops and lists {#lists}
-In our previous examples of loops, it has always been clear from the start how many iterations the loop should run and what the length of the output vector (or data frame) should be. This isn't always the case. To begin with, let's consider the case where the length of the output is unknown or difficult to know in advance. Let's say that we want to go through the `airquality` data to find days that are extreme in the sense that at least one variable attains its maximum on those days. That is, we wish to find the indices of the maxima of each variable, and store them in a vector. Because several days can have the same temperature or wind speed, there may be more than one such maximal index for each variable. For that reason, we don't know the length of the output vector in advance.
+In our previous examples of loops, it has always been clear from the start how many iterations the loop should run and what the length of the output vector (or data frame) should be. This isn't always the case. To begin with, let's consider the case where the length of the output is unknown or difficult to know in advance. Let's say that we want to go through the `airquality` data to find days that are extreme in the sense that at least one variable attains its maximum on those days. That is, we wish to find the index of the maximum of each variable, and store them in a vector. Because several days can have the same temperature or wind speed, there may be more than one such maximal index for each variable. For that reason, we don't know the length of the output vector in advance.
 
 In such cases, it is usually a good idea to store the result from each iteration in a `list` (Section \@ref(lists2)), and then collect the elements from the list once the loop has finished. We can create an empty list with one element for each variable in `airquality` using `vector`:
 
@@ -968,7 +968,7 @@ extreme_days <- unlist(max_list)
 ### `while` loops {#whileloop}
 In some situations, we want to run a loop until a certain condition is met, meaning that we don't know in advance how many iterations we'll need. This is more common in numerical optimisation and simulation, but sometimes also occurs in data analyses.
 
-When we don't know in advance how many iterations that are needed, we can use `while` loops\index{\texttt{while}}\index{loop!\texttt{while}}. Unlike `for` loops, that iterate a fixed numbers of times, `while` loops keep iterating as long as some specified condition is met. Here is an example where the loop keeps iterating until `i` squared is greater than 100:
+When we don't know in advance how many iterations that are needed, we can use `while` loops\index{\texttt{while}}\index{loop!\texttt{while}}. Unlike `for` loops, that iterate a fixed number of times, `while` loops keep iterating as long as some specified condition is met. Here is an example where the loop keeps iterating until `i` squared is greater than 100:
 
 ```{r eval=FALSE}
 i <- 1
@@ -982,9 +982,9 @@ while(i^2 <= 100)
 i
 ```
 
-The code block inside the loop keeps repeating until the condition `i^2 <= 100` no longer is satisfied. We have to be a little bit careful with this condition - if we set it in such a way that it is possible that the condition _always_ will be satisfied the loop will just keep running and running - creating what is known as an _infinite loop_\index{infinite loop|see {infinite loop}}. If you've accidentally created an infinite loop, you can break it by pressing the Stop button at the top of the Console panel in RStudio.
+The code block inside the loop keeps repeating until the condition `i^2 <= 100` no longer is satisfied. We have to be a little bit careful with this condition - if we set it in such a way that it is possible that the condition _always_ will be satisfied, the loop will just keep running and running - creating what is known as an _infinite loop_\index{infinite loop|see {infinite loop}}. If you've accidentally created an infinite loop, you can break it by pressing the Stop button at the top of the Console panel in RStudio.
 
-In Section \@ref(rle) we saw how `rle` can be used to find and compute the lengths of runs of equal values in a vector. We can use nested `while` loops to create something similar.  `while` loops are a good choice here, because we don't know in advance how many runs are in the vector. Here is an example, which you'll study in more detail in Exercise \@ref(exr:ch6exc8):
+In Section \@ref(rle) we saw how `rle` can be used to find and compute the lengths of runs of equal values in a vector. We can use nested `while` loops to create something similar.  `while` loops are a good choice here, because we don't know how many runs are in the vector in advance. Here is an example, which you'll study in more detail in Exercise \@ref(exr:ch6exc8):
 
 ```{r eval=FALSE}
 # Create a vector of 0's and 1's:
@@ -1039,7 +1039,7 @@ Consider the nested `while` loops in the run length example above. Go through th
 <br>
 
 ```{exercise, label="ch6exc9"}
-The _control statements_ `break`\index{\texttt{break}} and `next`\index{\texttt{next}} can be used inside both `for` and `while` loops to further control their behaviour. `break` stops a loop, and `next` skips to the next iteration of it. Use these functions to modify the following piece of code so that the loop skips to the next iteration if `x[i]` is `0`, and breaks if `x[i]` is `NA`:
+The _control statements_ `break`\index{\texttt{break}} and `next`\index{\texttt{next}} can be used inside both `for` and `while` loops to control their behaviour further. `break` stops a loop, and `next` skips to the next iteration of it. Use these functions to modify the following piece of code so that the loop skips to the next iteration if `x[i]` is `0`, and breaks if `x[i]` is `NA`:
   
 ```{r eval=FALSE}
 x <- c(1, 5, 8, 0, 20, 0, 3, NA, 18, 2)
@@ -1083,12 +1083,12 @@ Instead, we can simply apply the `^` operator, which uses fast C code to compute
 squares <- (1:5)^2
 ```
 
-These types of functions and operators are called _vectorised_\index{function!vectorised}. They take a vector as input and apply a function to all elements of it, meaning that we can avoid slower solutions utilising loops in R^[The vectorised functions often use loops, but loops written in C, which are much faster.]. Try to use vectorised solutions rather than loops whenever possible - it makes your code both easier to read and faster to run.
+These types of functions and operators are called _vectorised_\index{function!vectorised}. They take a vector as input and apply a function to all its elements, meaning that we can avoid slower solutions utilising loops in R^[The vectorised functions often use loops, but loops written in C, which are much faster.]. Try to use vectorised solutions rather than loops whenever possible - it makes your code both easier to read and faster to run.
 
 A related concept is _functionals_\index{functional}, which are functions that contain a `for` loop. Instead of writing a `for` loop, you can use a functional, supplying data, a function that should be applied in each iteration of the loop, and a vector to loop over. This won't necessarily make your loop run faster, but it does have other benefits:
 
-* _Shorter code_: functionals allow you to write shorter code. Some would argue that they also allow you to write code that is easier to read, but that is obviously a matter of taste.
-* _Efficient_: functionals handle memory allocation and other small tasks in an efficient way, meaning that you don't have to worry about creating a vector of an appropriate size to store the result.
+* _Shorter code_: functionals allow you to write more concise code. Some would argue that they also allow you to write code that is easier to read, but that is obviously a matter of taste.
+* _Efficient_: functionals handle memory allocation and other small tasks efficiently, meaning that you don't have to worry about creating a vector of an appropriate size to store the result.
 * _No changes to your environment_: because all operations now take place in the local environment of the functional, you don't run the risk of accidentally changing variables in your global environment.
 * _No left-overs_: `for` leaves the control variable (e.g. `i`) in the environment, functionals do not.
 * _Easy to use with pipes_: because the loop has been wrapped in a function, it lends itself well to being used in a `%>%` pipeline.
@@ -1186,7 +1186,7 @@ Hint: start by writing a function that simultaneously computes the maximum and m
 
 
 ### `purrr` {#purrr}
-If you are feeling enthusiastic about ~~skinning cats~~ using functionals instead of loops, the tidyverse package `purrr`\index{\texttt{purrr}} is a great addition to your toolbox. It contains a number of specialised alternatives to the `*apply` functions. More importantly, it also contains certain shortcuts that come in handy when working with functionals. For instance, it is fairly common to define a short function inside of your functional, which is useful for instance when you don't want the function to take up space in your environment. This can be done a little more elegantly with `purrr` functions using a shortcut denoted by `~`\index{\texttt{\textasciitilde}}. Let's say that we want to standardise all variables in `airquality`. The `map` function is the `purrr` equivalent of `lapply`. We can use it with or with the shortcut, and with or without pipes (we mention the use of pipes now because it will be important in what comes next):
+If you feel enthusiastic about ~~skinning cats~~ using functionals instead of loops, the tidyverse package `purrr`\index{\texttt{purrr}} is a great addition to your toolbox. It contains a number of specialised alternatives to the `*apply` functions. More importantly, it also contains certain shortcuts that come in handy when working with functionals. For instance, it is fairly common to define a short function inside your functional, which is useful for instance when you don't want the function to take up space in your environment. This can be done a little more elegantly with `purrr` functions using a shortcut denoted by `~`\index{\texttt{\textasciitilde}}. Let's say that we want to standardise all variables in `airquality`. The `map` function is the `purrr` equivalent of `lapply`. We can use it with or with the shortcut, and with or without pipes (we mention the use of pipes now because it will be important in what comes next):
 
 ```{r eval=FALSE}
 # Base solution:
@@ -1232,7 +1232,7 @@ airquality %>%
 Once you know the meaning of `~`, the `purrr` solution is a lot cleaner than the base solutions.
 
 ### Specialised functions
-So far, it may seem like `map` is just like `lapply` but with a shortcut for defining functions. Which is more or less true. But `purrr` contains a lot more functionals that you can use, each tailored to a very specific problem.
+So far, it may seem like `map` is just like `lapply` but with a shortcut for defining functions. Which is more or less true. But `purrr` contains a lot more functionals that you can use, each tailored to specific problems.
 
 For instance, if you need to specify that the output should be a vector of a specific type, you can use:
 
@@ -1338,7 +1338,7 @@ In Exercise \@ref(exr:ch6exc10) you wrote a function that printed the names and 
 
 
 ### Keep calm and carry on
-Another neat feature of `purrr` is the `safely`\index{\texttt{safely}} function, which can be used to wrap a function that will be used inside of a functional, and makes sure that the functional returns a result even if there is an error. For instance, let's say that we want to compute the logarithm of all variables in the `msleep` data:
+Another neat feature of `purrr` is the `safely`\index{\texttt{safely}} function, which can be used to wrap a function that will be used inside a functional, and makes sure that the functional returns a result even if there is an error. For instance, let's say that we want to compute the logarithm of all variables in the `msleep` data:
 
 ```{r eval=FALSE}
 library(ggplot2)
@@ -1354,7 +1354,7 @@ lapply(msleep, log)
 map(msleep, log)
 ```
 
-Note that the error messages that we get from `lapply` and `map` here don't give any information about which variable caused the error, making it more difficult to figure out what's gone wrong.
+Note that the error messages we get from `lapply` and `map` here don't give any information about which variable caused the error, making it more difficult to figure out what's gone wrong.
 
 If first we wrap `log` with `safely`, we get a list containing the correct output for the numeric variables, and error messages for the non-numeric variables:
 
@@ -1433,12 +1433,12 @@ Using the `gapminder` data from the `gapminder` package, create scatterplots of 
 
 
 ## Measuring code performance {#measureperformance}
-There are probably as many ideas about what good code is as there are programmers. Some prefer readable code, others prefer concise code. Some prefer to work with separate functions for each task, while others would rather continue to combine a few basic functions in new ways. Regardless of what you consider to be _good code_, there are a few objective measures that can be used to assess the quality of your code. In addition writing code that works and is bug-free, you'd like your code to be:
+There are probably as many ideas about what good code is as there are programmers. Some prefer readable code; others prefer concise code. Some prefer to work with separate functions for each task, while others would rather continue to combine a few basic functions in new ways. Regardless of what you consider to be _good code_, there are a few objective measures that can be used to assess the quality of your code. In addition to writing code that works and is bug-free, you'd like your code to be:
 
-* _Fast_: meaning that it runs quickly. There are tasks that can take anything from second to weeks depending on what code you write for them. Speed is particularly important if you're going to run your code many times. 
-* _Memory efficient_: meaning that it uses as little of your computer's memory as possible. Software running on your computer uses its memory - its RAM - to store data. If you're not careful with RAM, you may end up with a full memory and a sluggish or frozen computer. Memory efficiency is particularly important if you're working with big datasets, that take up a lot of RAM to begin with.
+* _Fast_: meaning that it runs quickly. Some tasks can take anything from second to weeks, depending on what code you write for them. Speed is particularly important if you're going to run your code many times. 
+* _Memory efficient_: meaning that it uses as little of your computer's memory as possible. Software running on your computer uses its memory - its RAM - to store data. If you're not careful with RAM, you may end up with a full memory and a sluggish or frozen computer. Memory efficiency is critical if you're working with big datasets, that take up a lot of RAM to begin with.
 
-In this section we'll have a look at how you can measure the speed and memory efficiency of R functions. A caveat is that while speed and memory efficiency are important, the most important thing is to come up with a solution that works in the first place. You should almost always start by solving a problem, and then worry about speed and memory efficiency, not the other way around. The reasons for this is that efficient code often is more difficult to write, read, and debug, which can slow down process of writing it considerably.
+In this section we'll have a look at how you can measure the speed and memory efficiency of R functions. A caveat is that while speed and memory efficiency are important, the most important thing is to come up with a solution that works in the first place. You should almost always start by solving a problem, and then worry about speed and memory efficiency, not the other way around. The reasons for this is that efficient code often is more difficult to write, read, and debug, which can slow down the process of writing it considerably.
 
 Note also, that speed and memory usage is system dependent - the clock frequency and architecture of your processor and speed and size of your RAM will affect how your code performs, as will what operating system you use and what other programs you are running at the same time. That means that if you wish to compare how two functions perform, you need to compare them on the same system under the same conditions.
 
@@ -1458,7 +1458,7 @@ rtime <- system.time({
 rtime
 ```
 
-This isn't the best way of measuring computational time though, and doesn't allow us to easily compare different functions. Instead, we'll use the `bench`\index{\texttt{bench}} package, which contains a function called `mark` that is very useful for measuring the execution time of functions and blocks of code. Let's start by installing it:
+This isn't the best way of measuring computational time though, and doesn't allow us to compare different functions easily. Instead, we'll use the `bench`\index{\texttt{bench}} package, which contains a function called `mark` that is very useful for measuring the execution time of functions and blocks of code. Let's start by installing it:
 
 ```{r eval=FALSE}
 install.packages("bench")
@@ -1549,7 +1549,7 @@ bm
 Functions in R are _compiled_ the first time they are run, which often makes them run faster than the same code would have outside of the function. We'll discuss this further next.
 
 ### Measuring memory usage - and a note on compilation
-`mark` also shows us how much memory is allocated when running different blocks of code, in the `mem_alloc` column of the output^[But only if your version of R has been _compiled with memory profiling_. If you are using a standard build of R, i.e. have downloaded the base R binary from R-project.org, you should be good to go. You can check that memory profiling is enabled by checking that `capabilities("profmem")` returns `TRUE`. If not, you may need to reinstall R if you wish to enable memory profiling.].
+`mark` also shows us how much memory is allocated when running different code blocks, in the `mem_alloc` column of the output^[But only if your version of R has been _compiled with memory profiling_. If you are using a standard build of R, i.e. have downloaded the base R binary from R-project.org, you should be good to go. You can check that memory profiling is enabled by checking that `capabilities("profmem")` returns `TRUE`. If not, you may need to reinstall R if you wish to enable memory profiling.].
 
 Unfortunately, measuring memory usage is a little tricky. To see why, restart R (yes, really - this is important!), and then run the following code to benchmark `x^2` versus `squares(x)`:
 
@@ -1580,7 +1580,7 @@ bm
 
 This time out, both functions use less memory, and `squares` now uses _less_ memory than `x^2`. What's going on?
 
-Computers can't read code written in R or most other programming languages directly. Instead, the code must be translated to _machine code_ that the computer's processor uses, in a process known as _compilation_. R uses _just-in-time compilation_ of functions and loops^[Since R 3.4.], meaning that it translates the R code for new functions and loops to machine code _during execution_. Other languages, such as C, use ahead-of-time compilation, translating the code _prior to execution_. The latter can make the execution much faster, but some flexibility is lost, and the code needs to be run through a compiler ahead of execution, which also takes time. When doing the just-in-time compilation, R needs to use some of the computer's memory, which causes the memory usage to be greater the first time the function is run. However, if an R function is run again, it has already been compiled, meaning that R doesn't have to allocate memory for compilation.
+Computers can't read code written in R or most other programming languages directly. Instead, the code must be translated to _machine code_ that the computer's processor uses, in a process known as _compilation_. R uses _just-in-time compilation_ of functions and loops^[Since R 3.4.], meaning that it translates the R code for new functions and loops to machine code _during execution_. Other languages, such as C, use ahead-of-time compilation, translating the code _prior to execution_. The latter can make the execution much faster, but some flexibility is lost, and the code needs to be run through a compiler ahead of execution, which also takes time. When doing the just-in-time compilation, R needs to use some of the computer's memory, which causes the memory usage to be greater the first time the function is run. However, if an R function is run again, it has already been compiled, meaning R doesn't have to allocate memory for compilation.
 
 In conclusion, if you want to benchmark the memory usage of functions, make sure to run them once before benchmarking. Alternatively, if your function takes a long time to run, you can compile it without running it using the `cmpfun`\index{\texttt{compfun}}\index{function!compile} function from the `compiler` package\index{\texttt{compiler}}:
 
@@ -1602,7 +1602,7 @@ Write a function for computing the mean of a vector using a `for` loop. How much
 <br>
 
 ```{exercise, label="ch6exc15"}
-We have seen three different ways of filtering a data frame to only keep rows that fulfill a condition: using base R, `data.table` and `dplyr`. Suppose that we want to extract all flights from 1 January from the `flights` data in the `nycflights13` package:
+We have seen three different ways of filtering a data frame to only keep rows that fulfil a condition: using base R, `data.table` and `dplyr`. Suppose that we want to extract all flights from 1 January from the `flights` data in the `nycflights13` package:
 
 ```{r eval=FALSE}
 library(data.table)

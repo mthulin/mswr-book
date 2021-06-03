@@ -31,7 +31,7 @@ R has six basic data types. For most people, it suffices to know about the first
 * `character`: text, e.g. `"a"`, `"Hello! I'm Ada."` and `"name@domain.com"`.\index{\texttt{character}}
 * `integer`: integer numbers, denoted in R by the letter `L`: `1L`, `55L`.\index{\texttt{integer}}
 * `complex`: complex numbers, like `2+3i`. Rarely used in statistical work.\index{\texttt{complex}}
-* `raw`: used to hold raw bytes. Don't fret if you don't know what that means. You can have a long and meaningful career in data science (or pretty much any other field) without ever having to worry about raw bytes. We won't discuss `raw` objects again in this book.\index{\texttt{raw}}
+* `raw`: used to hold raw bytes. Don't fret if you don't know what that means. You can have a long and meaningful career in statistics, data science, or pretty much any other field without ever having to worry about raw bytes. We won't discuss `raw` objects again in this book.\index{\texttt{raw}}
 
 In addition, these can be combined into special data types sometimes called _data structures_, examples of which include vectors and data frames. Important data structures include `factor`\index{\texttt{factor}}, which is used to store categorical data, and the awkwardly named `POSIXct`\index{\texttt{POSIXct}} which is used to store date and time data.
 
@@ -427,7 +427,7 @@ The function `cut`\index{\texttt{cut}}\index{variable!numeric $\rightarrow$ cate
 So far, we've looked at examples of data they either came shipped with base R or `ggplot2`, or simple toy examples that we created ourselves, like `bookstore`. While you can do all your data entry work in R, `bookstore` style, it is much more common to load data from other sources.\index{import data}\index{file!import data from} Two important types of files are _comma-separated value files_, `.csv`, and Excel spreadsheets, `.xlsx`. `.csv` files are spreadsheets stored as text files - basically Excel files stripped down to the bare minimum - no formatting, no formulas, no macros. You can open and edit them in spreadsheet software like LibreOffice Calc, Google Sheets or Microsoft Excel. Many devices and databases can export data in `.csv` format, making it a commonly used file format that you are likely to encounter sooner rather than later.
 
 ### Importing csv files
-In order to load data from a file into R, you needs its _path_ - that is, you need to tell R where to find the file. Unless you specify otherwise, R will look for files in its current _working directory_\index{working directory}\index{\texttt{getwd}}. To see what your current working directory is, run the following code in the Console panel:
+In order to load data from a file into R, you need its _path_ - that is, you need to tell R where to find the file. Unless you specify otherwise, R will look for files in its current _working directory_\index{working directory}\index{\texttt{getwd}}. To see what your current working directory is, run the following code in the Console panel:
 
 ```{r eval=FALSE}
 getwd()
@@ -435,7 +435,7 @@ getwd()
 
 In RStudio, your working directory will usually be shown in the Files panel. If you have opened RStudio by opening a `.R` file, the working directory will be the directory in which the file is stored. You can change the working directory by using the function `setwd`\index{\texttt{setwd}} or selecting _Session > Set Working Directory > Choose Directory_ in the RStudio menu.
 
-Before we discuss paths further, let's have a look at how you can import data from a file that is in your working directory. [Download the file `philosophers.csv`\index{data!\texttt{philosophers.csv}} from the book's web page](http://www.modernstatisticswithr.com/data.zip) and store it in the folder that is your current working directory. Open it with a spreadsheet software to have a quick look at it. Then open it in a text editor (for instance Notepad for Windows, TextEdit for Mac or Gedit for Linux). Note how commas are used to separate the columns of the data:
+Before we discuss paths further, let's look at how you can import data from a file that is in your working directory. [Download the file `philosophers.csv`\index{data!\texttt{philosophers.csv}} from the book's web page](http://www.modernstatisticswithr.com/data.zip) and store it in the folder that is your current working directory. Open it with a spreadsheet software to have a quick look at it. Then open it in a text editor (for instance Notepad for Windows, TextEdit for Mac or Gedit for Linux). Note how commas are used to separate the columns of the data:
 
 ```{r eval=FALSE}
 "Name","Description","Born","Deceased","Rating"
@@ -481,7 +481,7 @@ So, what can you do in case you need to import data from a file that is not in y
 imported_data2 <- read.csv(file.choose())
 ```
 
-A third option is to not write any code at all. Instead, you can import the data using RStudio's graphical interface by choosing _File > Import dataset > From Text (base)_ and then choosing `philosophers.csv`. This will generate the code needed to import the data (using `read.csv`) and run it in the Console window.
+A third option is not to write any code at all. Instead, you can import the data using RStudio's graphical interface by choosing _File > Import dataset > From Text (base)_ and then choosing `philosophers.csv`. This will generate the code needed to import the data (using `read.csv`) and run it in the Console window.
 
 The latter two solutions work just fine if you just want to open a single file once. But if you want to reuse your code or run it multiple times, you probably don't want to have to click and select your file each time. Instead, you can specify the path to your file in the call to `read.csv`.
 
@@ -669,7 +669,7 @@ load(file = "myData.RData")
 
 
 ## RStudio projects
-It is good practice to create a new folder for each new data analysis project that you are working on, where you store code, data and the output from the analysis. In Rstudio you can associate a folder with a Project, which lets you easily start RStudio with that folder as your working directory. Moreover, by opening another Project you can have several RStudio sessions, each with their separate variables and working directories, running simultaneously.
+It is good practice to create a new folder for each new data analysis project that you are working on, where you store code, data and the output from the analysis. In RStudio you can associate a folder with a Project, which lets you start RStudio with that folder as your working directory. Moreover, by opening another Project you can have several RStudio sessions, each with their separate variables and working directories, running simultaneously.
 
 To create a new Project, click _File > New Project_ in the RStudio menu\index{project}. You then get to choose whether to create a Project associated with a folder that already exists, or to create a Project in a new folder. After you've created the Project, it will be saved as an `.Rproj` file. You can launch RStudio with the Project folder as the working directory by double-clicking the `.Rproj` file. If you already have an active RStudio session, this will open another session in a separate window.
 
@@ -723,11 +723,12 @@ View(mtcars)
 Let's have a look at the relationship between gross horsepower (`hp`) and fuel consumption (`mpg`):
 
 ```{r eval=FALSE}
+library(ggplot2)
 ggplot(mtcars, aes(hp, mpg)) +
       geom_point()
 ```
 
-The relationship doesn't appear to be perfectly linear, but nevertheless we can try fitting a linear regression model to the data. This can be done using `lm`\index{\texttt{lm}}\index{\texttt{\textasciitilde}}. We fit a model with `mpg` as the response variable and `hp` as the explanatory variable:
+The relationship doesn't appear to be perfectly linear, but nevertheless, we can try fitting a linear regression model to the data. This can be done using `lm`\index{\texttt{lm}}\index{\texttt{\textasciitilde}}. We fit a model with `mpg` as the response variable and `hp` as the explanatory variable:
 
 ```{r eval=FALSE}
 m <- lm(mpg ~ hp, data = mtcars)
@@ -762,7 +763,7 @@ Diagnostic plots for the residuals are obtained using `plot`:
 plot(m)
 ```
 
-If we wish to add further variables to the model, we simply add them to the right hand-side of the formula in the function call: 
+If we wish to add further variables to the model, we simply add them to the right-hand-side of the formula in the function call: 
 
 ```{r eval=FALSE}
 m2 <- lm(mpg ~ hp + wt, data = mtcars)
@@ -778,7 +779,7 @@ There is much more to be said about linear models in R. We'll return to them in 
 $$\sim$$
 
 ```{exercise, label="ch3exc6bb"}
-Fit a linear regression model to the `mtcars` data, using `mpg` as response variable and `hp`, `wt`, `cyl`, and `am` as explanatory variables. Are all four explanatory variables significant?
+Fit a linear regression model to the `mtcars` data, using `mpg` as the response variable and `hp`, `wt`, `cyl`, and `am` as explanatory variables. Are all four explanatory variables significant?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions6bb)
@@ -823,7 +824,7 @@ Another function that can be used to compute grouped summaries is `by`\index{\te
 by(airquality$Temp, airquality$Month, mean)
 ```
 
-What makes `by` useful, is that unlike `aggregate` it is easy to use with functions that take more than one variable as input. If we want to compute the correlation between `Wind` and `Temp` grouped by month\index{\texttt{cor}!by group}, we can do that as follows:
+What makes `by` useful is that unlike `aggregate` it is easy to use with functions that take more than one variable as input. If we want to compute the correlation between `Wind` and `Temp` grouped by month\index{\texttt{cor}!by group}, we can do that as follows:
 
 ```{r eval=FALSE}
 names(airquality)  # Check that Wind and Temp are in columns 3 and 4
@@ -872,13 +873,13 @@ bookstore$rev_per_minute <- bookstore$purchase / bookstore$visit_length
 Wouldn't it be more convenient if you didn't have to write the `bookstore$` part each time? To just say once that you are manipulating `bookstore`, and have R implicitly understand that all the variables involved reside in that data frame? Yes. Yes, it would. Fortunately, R has tools that will let you do just that.
 
 ### _Ceci n'est pas une pipe_
-The `magrittr`\index{\texttt{magrittr}} package^[Arguably the [best-named](https://en.wikipedia.org/wiki/The_Treachery_of_Images) R package.] adds a set of tools called _pipes_ to R. Pipes are operators that let you improve the readability of your code, and let you restructure your code so that it is read from the left to the right instead of from the inside out. Let's start by installing the package:
+The `magrittr`\index{\texttt{magrittr}} package^[Arguably the [best-named](https://en.wikipedia.org/wiki/The_Treachery_of_Images) R package.] adds a set of tools called _pipes_ to R. Pipes are operators that let you improve your code's readability and restructure your code so that it is read from the left to the right instead of from the inside out. Let's start by installing the package:
 
 ```{r eval=FALSE}
 install.packages("magrittr")
 ```
 
-Now, let's say that are interested in finding out what the mean wind speed (in m/s rather than mph) on hot days (temperature above 80, say) in the `airquality` data is, aggregated by month. We could do something like this:
+Now, let's say that we are interested in finding out what the mean wind speed (in m/s rather than mph) on hot days (temperature above 80, say) in the `airquality` data is, aggregated by month. We could do something like this:
 
 ```{r eval=FALSE}
 # Extract hot days:
@@ -890,7 +891,7 @@ hot_wind_means <- aggregate(Wind ~ Month, data = airquality2,
                             FUN = mean)
 ```
 
-There is nothing wrong with this code per se. We create a copy of `airquality` (because we don't want to change the original data), change the units of the wind speed and then compute the grouped means. A downside is that we end up with a copy of `airquality` that we maybe won't need again. We could avoid that by putting all the operations inside of `aggregate`:
+There is nothing wrong with this code per se. We create a copy of `airquality` (because we don't want to change the original data), change the units of the wind speed, and then compute the grouped means. A downside is that we end up with a copy of `airquality` that we maybe won't need again. We could avoid that by putting all the operations inside of `aggregate`:
 
 ```{r eval=FALSE}
 # More compact:
@@ -899,7 +900,7 @@ hot_wind_means <-  aggregate(Wind*0.44704 ~ Month,
                             FUN = mean)
 ```
 
-The problem with this is that it is a little difficult to follow, because we have to read the code from the inside out. When we run the code, R will first extract the hot days, then convert the wind speed to m/s, and then compute the grouped means - so the operations happen in an order that is the opposite of the order in which we wrote them.
+The problem with this is that it is a little difficult to follow because we have to read the code from the inside out. When we run the code, R will first extract the hot days, then convert the wind speed to m/s, and then compute the grouped means - so the operations happen in an order that is the opposite of the order in which we wrote them.
 
 `magrittr` introduces a new operator, `%>%`, called a _pipe_\index{pipe}\index{\texttt{\%>\%}}, which can be used to chain functions together. Calls that you would otherwise write as
 
@@ -913,7 +914,7 @@ can be written as
 your_data %>% function_1 %>% function_2 -> new_variable
 ```
 
-so that the operations are written in the order they are performed. Some prefer the former style, which is more like mathematics, but many prefer the latter, which is more like natural language (particularly for those of us who are used to reading from the left to the right).
+so that the operations are written in the order they are performed. Some prefer the former style, which is more like mathematics, but many prefer the latter, which is more like natural language (particularly for those of us who are used to reading from left to right).
 
 Three operations are required to solve the `airquality` wind speed problem:
 
@@ -949,7 +950,7 @@ hot_wind_means <- aggregate(Wind ~ Month, data = airquality2,
                             FUN = mean)
 ```
 
-But, because we have functions to perform the operations, we can instead use `%>%` pipes to chain them together in a _pipeline_. Pipes automatically send the output from the previous function as the first argument to the next, so that the data flows from the left to the right, which make the code more concise. They also let us refer to the output from the previous function as `.`, which saves even more space. The resulting code is:
+But, because we have functions to perform the operations, we can instead use `%>%` pipes to chain them together in a _pipeline_. Pipes automatically send the output from the previous function as the first argument to the next, so that the data flows from left to right, which make the code more concise. They also let us refer to the output from the previous function as `.`, which saves even more space. The resulting code is:
 
 ```{r eval=FALSE}
 airquality %>%
@@ -959,7 +960,7 @@ airquality %>%
       hot_wind_means
 ```
 
-You can read the `%>%` operator as _then_: take the `airquality` data, _then_ subset it, _then_ convert the `Wind` variable, _then_ compute the grouped means. Once you wrap your head around the idea of reading the operations from the left to the right, this code is arguably clearer and easier to read. Note that we used the right-assignment operator `->` to assign the result to `hot_wind_means`, to keep in line with the idea that the data flows from the left to the right.
+You can read the `%>%` operator as _then_: take the `airquality` data, _then_ subset it, _then_ convert the `Wind` variable, _then_ compute the grouped means. Once you wrap your head around the idea of reading the operations from left to right, this code is arguably clearer and easier to read. Note that we used the right-assignment operator `->` to assign the result to `hot_wind_means`, to keep in line with the idea that the data flows from the left to the right.
 
 ### Aliases and placeholders
 In the remainder of the book, we will use pipes in some situations where they make the code easier to write or read. Pipes don't always make code easier to read though, as can be seen if we use them to compute $\exp(\log(2))$:
@@ -1002,14 +1003,14 @@ cat(paste("The current time is ", Sys.time())))
 Sys.time() %>% paste("The current time is", .) %>% cat
 ```
 
-If the data only appears inside parenthesis, you need to wrap the function in curly brackets `{}`, or otherwise `%>%` will try to pass it as the first argument to the function:
+If the data only appears inside parentheses, you need to wrap the function in curly brackets `{}`, or otherwise `%>%` will try to pass it as the first argument to the function:
 
 ```{r eval=FALSE}
 airquality %>% cat("Number of rows in data:", nrow(.)) # Doesn't work
 airquality %>% {cat("Number of rows in data:", nrow(.))} # Works!
 ```
 
-In addition to the `magrittr` pipes, from version 4.1 R also offers a native pipe, `|>`\index{$\mid >$}, which can be used in lieu of `%>%` without having to load any packages. Nevertheless, we'll use `%>%` pipes in the remainder of the book, partially because they are more commonly used (meaning that you are more likely to encounter them when looking at other people's code), and partially because `magrittr` also offers some other useful pipe operators. You'll see plenty of examples of how pipes can be used in Chapters \@ref(messychapter)-\@ref(mlchapter), and learn about other pipe operators in Section \@ref(morepipes).
+In addition to the `magrittr` pipes, from version 4.1 R also offers a native pipe, `|>`\index{$\mid >$}, which can be used in lieu of `%>%` without loading any packages. Nevertheless, we'll use `%>%` pipes in the remainder of the book, partially because they are more commonly used (meaning that you are more likely to encounter them when looking at other people's code), and partially because `magrittr` also offers some other useful pipe operators. You'll see plenty of examples of how pipes can be used in Chapters \@ref(messychapter)-\@ref(mlchapter), and learn about other pipe operators in Section \@ref(morepipes).
 
 $$\sim$$
 
@@ -1043,17 +1044,17 @@ Add a new variable `rev_per_minute` which is the ratio between purchase and the 
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch3solutions11)
 
 ## Flavours of R: base and tidyverse
-R is a programming _language_, and just as any language it has different dialects. When you read about R online you'll frequently see people mentioning the words "base" and "tidyverse". These are the two most common dialects of R. Base R is just that, R in its purest form. The tidyverse is a collection of add-on packages for working with different types of data. The two are fully compatible, and you can mix and match as much as you like. Both `ggplot2` and `magrittr` are part of the tidyverse.
+R is a programming _language_, and just like any language, it has different dialects. When you read about R online, you'll frequently see people mentioning the words "base" and "tidyverse". These are the two most common dialects of R. Base R is just that, R in its purest form. The tidyverse is a collection of add-on packages for working with different types of data. The two are fully compatible, and you can mix and match as much as you like. Both `ggplot2` and `magrittr` are part of the tidyverse.
 
-In recent years, the tidyverse has been heavily promoted as being "modern" R which "makes data science faster, easier and more fun". You should believe the hype. The tidyverse is marvelous. But if you only learn tidyverse R, you will miss out on much of what R has to offer. Base R is just as marvelous, and can definitely make data science as fast, easy and fun as the tidyverse.  Besides, nobody uses just base R anyway - there are a ton of non-tidyverse packages that extend and enrich R in exciting new ways. Perhaps "extended R" or "superpowered R" would be better names for the non-tidyverse dialect.
+In recent years, the tidyverse has been heavily promoted as being "modern" R which "makes data science faster, easier and more fun". You should believe the hype. The tidyverse is marvellous. But if you only learn tidyverse R, you will miss out on much of what R has to offer. Base R is just as marvellous, and can definitely make data science as fast, easy and fun as the tidyverse.  Besides, nobody uses just base R anyway - there are a ton of non-tidyverse packages that extend and enrich R in exciting new ways. Perhaps "extended R" or "superpowered R" would be better names for the non-tidyverse dialect.
 
-The point I'm trying to make is that anyone who tells you to just learn one of these dialects is wrong. Both are great, they work extremely well together, and they are similar enough that you shouldn't limit yourself to just mastering one of them. This book will show you both base R and tidyverse solutions to problems, so that you can decide for yourself which is faster, easier and more fun.
+Anyone who tells you to just learn one of these dialects is wrong. Both are great, they work extremely well together, and they are similar enough that you shouldn't limit yourself to just mastering one of them. This book will show you both base R and tidyverse solutions to problems, so that you can decide for yourself which is faster, easier, and more fun.
 
-A defining property of the tidyverse is that there is a separate function for everything, which is perfect for code that relies on pipes. In contrast, base R uses fewer functions, but with more parameters, to perform the same tasks. If you use tidyverse solutions there is a good chance that there exists a function which performs exactly the task you're going to do with its default settings. This is great (once again, especially if you want to use pipes), but it means that there are many more functions to master for tidyverse users, whereas you can make do with much fewer in base R. You will spend more time looking up function arguments when working with base R (which fortunately is fairly straightforward using the `?` documentation), but on the other hand, looking up arguments for a function that you know the name of is easier than finding a function that does something very specific that you don't know the name of. There are advantages and disadvantages to both approaches.
+A defining property of the tidyverse is that there are separate functions for everything, which is perfect for code that relies on pipes. In contrast, base R uses fewer functions, but with more parameters, to perform the same tasks. If you use tidyverse solutions there is a good chance that there exists a function which performs exactly the task you're going to do with its default settings. This is great (once again, especially if you want to use pipes), but it means that there are many more functions to master for tidyverse users, whereas you can make do with much fewer in base R. You will spend more time looking up function arguments when working with base R (which fortunately is fairly straightforward using the `?` documentation), but on the other hand, looking up arguments for a function that you know the name of is easier than finding a function that does something very specific that you don't know the name of. There are advantages and disadvantages to both approaches.
 
 
 ## Ethics and good statistical practice {#ethicalguidelines}
-Throughout this book, there will be sections devoted to ethics\index{ethics}. Good statistical practice is intertwined with good ethical practice. Both requires transparent assumptions, reproducible results, and valid interpretations.
+Throughout this book, there will be sections devoted to ethics\index{ethics}. Good statistical practice is intertwined with good ethical practice. Both require transparent assumptions, reproducible results, and valid interpretations.
 
 One of the most commonly cited ethical guidelines for statistical work is The American Statistical Association’s _Ethical Guidelines for Statistical Practice_\index{ethics!ASA guidelines} (Committee on Professional Ethics of the American Statistical Association, 2018), a shortened version of which is presented below^[The excerpt is from the version of the guidelines dated April 2018, and presented here with permission from the ASA.]. The full ethical guidelines are available at https://www.amstat.org/ASA/Your-Career/Ethical-Guidelines-for-Statistical-Practice.aspx
 
@@ -1073,10 +1074,10 @@ $$\sim$$
 ```{exercise, label="ch3ethics1"}
 _Discuss the following._ In the introduction to American Statistical Association’s _Ethical Guidelines for Statistical Practice_, it is stated that "using statistics in pursuit of unethical ends is inherently unethical". What is considered unethical depends on social, moral, political, and religious values, and ultimately you must decide for yourself what you consider to be unethical ends. Which (if any) of the following do you consider to be unethical?
   
-1. Using statistical analysis to help a company that harm the environment through their production processes. Does it matter to you what the purpose of the the analysis is?
-2. Using statistical analysis to help a tobacco or liquor manufacturing company. Does it matter to you what the purpose of the the analysis is?
+1. Using statistical analysis to help a company that harm the environment through their production processes. Does it matter to you what the purpose of the analysis is?
+2. Using statistical analysis to help a tobacco or liquor manufacturing company. Does it matter to you what the purpose of the analysis is?
 3. Using statistical analysis to help a bank identify which loan applicants that are likely to default on their loans.
-4. Using statistical analysis of social media profiles to identify terrorist.
+4. Using statistical analysis of social media profiles to identify terrorists.
 5. Using statistical analysis of social media profiles to identify people likely to protest against the government.
 6. Using statistical analysis of social media profiles to identify people to target with political adverts. 
 7. Using statistical analysis of social media profiles to target ads at people likely to buy a bicycle.

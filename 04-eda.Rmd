@@ -1,6 +1,6 @@
 # Exploratory data analysis and unsupervised learning {#eda}
 
-Exploratory data analysis (EDA) is a process in which we summarise and visually explore a dataset. An important part of EDA is unsupervised learning, which is a collection of methods for finding interesting subgroups and patterns in our data. Unlike statistical hypothesis testing, which is used to reject hypotheses, EDA can be used to _generate_ hypotheses (which can then be confirmed or rejected by new studies). Another purpose of EDA is to find outliers and incorrect observations, which can lead to a cleaner and more useful dataset. In EDA we ask questions about our data, and then try to answer them using summary statistics and graphics. Some questions will prove to be important, and some will not. The key to finding important questions is to ask a lot of questions. This chapter will provide you with a wide range of tools for question-asking.
+Exploratory data analysis (EDA) is a process in which we summarise and visually explore a dataset. An important part of EDA is unsupervised learning, which is a collection of methods for finding interesting subgroups and patterns in our data. Unlike statistical hypothesis testing, which is used to reject hypotheses, EDA can be used to _generate_ hypotheses (which can then be confirmed or rejected by new studies). Another purpose of EDA is to find outliers and incorrect observations, which can lead to a cleaner and more useful dataset. In EDA we ask questions about our data and then try to answer them using summary statistics and graphics. Some questions will prove to be important, and some will not. The key to finding important questions is to ask a lot of questions. This chapter will provide you with a wide range of tools for question-asking.
 
 After working with the material in this chapter, you will be able to use R to:
 
@@ -18,9 +18,9 @@ After working with the material in this chapter, you will be able to use R to:
 * Use factor analysis to find latent variables in your data.
 
 ## Reports with R Markdown {#rmarkdown}
-R Markdown files can be used to create nicely formatted documents using R, that are easy to export to other formats, like HTML, Word or pdf. They allow you to mix R code with results and text. They can be used to create reproducible reports, that are easy to update with new data, because they include the code for creating tables and figures. Additionally, they can be used as notebooks for keeping track of your work and your thoughts as you carry out an analysis. You can even use them for writing books - in fact, this entire book was written using R Markdown.
+R Markdown files can be used to create nicely formatted documents using R, that are easy to export to other formats, like HTML, Word or pdf. They allow you to mix R code with results and text. They can be used to create reproducible reports that are easy to update with new data, because they include the code for making tables and figures. Additionally, they can be used as notebooks for keeping track of your work and your thoughts as you carry out an analysis. You can even use them for writing books - in fact, this entire book was written using R Markdown.
 
-It is often a good idea to use R Markdown for exploratory analyses, as it allows you to write down your thoughts and comments as the analysis progresses, as well as to save the results of the exploratory journey. For that reason, we'll start this chapter by having a look at some examples of what you can do using R Markdown. You can use either R Markdown or ordinary R scripts for the analyses in the remainder of the chapter, according to your preference. The R code used is the same and the results are identical, but if you use R Markdown, you can also save the output of the analysis in a nicely formatted document.
+It is often a good idea to use R Markdown for exploratory analyses, as it allows you to write down your thoughts and comments as the analysis progresses, as well as to save the results of the exploratory journey. For that reason, we'll start this chapter by looking at some examples of what you can do using R Markdown. According to your preference, you can use either R Markdown or ordinary R scripts for the analyses in the remainder of the chapter. The R code used is the same and the results are identical, but if you use R Markdown, you can also save the output of the analysis in a nicely formatted document.
 
 ### A first example
 When you create a new R Markdown document in RStudio by clicking _File > New File > R Markdown_ in the menu, a document similar to that below is created :
@@ -37,7 +37,7 @@ Now, let's have a look at what the different parts of the Markdown document do. 
 cat(htmltools::includeText("Examples/rmarkdown1.Rmd"))
 ```
 
-The part that says `output: html_document` specifies what type of document that should be created when you press _Knit_. In this case, it's set to `html_document`, meaning that an HTML document will be created. By changing this to `output: word_document` you can create a `.docx` Word document instead. By changing it to `output: pdf_document`, you can create a `.pdf` document using LaTeX (you'll have to install LaTeX if you haven't already - RStudio will notify you if that is the case). 
+The part that says `output: html_document` specifies what type of document should be created when you press _Knit_. In this case, it's set to `html_document`, meaning that an HTML document will be created. By changing this to `output: word_document` you can create a `.docx` Word document instead. By changing it to `output: pdf_document`, you can create a `.pdf` document using LaTeX (you'll have to install LaTeX if you haven't already - RStudio will notify you if that is the case). 
 
 The second part sets the default behaviour of _code chunks_ included in the document, specifying that the output from running the chunks should be printed unless otherwise specified:
 
@@ -60,7 +60,7 @@ cat(htmltools::includeText("Examples/rmarkdown4.Rmd"))
 In the next few sections, we will look at how formatting and code chunks work in R Markdown.
 
 ### Formatting text
-To create plain text in a Markdown file, you simply have to write plain text. If you wish to add some formatting to you text, you can use the following:
+To create plain text in a Markdown file, you simply have to write plain text. If you wish to add some formatting to your text, you can use the following:
 
 * `_italics_` or `*italics*`: to create text in _italics_.
 * `__bold__` or `**bold**`: to create **bold** text.
@@ -80,7 +80,7 @@ To add headers and subheaders, and to divide your document into section, start a
 
 ### Lists, tables, and images
 
-To create a bullet lists, you can use `*` as follows. Note that you need a blank line between your list and the previous paragraph to begin a list.
+To create a bullet list, you can use `*` as follows. Note that you need a blank line between your list and the previous paragraph to begin a list.
 
 ```{r echo = FALSE, comment = ""}
 cat(htmltools::includeText("Examples/rmarkdown5.Rmd"))
@@ -136,7 +136,7 @@ which yields the following:
 
 
 ### Code chunks
-The simplest way to define a code chunk is to simply write:
+The simplest way to define a code chunk is to write:
 
 ```{r echo = FALSE, comment = ""}
 cat(htmltools::includeText("Examples/rmarkdown9.Rmd"))
@@ -225,7 +225,7 @@ ggplot(msleep, aes(brainwt, sleep_total)) +
       facet_wrap(~ vore)
 ```
 
-It looks nice, sure, but there may be things that you'd like to change. Maybe you'd like the background of the plot to be white instead of grey, or maybe you'd like to use a different font. These, and many other things, can be modified using _themes_.
+It looks nice, sure, but there may be things that you'd like to change. Maybe you'd like the plot's background to be white instead of grey, or perhaps you'd like to use a different font. These, and many other things, can be modified using _themes_.
 
 ### Using themes
 `ggplot2` comes with a number of basic themes. All are fairly similar, but differ in things like background colour, grids and borders. You can add them to your plot using `theme_themeName`\index{\texttt{theme\_...}}, where `themeName` is the name of the theme^[See `?theme_grey` for a list of available themes.]. Here are some examples:
@@ -271,7 +271,7 @@ p + theme_modern_rc() # Suitable for use with dark RStudio themes
 ```
 
 ### Colour palettes {#colourpalettes}
-Unlike e.g. background colours, the _colour palette_, i.e. the list of colours used for plotting, is actually not part of the theme that you're using. Next, we'll have a look at how to change the colour palette used for your plot.
+Unlike e.g. background colours, the _colour palette_, i.e. the list of colours used for plotting, is not part of the theme that you're using. Next, we'll have a look at how to change the colour palette used for your plot.
 
 Let's start by creating a `ggplot` object:
 
@@ -286,7 +286,7 @@ p <- ggplot(msleep, aes(brainwt, sleep_total, colour = vore)) +
 You can change the colour palette using `scale_colour_brewer`\index{\texttt{scale\_colour\_brewer}}\index{plot!choose colour palette}. Three types of colour palettes are available:
 
 * **Sequential palettes**: that range from a colour to white. These are useful for representing ordinal (i.e. ordered) categorical variables and numerical variables.
-* **Diverging palettes**: these range from one colour to another, with white in between. Diverging palettes are useful when there is a meaningful middle or 0 value (e.g. when your variables represents temperatures or profit/loss), which can be mapped to white.
+* **Diverging palettes**: these range from one colour to another, with white in between. Diverging palettes are useful when there is a meaningful middle or 0 value (e.g. when your variables represent temperatures or profit/loss), which can be mapped to white.
 * **Qualitative palettes**: which contain multiple distinct colours. These are useful for nominal (i.e. with no natural ordering) categorical variables.
 
 See `?scale_colour_brewer` or http://www.colorbrewer2.org for a list of the available palettes. Here are some examples:
@@ -303,9 +303,9 @@ p + scale_colour_brewer(palette = "Set1")
 In this case, because `vore` is a nominal categorical variable, a qualitative palette is arguably the best choice.
 
 ### Theme settings
-The point of using a theme is that you get a combination of colours, fonts and other choices that are supposed to go well together, meaning that you don't have to spend too much time on picking combinations. But if you like, you can override the default options and customise any and all parts of a theme.
+The point of using a theme is that you get a combination of colours, fonts and other choices that are supposed to go well together, meaning that you don't have to spend too much time picking combinations. But if you like, you can override the default options and customise any and all parts of a theme.
 
-The theme controls all visual aspects of the plot not related to the aesthethics. You can change the theme settings using the `theme` function. For instance, you can use `theme`\index{\texttt{theme}} to remove the legend, or change its position:
+The theme controls all visual aspects of the plot not related to the aesthetics. You can change the theme settings using the `theme` function. For instance, you can use `theme`\index{\texttt{theme}} to remove the legend or change its position:
 
 ```{r eval=FALSE}
 # No legend:
@@ -339,7 +339,7 @@ $$\sim$$
 ```{exercise, label="ch4exc0"}
 Use the documentation for `theme` and the `element_...` functions to change the plot object `p` created above as follows:
 
-1. Change the background colour of the the entire plot to `lightblue`.
+1. Change the background colour of the entire plot to `lightblue`.
 
 2. Change the font of the legend to `serif`.
 
@@ -352,7 +352,7 @@ Use the documentation for `theme` and the `element_...` functions to change the 
 
 
 ## Exploring distributions
-It is often useful to visualise the distribution of a numerical variable. Comparing the distributions of different groups can lead to important insights. Visualising distributions is also important when checking assumptions used for various statistical tests (sometimes called _initial data analysis_). In this section we will illustrate how this can be done using the `diamonds` data from the `ggplot2` package, which you started to explore in Chapter \@ref(thebasics).
+It is often useful to visualise the distribution of a numerical variable. Comparing the distributions of different groups can lead to important insights. Visualising distributions is also essential when checking assumptions used for various statistical tests (sometimes called _initial data analysis_). In this section we will illustrate how this can be done using the `diamonds` data from the `ggplot2` package, which you started to explore in Chapter \@ref(thebasics).
 
 ### Density plots and frequency polygons
 We already know how to visualise the distribution of the data by dividing it into bins and plotting a histogram:
@@ -379,7 +379,7 @@ ggplot(diamonds, aes(carat, colour = cut)) +
 
 It is clear from this figure that there are more diamonds with ideal cuts than diamonds with fair cuts in the data. The polygons have roughly the same shape, except perhaps for the polygon for diamonds with fair cuts.
 
-In some cases we are more interested in the shape of the distribution that in the actual counts in the different bins. Density plots\index{density plot} are similar to frequency polygons, but show an estimate of the density function of the underlying random variable. These estimates are smooth curves that are scaled so that the area below them is 1 (i.e. scaled to be proper density functions)\index{\texttt{geom\_density}}:
+In some cases, we are more interested in the shape of the distribution than in the actual counts in the different bins. Density plots\index{density plot} are similar to frequency polygons but show an estimate of the density function of the underlying random variable. These estimates are smooth curves that are scaled so that the area below them is 1 (i.e. scaled to be proper density functions)\index{\texttt{geom\_density}}:
 
 ```{r eval=FALSE}
 ggplot(diamonds, aes(carat, colour = cut)) +
@@ -399,7 +399,7 @@ Using the density plot created above and the documentation for `geom_density`, d
 
 3. Make the colours that fill the areas under the curves transparent.
 
-4. The figure still isn't that easy to interpret. Install and load the `ggridges`\index{\texttt{ggridges}} package, which is an extension of `ggplot2` that allows you to make so-called ridge plots (density plots that are separated along the y-axis, similar to facetting). Read the documentation for `geom_density_ridges`\index{\texttt{geom\_density\_ridges}} and use it to make a ridge plot of diamond prices for different cuts.
+4. The figure still isn't that easy to interpret. Install and load the `ggridges`\index{\texttt{ggridges}} package, an extension of `ggplot2` that allows you to make so-called ridge plots (density plots that are separated along the y-axis, similar to facetting). Read the documentation for `geom_density_ridges`\index{\texttt{geom\_density\_ridges}} and use it to make a ridge plot of diamond prices for different cuts.
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch4solutions9)
@@ -415,7 +415,7 @@ Return to the histogram created by `ggplot(diamonds, aes(carat)) + geom_histogra
 
 
 ### Asking questions
-Exercise \@ref(exr:ch4exc10) causes us to ask why diamonds with carat values that are multiples of 0.25 are more common that others. Perhaps price is involved? Unfortunately, a plot of carat versus price is not that informative:
+Exercise \@ref(exr:ch4exc10) causes us to ask why diamonds with carat values that are multiples of 0.25 are more common than others. Perhaps the price is involved? Unfortunately, a plot of `carat` versus `price` is not that informative:
 
 ```{r eval=FALSE}
 ggplot(diamonds, aes(carat, price)) +
@@ -438,7 +438,7 @@ carat_br <- hist(diamonds$carat, breaks = 481, right = FALSE,
 diamonds$carat_cat <- cut(diamonds$carat, 481, right = FALSE)
 ```
 
-We now have a variable, `carat_cat`, that shows which bin each observation belongs to. Next, we'd like to compute the mean for each bin. This is a grouped summary - mean by category. After we've computed the bin means, we could then plot them against the bin midpoints. Let's try it:
+We now have a variable, `carat_cat`, that shows to which bin each observation belongs. Next, we'd like to compute the mean for each bin. This is a grouped summary - mean by category. After we've computed the bin means, we could then plot them against the bin midpoints. Let's try it:
 
 ```{r eval=FALSE}
 means <- aggregate(price ~ carat_cat, data = diamonds, FUN = mean)
@@ -500,13 +500,13 @@ ggplot(d2, aes(bin, mean)) +
 ```
 `r if (knitr::is_html_output()) '</div></table>'`\etwocol
 
-It appears that there are small jumps in the prices at at least some of the 0.25-marks. This explains why there are more diamonds just above these marks than just below.
+It appears that there are small jumps in the prices at some of the 0.25-marks. This explains why there are more diamonds just above these marks than just below.
 
-The above example illustrates three important things regarding exploratory data analysis:
+The above example illustrates three crucial things regarding exploratory data analysis:
 
 * Plots (in our case, the histogram) often lead to new questions.
 
-* A lot of the time we must transform, summarise or otherwise manipulate our data to answer a question. Sometimes this is straightforward and sometimes it means diving deep into R code.
+* Often, we must transform, summarise or otherwise manipulate our data to answer a question. Sometimes this is straightforward and sometimes it means diving deep into R code.
 
 * Sometimes the thing that we're trying to do doesn't work straight away. There is almost always a solution though (and oftentimes more than one!). The more you work with R, the more problem-solving tricks you will learn.
 
@@ -593,7 +593,7 @@ plot4 <- ggplot(diamonds, aes(carat, fill = cut)) +
 ## Outliers and missing data
 
 ### Detecting outliers
-Both boxplots and scatterplots are useful for detecting deviating observations - often called outliers. Outliers can be caused by measurement errors or errors in the data input, but can also be interesting rare cases that can provide valuable insights about the process that generated the data. Either way, it is often of interest to detect outliers, for instance because that may influence the choice of what statistical tests to use.
+Both boxplots and scatterplots are helpful in detecting deviating observations - often called outliers. Outliers can be caused by measurement errors or errors in the data input but can also be interesting rare cases that can provide valuable insights about the process that generated the data. Either way, it is often of interest to detect outliers, for instance because that may influence the choice of what statistical tests to use.
 
 Let's return to the scatterplot of diamond carats versus prices:
 
@@ -642,9 +642,9 @@ The variables `x` and `y` in the `diamonds` data describe the length and width o
 
 
 ### Labelling outliers
-Interactive plots are great when exploring a dataset, but are not always possible to use in other contexts, e.g. for printed reports and some presentations. In these other cases, we can instead annotate the plot with notes about outliers. One way to do this is to use a geom called `geom_text`\index{\texttt{geom\_text}}. 
+Interactive plots are great when exploring a dataset but are not always possible to use in other contexts, e.g. for printed reports and some presentations. In these other cases, we can instead annotate the plot with notes about outliers. One way to do this is to use a geom called `geom_text`\index{\texttt{geom\_text}}. 
 
-For instance, we may want to add the row numbers of outliers to a plot. To do so, we use `geom_text` along with a condition that specifies which points we should add annotations for. Like in Section \@ref(conditionsintro), if we e.g. wish to add row numbers for diamonds with carats greater than four, our condition would be `carat > 4`. The `ifelse` function, which we'll look closer at in Section \@ref(conditions), is perfect to use here. The syntax\index{\texttt{ifelse}} will be `ifelse(condition, what text to write if condition is satisfied, what text to write else)`. To add row names for observations that satisfy the condition but not for other observations, we use `ifelse(condition, rownames(diamonds), "")`. If instead we wanted to print the price of the diamonds, we'd use `ifelse(condition, price, "")` instead.
+For instance, we may want to add the row numbers of outliers to a plot. To do so, we use `geom_text` along with a condition that specifies for which points we should add annotations. Like in Section \@ref(conditionsintro), if we e.g. wish to add row numbers for diamonds with carats greater than four, our condition would be `carat > 4`. The `ifelse` function, which we'll look closer at in Section \@ref(conditions), is perfect to use here. The syntax\index{\texttt{ifelse}} will be `ifelse(condition, what text to write if the condition is satisfied, what text to write else)`. To add row names for observations that fulfil the condition but not for other observations, we use `ifelse(condition, rownames(diamonds), "")`. If instead, we wanted to print the price of the diamonds, we'd use `ifelse(condition, price, "")`.
 
 Here are some different examples of conditions used to plot text:
 
@@ -701,7 +701,7 @@ We can count the number of missing values for each variable using\index{\texttt{
 colSums(is.na(msleep))
 ```
 
-Here, `colSums` computes the sum of `is.na(msleep)` for each column of `msleep` (remember than in summation, `TRUE` counts as `1` and `FALSE` as `0`), yielding the number of missing values for each variable. In total there are 136 missing values in the dataset:
+Here, `colSums` computes the sum of `is.na(msleep)` for each column of `msleep` (remember that in summation, `TRUE` counts as `1` and `FALSE` as `0`), yielding the number of missing values for each variable. In total, there are 136 missing values in the dataset:
 
 ```{r eval=FALSE}
 sum(is.na(msleep))
@@ -715,7 +715,7 @@ ggplot(msleep, aes(brainwt, sleep_total)) +
       scale_x_log10()
 ```
 
-Sometimes data are missing simply because the information is not yet available (for instance, the brain weight of the mountain beaver could be missing because no one has ever weighed the brain of a mountain beaver). In other cases, data can be missing because something about them are different (for instance, values for a male patient in a medical trial can be missing because the patient died, or because some values only were collected for female patients). It is therefore of interest to see if there are any differences in non-missing variables between subjects that have missing data and subjects that don't.
+Sometimes data are missing simply because the information is not yet available (for instance, the brain weight of the mountain beaver could be missing because no one has ever weighed the brain of a mountain beaver). In other cases, data can be missing because something about them is different (for instance, values for a male patient in a medical trial can be missing because the patient died, or because some values only were collected for female patients). Therefore, it is of interest to see if there are any differences in non-missing variables between subjects that have missing data and subjects that don't.
 
 In `msleep`, all animals have recorded values for `sleep_total` and `bodywt`. To check if the animals that have missing `brainwt` values differ from the others, we can plot them in a different colour in a scatterplot:
 
@@ -725,7 +725,7 @@ ggplot(msleep, aes(bodywt, sleep_total, colour = is.na(brainwt))) +
       scale_x_log10()
 ```
 
-(If `is.na(brainwt)` is `TRUE` then the brain weight is missing in the dataset.) In this case, there are no obvious differences between the animals with missing data and those without.
+(If `is.na(brainwt)` is `TRUE` then the brain weight is missing in the dataset.) In this case, there are no apparent differences between the animals with missing data and those without.
 
 $$\sim$$
 
@@ -748,7 +748,7 @@ flights2 <- flights[flights$month == 1 & flights$day == 1,]
 $$\sim$$
 
 ```{exercise, label="ch4exc15"}
-Explore the `flights2` dataset, focusing on delays and amount of time spent in the air. Are there any differences between the different carriers? Are there missing data? Are there any outliers?
+Explore the `flights2` dataset, focusing on delays and the amount of time spent in the air. Are there any differences between the different carriers? Are there missing data? Are there any outliers?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch4solutions15)
@@ -798,7 +798,7 @@ Check the documentation for `geom_smooth`. Starting with the plot of brain weigh
 
 
 ## Exploring time series {#tsplots}
-Before we have a look at time series, you should install four useful packages: `forecast`, `nlme`, `fma` and `fpp2`\index{\texttt{forecast}}\index{\texttt{nlme}}\index{\texttt{fma}}\index{\texttt{fpp2}}. The first contains useful functions for plotting time series data and the latter three contain datasets that we'll use.
+Before we have a look at time series, you should install four useful packages: `forecast`, `nlme`, `fma` and `fpp2`\index{\texttt{forecast}}\index{\texttt{nlme}}\index{\texttt{fma}}\index{\texttt{fpp2}}. The first contains useful functions for plotting time series data, and the latter three contain datasets that we'll use.
 
 ```{r eval=FALSE}
 install.packages(c("nlme", "forecast", "fma", "fpp2"),
@@ -862,7 +862,7 @@ library(forecast)
 autoplot(gold)
 ```
 
-There is a sharp spike a few weeks before day 800, which is due to an incorrect value in the data series. We'd like to add a note about that to the plot. First, we wish to find out on which day the spike appears. This can be done by checking the data manually, or using some code:
+There is a sharp spike a few weeks before day 800, which is due to an incorrect value in the data series. We'd like to add a note about that to the plot. First, we wish to find out on which day the spike appears. This can be done by checking the data manually or using some code:
 
 ```{r eval=FALSE}
 spike_date <- which.max(gold)
@@ -903,7 +903,7 @@ library(fpp2)
 autoplot(elecdaily)
 ```
 
-In this case, it is probably a good idea to facet the data, i.e. to plot each series in a separate figure:
+In this case, it is probably a good idea to facet the data, i.e. to plot each series in a different figure:
 
 ```{r eval=FALSE}
 autoplot(elecdaily, facets = TRUE)
@@ -914,7 +914,7 @@ $$\sim$$
 ```{exercise, label="ch4exc4"}
 Make the following changes to the `autoplot(elecdaily, facets = TRUE)`:
 
-1. Remove the `WorkDay` variable from the plot (it describes whether or not a given date is a work day, and while it is useful for modelling purposes, we do not wish to include it in our figure).
+1. Remove the `WorkDay` variable from the plot (it describes whether or not a given date is a workday, and while it is useful for modelling purposes, we do not wish to include it in our figure).
 
 2. Add smoothed trend lines to the time series plots.
 
@@ -923,7 +923,7 @@ Make the following changes to the `autoplot(elecdaily, facets = TRUE)`:
 
 
 ### Path plots
-Another option for plotting multiple time series is path plots\index{path plot}. A path plot is a scatterplot where the points are connected with lines in the order that they appear in the data (which, for time series data, should correspond to time). The lines and points can be coloured to represent time.
+Another option for plotting multiple time series is path plots\index{path plot}. A path plot is a scatterplot where the points are connected with lines in the order they appear in the data (which, for time series data, should correspond to time). The lines and points can be coloured to represent time.
 
 To make a path plot of Temperature versus Demand for the `elecdaily` data, we first convert the time series object to a data frame and create a scatterplot:
 
@@ -941,7 +941,7 @@ ggplot(as.data.frame(elecdaily), aes(Temperature, Demand)) +
       geom_path()
 ```
 
-The resulting figure is quite messy. Using colour to indicate the passing of time helps a little. For this, we need to add the day of the year to the data frame. To get the values right, we use `nrow`\index{\texttt{nrow}}\index{data frame!number of rows} which gives us the number of rows in the data frame.
+The resulting figure is quite messy. Using colour to indicate the passing of time helps a little. For this, we need to add the day of the year to the data frame. To get the values right, we use `nrow`\index{\texttt{nrow}}\index{data frame!number of rows}, which gives us the number of rows in the data frame.
 
 ```{r eval=FALSE}
 elecdaily2 <- as.data.frame(elecdaily)
@@ -952,7 +952,7 @@ ggplot(elecdaily2, aes(Temperature, Demand, colour = day)) +
       geom_path()
 ```
 
-It becomes clear from the plot that temperatures were the highest at the beginning of the year, and lower in the winter months (July-August).
+It becomes clear from the plot that temperatures were the highest at the beginning of the year and lower in the winter months (July-August).
 
 $$\sim$$
 
@@ -1018,7 +1018,7 @@ Figure out how to produce a spaghetti plot of the `Oxboys` data with a single re
 
 
 ### Seasonal plots and decompositions {#stlsec}
-The `forecast` packages includes a number of useful functions when working with time series. One of them is `ggseasonplot`\index{\texttt{ggseasonplot}}\index{seasonal plot}, which allows us to easily create a spaghetti plot of different periods of a time series with seasonality, i.e. with patterns that repeat seasonally over time. It works similar to the `autoplot` function, in that it replaces the `ggplot(data, aes) + geom` part of the code.
+The `forecast` package includes a number of useful functions when working with time series. One of them is `ggseasonplot`\index{\texttt{ggseasonplot}}\index{seasonal plot}, which allows us to easily create a spaghetti plot of different periods of a time series with seasonality, i.e. with patterns that repeat seasonally over time. It works similar to the `autoplot` function, in that it replaces the `ggplot(data, aes) + geom` part of the code.
 
 ```{r eval=FALSE}
 library(forecast)
@@ -1066,7 +1066,7 @@ Investigate the `writing`\index{data!\texttt{writing}} dataset from the `fma` pa
 
 
 ### Detecting changepoints
-The `changepoint`\index{\texttt{changepoint}}\index{time series!changepoint} package contains a number of methods for detecting _changepoints_ in time series, i.e. timepoints at which either the mean or the variance of the series changes. Finding changepoints can be important for detecting changes in the process underlying the time series. The `ggfortify`\index{\texttt{ggfortify}} package extends `ggplot2` by adding `autoplot` functions for a variety of tools, including those in `changepoint`.\index{\texttt{cpt.mean}}\index{\texttt{cpt.var}}\index{\texttt{cpt.meanvar}} Let's install the packages:
+The `changepoint`\index{\texttt{changepoint}}\index{time series!changepoint} package contains a number of methods for detecting _changepoints_ in time series, i.e. time points at which either the mean or the variance of the series changes. Finding changepoints can be important for detecting changes in the process underlying the time series. The `ggfortify`\index{\texttt{ggfortify}} package extends `ggplot2` by adding `autoplot` functions for a variety of tools, including those in `changepoint`.\index{\texttt{cpt.mean}}\index{\texttt{cpt.var}}\index{\texttt{cpt.meanvar}} Let's install the packages:
 
 ```{r eval=FALSE}
 install.packages(c("changepoint", "ggfortify"))
@@ -1124,7 +1124,7 @@ myPlot <- autoplot(elecdaily[,"Demand"])
 ggplotly(myPlot)
 ```
 
-When you hover the mouse pointer over a point, a box appears, which displays information about that data point. Unfortunately, the date formatting isn't great in this example - dates are shown as weeks with decimal points. We'll see how to fix this in Section \@ref(datetime). 
+When you hover the mouse pointer over a point, a box appears, displaying information about that data point. Unfortunately, the date formatting isn't great in this example - dates are shown as weeks with decimal points. We'll see how to fix this in Section \@ref(datetime). 
 
 
 ## Using polar coordinates {#polar}
@@ -1191,7 +1191,7 @@ ggplot(msleep, aes(factor(1), fill = vore)) +
       geom_bar()
 ```
 
-What would happen if we plotted this figure in a polar coordinate system instead? If we map height of the bars (the y-axis of the Cartesian coordinate system) to both the angle and the radial distance, we end up with a pie chart:
+What would happen if we plotted this figure in a polar coordinate system instead? If we map the height of the bars (the y-axis of the Cartesian coordinate system) to both the angle and the radial distance, we end up with a pie chart:
 
 ```{r eval=FALSE}
 ggplot(msleep, aes(factor(1), fill = vore)) +
@@ -1220,7 +1220,7 @@ ggplot(msleep, aes(vore, fill = vore)) +
 ### Scatterplot matrices {#scatterplotmatrix}
 When we have a large enough number of `numeric` variables in our data, plotting scatterplots of all pairs of variables becomes tedious. Luckily there are some R functions that speed up this process.
 
-The `GGally`\index{\texttt{GGally}} package is an extension to `ggplot2` which contains several functions for plotting multivariate data. They work similar to the `autoplot` functions that we have used in previous sections. One of these is `ggpairs`\index{\texttt{ggpairs}}, which creates a scatterplot matrix\index{scatterplot matrix}, that is, a grid with scatterplots of all pairs of variables in `data`. In addition, it also plots density estimates (along the diagonal) and shows the (Pearson) correlation for each pair. Let's start by installing `GGally`:
+The `GGally`\index{\texttt{GGally}} package is an extension to `ggplot2` which contains several functions for plotting multivariate data. They work similarly to the `autoplot` functions that we have used in previous sections. One of these is `ggpairs`\index{\texttt{ggpairs}}, which creates a scatterplot matrix\index{scatterplot matrix}, a grid with scatterplots of all pairs of variables in `data`. In addition, it also plots density estimates (along the diagonal) and shows the (Pearson) correlation for each pair. Let's start by installing `GGally`:
 
 ```{r eval=FALSE}
 install.packages("GGally")
@@ -1276,7 +1276,7 @@ plot(airquality)
 $$\sim$$
 
 ```{exercise, label="ch4exc16"}
-Create a scatterplot matrix for all `numeric` variables in `diamonds`. Differentiate different cuts by colour. Add a suitable title to the plot. (`diamonds` is a fairly large dataset and it may take a minute or so for R to create the plot.)
+Create a scatterplot matrix for all `numeric` variables in `diamonds`. Differentiate different cuts by colour. Add a suitable title to the plot. (`diamonds` is a fairly large dataset, and it may take a minute or so for R to create the plot.)
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch4solutions16)
@@ -1321,9 +1321,9 @@ Using the `diamonds` dataset and the documentation for `ggcorr`, do the followin
 
 
 ### Adding more variables to scatterplots
-We have already seen how scatterplots can be used to visualise two continuous and one categorical variable, by plotting the two continuous variables against each other and using the categorical variable to set the colours of the points. There are however more ways we can incorporate information about additional variables into a scatterplot.
+We have already seen how scatterplots can be used to visualise two continuous and one categorical variable by plotting the two continuous variables against each other and using the categorical variable to set the colours of the points. There are however more ways we can incorporate information about additional variables into a scatterplot.
 
-So far, we have set three aesthethics in our scatterplots: `x`, `y` and `colour`. Two other important aesthetics are `shape`\index{\texttt{aes}!\texttt{shape}} and `size`\index{\texttt{aes}!\texttt{size}} which, as you'd expect, allow us to control the shape and size of the points. As a first example using the `msleep` data, we use feeding behaviour (`vore`) to set the shapes used for the points:
+So far, we have set three aesthetics in our scatterplots: `x`, `y` and `colour`. Two other important aesthetics are `shape`\index{\texttt{aes}!\texttt{shape}} and `size`\index{\texttt{aes}!\texttt{size}}, which, as you'd expect, allow us to control the shape and size of the points. As a first example using the `msleep` data, we use feeding behaviour (`vore`) to set the shapes used for the points:
 
 ```{r eval=FALSE}
 ggplot(msleep, aes(brainwt, sleep_total, shape = vore)) +
@@ -1472,7 +1472,7 @@ ggplot(diamonds, aes(color, cut)) +
       geom_count()
 ```
 
-However, it is often better to use colour rather than point size to visualise counts, which we can do using a tile plot. First we have to compute the counts though\index{count occurences}, using `aggregate`. We now wish to have two grouping variables, `color` and `cut`, which we can put on the right-hand side of the formula as follows:
+However, it is often better to use colour rather than point size to visualise counts, which we can do using a tile plot. First, we have to compute the counts though\index{count occurences}, using `aggregate`. We now wish to have two grouping variables, `color` and `cut`, which we can put on the right-hand side of the formula as follows:
 
 ```{r eval=FALSE}
 diamonds2 <- aggregate(carat ~ cut + color, data = diamonds,
@@ -1480,7 +1480,7 @@ diamonds2 <- aggregate(carat ~ cut + color, data = diamonds,
 diamonds2
 ```
 
-`diamonds2` is now a data frame containing the different combinations of `color` and `cut` along with counts of how many diamonds that belong to each combination (labelled `carat`, because we put `carat` in our formula). Let's change the name of the last column from `carat` to `Count`:
+`diamonds2` is now a data frame containing the different combinations of `color` and `cut` along with counts of how many diamonds belong to each combination (labelled `carat`, because we put `carat` in our formula). Let's change the name of the last column from `carat` to `Count`:
 
 ```{r eval=FALSE}
 names(diamonds2)[3] <- "Count"
@@ -1507,7 +1507,7 @@ Using the `diamonds` dataset, do the following:
 
 1. Use a plot to find out what the most common combination of cut and clarity is.
 
-2. Use a plot to find out which combination of cut and clarity that has the highest average price.
+2. Use a plot to find out which combination of cut and clarity has the highest average price.
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch4solutions20)
@@ -1533,8 +1533,8 @@ Do the following using the `gapminder` dataset:
 
 1. Create a scatterplot matrix showing life expectancy, population and GDP per capita for all countries, using the data from the year 2007. Use colours to differentiate countries from different continents. Note: you'll probably need to add the argument `upper = list(continuous = "na")` when creating the scatterplot matrix. By default, correlations are shown above the diagonal, but the fact that there only are two countries from Oceania will cause a problem there - at least 3 points are needed for a correlation test.
 
-2. Create an interactive bubble plot, showing information about each country when you hover the points. Use data from the year 2007. Put log(GDP per capita) on the x-axis and life expetancy on the y-axis. Let population determine point size. Plot each country in a different colour and facet by continent.
-Tip: the `gapminder` package provides a pretty color scheme for different countries, called `country_colors`. You can use that scheme by adding `scale_colour_manual(values = country_colors)` to your plot.
+2. Create an interactive bubble plot, showing information about each country when you hover the points. Use data from the year 2007. Put log(GDP per capita) on the x-axis and life expectancy on the y-axis. Let population determine point size. Plot each country in a different colour and facet by continent.
+Tip: the `gapminder` package provides a pretty colour scheme for different countries, called `country_colors`. You can use that scheme by adding `scale_colour_manual(values = country_colors)` to your plot.
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch4solutions21)
@@ -1559,9 +1559,9 @@ Use graphics to answer the following questions regarding the `planes` dataset:
 
 
 ## Principal component analysis {#pca}
-If there are a lot of variables in your data, it can often be difficult to detect differences between groups, or to create a perspicuous visualisation. A useful tool in this context is _principal component analysis_ (PCA, for short)\index{principal component analysis}, which can reduce high-dimensional data to a lower number of variables that can be visualised in one or two scatterplots. The idea is to compute new variables, called _principal components_, that are linear combinations of the original variables^[A linear combination is a weighted sum of the form $a_1x_1+a_2x_2+\cdots+a_px_p$. If you like, you can think of principal components as weighted averages of variables, computed for each row in your data.]. These are constructed with two goals in mind: the principal components should capture as much of the variance in the data as possible, and each principal component should be uncorrelated to the other components. You can then plot the principal components to get a low-dimensional representation of your data, which hopefully captures most of its variation. 
+If there are many variables in your data, it can often be difficult to detect differences between groups or create a perspicuous visualisation. A useful tool in this context is _principal component analysis_ (PCA, for short)\index{principal component analysis}, which can reduce high-dimensional data to a lower number of variables that can be visualised in one or two scatterplots. The idea is to compute new variables, called _principal components_, that are linear combinations of the original variables^[A linear combination is a weighted sum of the form $a_1x_1+a_2x_2+\cdots+a_px_p$. If you like, you can think of principal components as weighted averages of variables, computed for each row in your data.]. These are constructed with two goals in mind: the principal components should capture as much of the variance in the data as possible, and each principal component should be uncorrelated to the other components. You can then plot the principal components to get a low-dimensional representation of your data, which hopefully captures most of its variation. 
 
-By design, the number of principal components computed are as many as the original number of variables, with the first having the largest variance, the second the second largest variance, and so on. We hope that it will suffice to use just the first few of these to represent most of the variation in the data, but this is not guaranteed. Principal component analysis is more likely to yield a useful result if several variables are correlated.
+By design, the number of principal components computed are as many as the original number of variables, with the first having the largest variance, the second having the second largest variance, and so on. We hope that it will suffice to use just the first few of these to represent most of the variation in the data, but this is not guaranteed. Principal component analysis is more likely to yield a useful result if several variables are correlated.
 
 To illustrate the principles of PCA we will use a dataset from Charytanowicz et al. (2010), containing measurements on wheat kernels for three varieties of wheat. A description of the variables is available at
 
@@ -1587,7 +1587,7 @@ library(GGally)
 ggpairs(seeds[, -8], aes(colour = seeds$Variety, alpha = 0.2))
 ```
 
-Moreover, for presentation purposes the amount of information in the scatterplot matrix is a bit overwhelming. It would be nice to be able to present the data in a single scatterplot, without losing too much information. We'll therefore compute the principal components using the `prcomp` function\index{\texttt{prcomp}}. It is usually recommended that PCA is performed using standardised data, i.e. using data that has been scaled to have mean 0 and standard deviation 1. The reason for this is that it puts all variables on the same scale. If we don't standardise our data then variables that have a high variance will completely dominate the principal components. This isn't desirable, as variance is affected by the scale of the measurements, meaning that the choice of measurement scale would influence the results (as an example, the variance of kernel length will be a million times greater if lengths are measured in millimetres instead of in metres).
+Moreover, for presentation purposes, the amount of information in the scatterplot matrix is a bit overwhelming. It would be nice to be able to present the data in a single scatterplot, without losing too much information. We'll therefore compute the principal components using the `prcomp` function\index{\texttt{prcomp}}. It is usually recommended that PCA is performed using standardised data, i.e. using data that has been scaled to have mean 0 and standard deviation 1. The reason for this is that it puts all variables on the same scale. If we don't standardise our data then variables with a high variance will completely dominate the principal components. This isn't desirable, as variance is affected by the scale of the measurements, meaning that the choice of measurement scale would influence the results (as an example, the variance of kernel length will be a million times greater if lengths are measured in millimetres instead of in metres).
 
 We don't have to standardise the data ourselves, but can let `prcomp` do that for us using the arguments `center = TRUE` (to get mean 0) and `scale. = TRUE` (to get standard deviation 1):
 
@@ -1618,7 +1618,7 @@ To visualise this, we can draw a _scree plot_, which shows the variance of each 
 screeplot(pca, type = "lines")
 ```
 
-We can use this to choose how many principal components to use when visualising or summarising our data. In that case, we look for an "elbow", i.e. a bend after which increases the number of components doesn't increase amount of variance explained much.
+We can use this to choose how many principal components to use when visualising or summarising our data. In that case, we look for an "elbow", i.e. a bend after which increases the number of components doesn't increase the amount of variance explained much.
 
 We can access the values of the principal components using `pca$x`. Let's check that the first two components really are uncorrelated:
 
@@ -1645,7 +1645,7 @@ autoplot(pca, data = seeds, colour = "Variety",
 
 Here, the separation is nowhere near as clear as in the previous figure. In this particular example, plotting the first two principal components is the better choice.
 
-Judging from these plots, it appears that the kernel measurements can be used to discriminate between the three varieties of wheat. In Chapters \@ref(modchapter) and \@ref(mlchapter) you'll learn how to use R to build models that can be used to do just that, e.g. by predicting which variety of wheat a kernel comes from given its measurements. If we wanted to build a statistical model that could be used for this purpose, we could use the original measurements. But we could also try using the first two principal components as the only input to the model. Principal component analysis is very useful as a pre-processing tool, used to create simpler models that are based on fewer variables (or ostensibly simpler, because the new variables are typically more difficult to interpret than the original ones).
+Judging from these plots, it appears that the kernel measurements can be used to discriminate between the three varieties of wheat. In Chapters \@ref(modchapter) and \@ref(mlchapter) you'll learn how to use R to build models that can be used to do just that, e.g. by predicting which variety of wheat a kernel comes from given its measurements. If we wanted to build a statistical model that could be used for this purpose, we could use the original measurements. But we could also try using the first two principal components as the only input to the model. Principal component analysis is very useful as a pre-processing tool, used to create simpler models based on fewer variables (or ostensibly simpler, because the new variables are typically more difficult to interpret than the original ones).
 
 $$\sim$$
 
@@ -1674,7 +1674,7 @@ Return to the scatterplot of the first two principal components for the `seeds` 
 
 
 ## Cluster analysis {#clustering}
-Cluster analysis is concerned with grouping observations into groups, _clusters_\index{clustering}, that in some sense are similar. Numerous methods are available for this task, approaching the problem from different angles. Many of these are available in the `cluster`\index{\texttt{cluster}} package, that ships with R. In this section, we'll have a look at a smorgasbord of clustering techniques.
+Cluster analysis is concerned with grouping observations into groups, _clusters_\index{clustering}, that in some sense are similar. Numerous methods are available for this task, approaching the problem from different angles. Many of these are available in the `cluster`\index{\texttt{cluster}} package, which ships with R. In this section, we'll look at a smorgasbord of clustering techniques.
 
 ### Hierarchical clustering
 As a first example where clustering can be of interest\index{clustering!hierarchical}, we'll consider the `votes.repub`\index{data!\texttt{votes.repub}} data from `cluster`. It describes the proportion of votes for the Republican candidate in US presidential elections from 1856 to 1976 in 50 different states:
@@ -1687,7 +1687,7 @@ View(votes.repub)
 
 We are interested in finding subgroups - clusters - of states with similar voting patterns.
 
-To find clusters of similar observations (states, in this case), we could start by assigning each observation to its own cluster. We'd then start with 50 clusters, one for each observation. Next, we could merge the two clusters that are the most similar, yielding 49 clusters, one of which consisted of two observations and 48 consisting of a single observation. We could repeat this process, merging the two most similar clusters in each iteration, until only a single cluster was left. This would give us a _hierarchy_ of clusters, which could be plotted in a tree-like structure, where observations from the same cluster would be one the same branch. Like this:
+To find clusters of similar observations (states, in this case), we could start by assigning each observation to its own cluster. We'd then start with 50 clusters, one for each observation. Next, we could merge the two clusters that are the most similar, yielding 49 clusters, one of which consisted of two observations and 48 consisting of a single observation. We could repeat this process, merging the two most similar clusters in each iteration until only a single cluster was left. This would give us a _hierarchy_ of clusters, which could be plotted in a tree-like structure, where observations from the same cluster would be one the same branch. Like this:
 
 ```{r eval=FALSE}
 clusters_agnes <- agnes(votes.repub)
@@ -1696,7 +1696,7 @@ plot(clusters_agnes, which = 2)
 
 This type of plot is known as a _dendrogram_\index{clustering!dendrogram}.
 
-We've just used `agnes`\index{\texttt{agnes}}, a function from `cluster` that can be used to carry out _hierarchical clustering_ in the manner described above. There are a couple of things that need to be clarified though.
+We've just used `agnes`\index{\texttt{agnes}}, a function from `cluster` that can be used to carry out _hierarchical clustering_ in the manner described above. There are a couple of things that need to be clarified, though.
 
 First, how do we measure how similar two $p$-dimensional observations $x$ and $y$ are? `agnes` provides two measures of distance between points\index{clustering!distance measure}:
 
@@ -1746,7 +1746,7 @@ votes.repub %>% scale() %>%
                 plot(which = 2, hang = -1)
 ```
 
-As an alternative to `agnes`, we can consider `diana`\index{\texttt{diana}}. `agnes` is an _agglomerative_ methods, which starts with a lot of clusters and then merge them step-by-step. `diana`, in contrast, is a _divisive_ method, which starts with one large cluster and then step-by-step splits it into several smaller clusters.
+As an alternative to `agnes`, we can consider `diana`\index{\texttt{diana}}. `agnes` is an _agglomerative_ method, which starts with a lot of clusters and then merge them step-by-step. `diana`, in contrast, is a _divisive_ method, which starts with one large cluster and then step-by-step splits it into several smaller clusters.
 
 ```{r eval=FALSE}
 votes.repub %>% scale() %>%
@@ -1780,7 +1780,7 @@ tanglegram(as.dendrogram(clusters_agnes),
 
 Some clusters are quite similar here, whereas others are very different.
 
-A lot of the time, we are interested in finding a comparatively small number of clusters, $k$. In hierarchical clustering, we can reduce the number of clusters by "cutting" the dendrogram tree. To do so using the `factoextra` package, we first use `hcut`\index{\texttt{hcut}} to cut the tree into $k$ parts, and then `fviz_dend`\index{\texttt{fviz\_dend}} to plot the dendrogram, with each cluster plotted in a different colour. If, for instance, we want $k=5$ clusters^[Just to be clear, 5 is just an arbitrary number here. We could of course want 4, 14, or any other number of clusters.] and want to use `agnes` with average linkage and Euclidean distance for the clustering, we'd do the following:
+Often, we are interested in finding a comparatively small number of clusters, $k$. In hierarchical clustering, we can reduce the number of clusters by "cutting" the dendrogram tree. To do so using the `factoextra` package, we first use `hcut`\index{\texttt{hcut}} to cut the tree into $k$ parts, and then `fviz_dend`\index{\texttt{fviz\_dend}} to plot the dendrogram, with each cluster plotted in a different colour. If, for instance, we want $k=5$ clusters^[Just to be clear, 5 is just an arbitrary number here. We could of course want 4, 14, or any other number of clusters.] and want to use `agnes` with average linkage and Euclidean distance for the clustering, we'd do the following:
 
 ```{r eval=FALSE}
 library(factoextra)
@@ -1811,7 +1811,7 @@ Continue the last example above by changing the clustering method to complete li
 <br>
 
 ```{exercise, label="ch4exc25b"}
-The `USArrests`\index{data!\texttt{USArrests}} data contains statistics on violent crime rates in 50 US states. Perform a hierarchical cluster analysis of the data. Which states are Maryland clustered with?
+The `USArrests`\index{data!\texttt{USArrests}} data contains statistics on violent crime rates in 50 US states. Perform a hierarchical cluster analysis of the data. With which states are Maryland clustered?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch4solutions25b)
@@ -1828,7 +1828,7 @@ votes.repub %>% as.matrix() %>% heatmap()
 
 You may want to increase the height of your Plot window so that the names of all states are displayed properly. Using the default colours, low values are represented by a light yellow and high values by a dark red. White represents missing values.
 
-You'll notice that dendrograms are plotted along the margins. `heatmap` performs hierarchical clustering (by default, agglomerative with complete linkage) of the observations as well as of the variables. In the latter case, variables are grouped together based on _similarities between observations_, which creates _clusters of variables_\index{clustering!of variables}. In essence, this is just a hierarchical clustering of the transposed data matrix, but it does offer a different view of the data, which at times can be very revealing. The rows and columns are sorted according to the two hierarchical clusterings.
+You'll notice that dendrograms are plotted along the margins. `heatmap` performs hierarchical clustering (by default, agglomerative with complete linkage) of the observations as well as of the variables. In the latter case, variables are grouped together based on _similarities between observations_, creating _clusters of variables_\index{clustering!of variables}. In essence, this is just a hierarchical clustering of the transposed data matrix, but it does offer a different view of the data, which at times can be very revealing. The rows and columns are sorted according to the two hierarchical clusterings.
 
 As per usual, it is a good idea to standardise the data before clustering, which can be done using the `scale` argument in `heatmap`. There are two options for scaling, either in the row direction (preferable if you wish to cluster variables) or the column direction (preferable if you wish to cluster observations):
 
@@ -1840,7 +1840,7 @@ votes.repub %>% as.matrix() %>% heatmap(scale = "row")
 votes.repub %>% as.matrix() %>% heatmap(scale = "col")
 ```
 
-Looking at the first of these plots, we can see which elections (i.e. which variables) that had similar outcomes in terms of Republican votes. For instance, we can see that the elections in 1960, 1976, 1888, 1884, 1880, and 1876 all had similar outcomes, with the large number of orange rows indicating that the Republicans neither did great nor did poorly.
+Looking at the first of these plots, we can see which elections (i.e. which variables) had similar outcomes in terms of Republican votes. For instance, we can see that the elections in 1960, 1976, 1888, 1884, 1880, and 1876 all had similar outcomes, with the large number of orange rows indicating that the Republicans neither did great nor did poorly.
 
 If you like, you can change the colour palette used. As in Section \@ref(colourpalettes), you can choose between palettes from http://www.colorbrewer2.org. `heatmap` is not a `ggplot2` function, so this is done in a slightly different way to what you're used to from other examples\index{\texttt{colorRampPalette}}\index{\texttt{brewer.pal}}. Here are two examples, with the white-blue-purple sequential palette `"BuPu"` and the red-white-blue diverging palette `"RdBu"`:
 
@@ -1858,7 +1858,7 @@ votes.repub %>% as.matrix() %>%
 $$\sim$$
 
 ```{exercise, label="ch4exc25c"}
-Draw a heatmap for the `USArrests` data. Have a look at Maryland and the states that it is clustered with. Do they have high or low crime rates?
+Draw a heatmap for the `USArrests` data. Have a look at Maryland and the states with which it is clustered. Do they have high or low crime rates?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch4solutions25c)
@@ -1876,7 +1876,7 @@ seeds <- read.table("https://tinyurl.com/seedsdata",
 seeds$Variety <- factor(seeds$Variety)
 ```
 
-We know that there are three varieties of seeds in this dataset, but what if we didn't? Or what if we'd lost the labels, and don't know what seeds are of what type? There are no rows names for this data, and plotting a dendrogram may therefore not be that useful. Instead, we can use $k$-means clustering\index{clustering!$k$-means}\index{clustering!centroid}, where the the points are clustered into $k$ clusters based on their distances to the cluster means, or _centroids_.
+We know that there are three varieties of seeds in this dataset, but what if we didn't? Or what if we'd lost the labels and didn't know what seeds are of what type? There are no rows names for this data, and plotting a dendrogram may therefore not be that useful. Instead, we can use $k$-means clustering\index{clustering!$k$-means}\index{clustering!centroid}, where the points are clustered into $k$ clusters based on their distances to the cluster means, or _centroids_.
 
 When performing $k$-means clustering (using the algorithm of Hartigan & Wong (1979) that is the default in the function that we'll use), the data is split into $k$ clusters based on their distance to the mean of all points. Points are then moved between clusters, one at a time, based on how close they are (as measured by Euclidean distance) to the mean of each cluster. The algorithm finishes when no point can be moved between clusters without increasing the average distance between points and the means of their clusters.
 
@@ -1903,7 +1903,7 @@ autoplot(pca, data = seeds, colour = seeds_cluster$cluster,
          shape = "Variety", size = 2, alpha = 0.75)
 ```
 
-In this case, the clusters more or less overlap with the varieties! Of course, in a lot of cases we don't know the number of clusters beforehand. What happens if we change $k$?
+In this case, the clusters more or less overlap with the varieties! Of course, in a lot of cases, we don't know the number of clusters beforehand. What happens if we change $k$?
 
 First, we try $k=2$:
 
@@ -1932,7 +1932,7 @@ autoplot(pca, data = seeds, colour = seeds_cluster$cluster,
          shape = "Variety", size = 2, alpha = 0.75)
 ```
 
-If it weren't from the fact that the different varieties were shown as different shapes, we'd have no way to say, based on this plot alone, which choice of $k$ that is preferable here. Before we go into methods for choosing $k$ though, we'll mention `pam`\index{\texttt{pam}}, and alternative to $k$-means that works in the same way, but uses median-like points, _medoids_ instead of cluster means. This makes it more robust to outliers. Let's try it with $k=3$ clusters:
+If it weren't for the fact that the different varieties were shown as different shapes, we'd have no way to say, based on this plot alone, which choice of $k$ that is preferable here. Before we go into methods for choosing $k$ though, we'll mention `pam`\index{\texttt{pam}}. `pam` is an alternative to $k$-means that works in the same way, but uses median-like points, _medoids_ instead of cluster means. This makes it more robust to outliers. Let's try it with $k=3$ clusters:
 
 ```{r eval=FALSE}
 seeds[, -8] %>% scale() %>% 
@@ -2019,7 +2019,7 @@ autoplot(pca, data = seeds, colour = seeds_cluster$cluster,
 -->
 
 ### Fuzzy clustering
-An alternative to $k$-means clustering is _fuzzy clustering_\index{clustering!fuzzy}, in which each point is "spread out" over the $k$ clusters instead of being placed in a single cluster. The more similar it is to other observations in a cluster, the higher is its membership in that cluster. Points can have a high degree of membership to several clusters, which is useful in applications where points should be allowed to belong to more than one cluster. An important example is genetics, where genes can encode proteins with more than one function. If each point corresponds to a gene, it then makes sense to allow the points to belong to several clusters, which potentially can be associated with different functions. The opposite of fuzzy clustering is _hard clustering_, in which each point only belongs to one cluster.
+An alternative to $k$-means clustering is _fuzzy clustering_\index{clustering!fuzzy}, in which each point is "spread out" over the $k$ clusters instead of being placed in a single cluster. The more similar it is to other observations in a cluster, the higher is its membership in that cluster. Points can have a high degree of membership to several clusters, which is useful in applications where points should be allowed to belong to more than one cluster. An important example is genetics, where genes can encode proteins with more than one function. If each point corresponds to a gene, it then makes sense to allow the points to belong to several clusters, potentially associated with different functions. The opposite of fuzzy clustering is _hard clustering_, in which each point only belongs to one cluster.
 
 `fanny`\index{\texttt{fanny}} from `cluster` can be used to perform fuzzy clustering:
 
@@ -2093,7 +2093,7 @@ Return to the `chorSub`\index{data!\texttt{chorSub}} data from Exercise \@ref(ex
 
 
 ### Comparing clusters
-Having found some interesting clusters, we are often interested in exploring differences between the clusters. To do so, we much first extract the cluster labels from our clustering (which are contained in the variables `clustering` for methods with Western female names, `cluster` for `kmeans`, and `classification` for `Mclust`). We can then add those labels to our data frame and use it when plotting.
+Having found some interesting clusters, we are often interested in exploring differences between the clusters. To do so, we much first extract the cluster labels from our clustering (which are contained in the variables `clustering` for methods with Western female names, `cluster` for `kmeans`, and `classification` for `Mclust`). We can then add those labels to our data frame and use them when plotting.
 
 For instance, using the `seeds` data, we can compare the area of seeds from different clusters:
 
@@ -2125,7 +2125,7 @@ library(GGally)
 ggpairs(seeds[, -8], aes(colour = seeds$clusters, alpha = 0.2))
 ```
 
-It may be tempting to run some statistical tests (e.g. a t-test) to see if there are differences between the clusters. Note however that in statistical hypothesis testing, it is typically assumed that the hypotheses that are being tested have been generated independently from the data. _Double-dipping_, where the data first is used to generate a hypothesis ("judging from this boxplot, there seems to be a difference in means between these two groups!" or "I found these clusters, and now I'll run a test to see if they are different") and then test that hypothesis, is generally frowned upon, as that substantially inflates the risk of a type I error. Recently, there have however been some advances in valid techniques for testing differences in means between clusters found using hierarchical clustering; see Gao et al. (2020).
+It may be tempting to run some statistical tests (e.g. a t-test) to see if there are differences between the clusters. Note, however, that in statistical hypothesis testing, it is typically assumed that the hypotheses that are being tested have been generated independently from the data. _Double-dipping_, where the data first is used to generate a hypothesis ("judging from this boxplot, there seems to be a difference in means between these two groups!" or "I found these clusters, and now I'll run a test to see if they are different") and then test that hypothesis, is generally frowned upon, as that substantially inflates the risk of a type I error. Recently, there have however been some advances in valid techniques for testing differences in means between clusters found using hierarchical clustering; see Gao et al. (2020).
 
 ## Exploratory factor analysis
 The purpose of _factor analysis_\index{factor analysis} is to describe and understand the correlation structure for a set of observable variables through a smaller number of unobservable underlying variables, called _factors_ or _latent variables_. These are thought to explain the values of the observed variables in a causal manner. Factor analysis is a popular tool in psychometrics, where it for instance is used to identify latent variables that explain people's results on different tests, e.g. related to personality, intelligence, or attitude.
@@ -2153,7 +2153,7 @@ attitude_fa <- fa(attitude, nfactors = 2,
                   rotate = "oblimin", fm = "ml")
 ```
 
-`fa` does two things for us. First, it fits a factor model to the data, which yields a table of _factor loadings_, i.e. the correlation between the two unobserved factors and the observed variables. However, there are an infinite number of mathematically valid factor models for any given dataset. The factors are therefore _rotated_ according to some rule to obtain a factor model that hopefully allows for easy and useful interpretation. There are several methods that can be used to fit the factor model (set using the `fm` argument in `fa`) and for rotation the solution (set using `rotate`). We'll look at some of the options shortly.
+`fa` does two things for us. First, it fits a factor model to the data, which yields a table of _factor loadings_, i.e. the correlation between the two unobserved factors and the observed variables. However, there is an infinite number of mathematically valid factor models for any given dataset. Therefore, the factors are _rotated_ according to some rule to obtain a factor model that hopefully allows for easy and useful interpretation. Several methods can be used to fit the factor model (set using the `fm` argument in `fa`) and for rotation the solution (set using `rotate`). We'll look at some of the options shortly.
 
 First, we'll print the result, showing the factor loadings (after rotation). We'll also plot the resulting model using `fa.diagram`\index{\texttt{fa.diagram}}, showing the correlation between the factors and the observed variables:
 
@@ -2185,7 +2185,7 @@ attitude_fa <- fa(attitude, nfactors = 2,
 fa.diagram(attitude_fa, simple = FALSE)
 ```
 
-Once again, the results are similar to what we saw before. In other examples, the results differ more. When choosing which estimation method and rotation to use, bear in mind that in an exploratory study, there is no harm in playing around with a few different methods. After all, your purpose is to generate hypotheses rather than to confirm them, and looking at the data in a few different ways will help you do that.
+Once again, the results are similar to what we saw before. In other examples, the results differ more. When choosing which estimation method and rotation to use, bear in mind that in an exploratory study, there is no harm in playing around with a few different methods. After all, your purpose is to generate hypotheses rather than confirm them, and looking at the data in a few different ways will help you do that.
 
 To determine the number of factors that are appropriate for a particular dataset, we can draw a scree plot with `scree`\index{\texttt{scree}}. This is interpreted in the same way as for principal components analysis (Section \@ref(pca)) and centroid-based clustering (Section \@ref(centroid)) - we look for an "elbow" in the plot, which tells us at which point adding more factors no longer contributes much to the model:
 
@@ -2214,9 +2214,9 @@ Factor analysis only relies on the covariance or correlation matrix of your data
 
 
 ### Latent class analysis {#lca}
-When there is a single categorical latent variable, factor analysis overlaps with clustering, which we studied in Section \@ref(clustering). Whether we think of the values of the latent variable as clusters, classes, factor levels, or something else is mainly a philosophical question - from a mathematical perspective it doesn't matter what name we use for them.
+When there is a single categorical latent variable, factor analysis overlaps with clustering, which we studied in Section \@ref(clustering). Whether we think of the values of the latent variable as clusters, classes, factor levels, or something else is mainly a philosophical question - from a mathematical perspective, it doesn't matter what name we use for them.
 
-When observations from the same cluster are assumed to be uncorrelated, the resulting model is called _latent profile analysis_\index{latent profile analysis}, which typically is handled using model-based clustering (Section \@ref(modelbasedclustering)). The special case where the observed variables are categorical, is instead known as _latent class analysis_\index{latent class analysis}. This is common e.g. in analyses of survey data, and we'll have a look at such an example in this section. The package that we'll use for our analyses is called `poLCA`\index{\texttt{poLCA}} - let's install it:
+When observations from the same cluster are assumed to be uncorrelated, the resulting model is called _latent profile analysis_\index{latent profile analysis}, which typically is handled using model-based clustering (Section \@ref(modelbasedclustering)). The special case where the observed variables are categorical is instead known as _latent class analysis_\index{latent class analysis}. This is common e.g. in analyses of survey data, and we'll have a look at such an example in this section. The package that we'll use for our analyses is called `poLCA`\index{\texttt{poLCA}} - let's install it:
 
 ```{r eval=FALSE}
 install.packages("poLCA")
@@ -2264,14 +2264,13 @@ treatments <- treatments + 1
 summary(treatments)
 ```
 
-We are now ready to get started with out analysis. To begin with, we will try to find classes based on whether or not the facilities offer the following five treatments:
+We are now ready to get started with our analysis. To begin with, we will try to find classes based on whether or not the facilities offer the following five treatments:
 
-* `TREATPSYCHOTHRPY`: Facility offers individual psychotherapy,
-* `TREATFAMTHRPY`: Facility offers couples/family therapy,
-* `TREATGRPTHRPY`: Facility offers group therapy,
-* `TREATCOGTHRPY`: Facility offers cognitive behavioural therapy,
-* `TREATPSYCHOMED`: Facility offers psychotropic medication.
-
+* `TREATPSYCHOTHRPY`: The facility offers individual psychotherapy,
+* `TREATFAMTHRPY`: The facility offers couples/family therapy,
+* `TREATGRPTHRPY`: The facility offers group therapy,
+* `TREATCOGTHRPY`: The facility offers cognitive behavioural therapy,
+* `TREATPSYCHOMED`: The facility offers psychotropic medication.
 The `poLCA` function needs three inputs: a formula describing what observed variables to use, a data frame containing the observations, and `nclass`, the number of latent classes to find. To begin with, let's try two classes:
 
 ```{r eval=FALSE}
@@ -2324,7 +2323,7 @@ This time, we run into numerical problems - the model estimation has failed, as 
 ALERT: iterations finished, MAXIMUM LIKELIHOOD NOT FOUND 
 ```
 
-`poLCA` fits the model using a method known as the _EM algorithm_, which find maximum likelihood estimates numerically. First, the observations are randomly assigned to the classes. Step by step, the observations are then moved between classes, until the optimal split has been found. It can however happen that more steps are needed to find the optimum (by default 1,000 steps are used), or that we end up with unfortunate initial class assignments that prevent the algorithm from finding the optimum. To attenuate this problem, we can increase the number of steps used, or run the algorithm multiple times, each with new initial class assignments. The `poLCA` arguments for this are `maxiter`, which controls the number of steps (or iterations) used, and `nrep`, which controls the number of repetitions with different initial assignments. We'll increase both, and see if that helps. Note that this means that the algorithm will take longer to run:
+`poLCA` fits the model using a method known as the _EM algorithm_, which finds maximum likelihood estimates numerically. First, the observations are randomly assigned to the classes. Step by step, the observations are then moved between classes, until the optimal split has been found. It can however happen that more steps are needed to find the optimum (by default 1,000 steps are used), or that we end up with unfortunate initial class assignments that prevent the algorithm from finding the optimum. To attenuate this problem, we can increase the number of steps used, or run the algorithm multiple times, each with new initial class assignments. The `poLCA` arguments for this are `maxiter`, which controls the number of steps (or iterations) used, and `nrep`, which controls the number of repetitions with different initial assignments. We'll increase both, and see if that helps. Note that this means that the algorithm will take longer to run:
 
 ```{r eval=FALSE}
 m <- poLCA(cbind(TREATPSYCHOTHRPY, TREATFAMTHRPY,
@@ -2388,7 +2387,7 @@ m$bic
 
 The lower these are, the better is the model fit.
 
-If you like, you can add a covariate to your latent class analysis, which allows you to simultaneously find classes and study their relationship with the covariate. Let's add the variable `PAYASST`, which says whether a facility offers treatment at no charge or minimal payment to clients who cannot afford to pay, to our data, and then use that as a covariate.
+If you like, you can add a covariate to your latent class analysis, which allows you to simultaneously find classes and study their relationship with the covariate. Let's add the variable `PAYASST` (which says whether a facility offers treatment at no charge or minimal payment to clients who cannot afford to pay) to our data, and then use that as a covariate.
 
 ```{r eval=FALSE}
 # Add PAYASST variable to data, then change negative values
