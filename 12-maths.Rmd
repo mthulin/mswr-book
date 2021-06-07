@@ -18,7 +18,7 @@ $$\Big(t_{obs}-se_t^*\cdot q_\alpha/2, t_{obs}+se_t^*\cdot q_{1-\alpha/2}\Big).$
 
 
 ## The equivalence between confidence intervals and hypothesis tests {#confintequal}
-Let $\theta$ be an unknown parameter in the parameter space $\Theta\subseteq\mathbb{R}$, and let the sample $\mathbf{x}=(x_1,\ldots,x_n)\in\mathcal{X}^ n\subseteq\mathbb{R}^n$ be a realization of the random variable $\mathbf{X}=(X_1,\ldots,X_n)$. In frequentist statistics there is a fundamental connection between interval estimation and point-null hypothesis testing of $\theta$ , which we describe next. We define a confidence interval $I_\alpha(\mathbf{X})$ as a random interval such that its _coverage probability_
+Let $\theta$ be an unknown parameter in the parameter space $\Theta\subseteq\mathbb{R}$, and let the sample $\mathbf{x}=(x_1,\ldots,x_n)\in\mathcal{X}^ n\subseteq\mathbb{R}^n$ be a realisation of the random variable $\mathbf{X}=(X_1,\ldots,X_n)$. In frequentist statistics there is a fundamental connection between interval estimation and point-null hypothesis testing of $\theta$ , which we describe next. We define a confidence interval $I_\alpha(\mathbf{X})$ as a random interval such that its _coverage probability_
 $$\mbox{P}_\theta(\theta\in I_\alpha(\mathbf{X}))= 1-\alpha\qquad\mbox{for all }\alpha\in(0,1).$$
 Consider a two-sided test of the point-null hypothesis $H_0(\theta_0): \theta=\theta_0$ against the alternative $H_1(\theta_0): \theta\neq \theta_0$. Let $\lambda(\theta_0,\mathbf{x})$ denote the p-value of the test. For any $\alpha\in(0,1)$, $H_0(\theta_0)$ is rejected at the level $\alpha$ if $\lambda(\theta_0,x)\leq\alpha$. The level $\alpha$ _rejection region_ is the set of $\mathbf{x}$ which lead to the rejection of $H_0(\theta_0)$:
 $$ R_\alpha(\theta_0)=\{\mathbf{x}\in\mathbb{R}^n: \lambda(\theta_0,\mathbf{x})\leq\alpha\}.$$
@@ -123,11 +123,11 @@ In a regularised GLM, it is not the likelihood $L(\beta)$ that is maximised, but
 The most popular penalty terms correspond to common $L_q$-norms. On a log-scale, the function to be maximised is then
 $$\ell(\beta)+\lambda\sum_{i=1}^p|\beta_i|^q,$$
 where $\ell(\beta)$ is the loglikelihood of $\beta$ and $\sum_{i=1}^p|\beta_i|^q$ is the $L_q$-norm, with $q\geq 0$.
-This is equivalent to maximizing $\ell(\beta)$ under the constraint that $\sum_{i=1}^p|\beta_i|^q\leq\frac{1}{h(\lambda)}$, for some increasing positive function $h$.
+This is equivalent to maximising $\ell(\beta)$ under the constraint that $\sum_{i=1}^p|\beta_i|^q\leq\frac{1}{h(\lambda)}$, for some increasing positive function $h$.
 
 In Bayesian estimation, a _prior distribution_ $p(\beta)$ for the parameters $\beta_i$ is used The estimates are then computed from the conditional distribution of the $\beta_i$ given the data, called the _posterior distribution_. Using Bayes' theorem, we find that
 $$P(\beta|\mathbf{x})\propto L(\beta)\cdot p(\beta),$$
-i.e. that the posterior distribution is proportional to the likelihood times the prior. The Bayesian _maximum a posteriori estimator_ (MAP) is found by maximizing the above expression (i.e. finding the mode of the posterior). This is equivalent to the estimates from a regularised frequentist model with penalty function $p(\beta)$, meaning that regularised regression can be motivated both from a frequentist and a Bayesian perspective.
+i.e. that the posterior distribution is proportional to the likelihood times the prior. The Bayesian _maximum a posteriori estimator_ (MAP) is found by maximising the above expression (i.e. finding the mode of the posterior). This is equivalent to the estimates from a regularised frequentist model with penalty function $p(\beta)$, meaning that regularised regression can be motivated both from a frequentist and a Bayesian perspective.
 
 When the $L_2$ penalty is used, the regularised model is called _ridge regression_, for which we maximise
 $$\ell(\beta)+\lambda\sum_{i=1}^p\beta_i^2.$$

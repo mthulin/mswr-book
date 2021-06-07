@@ -1775,7 +1775,7 @@ After reading this chapter, you will be able to use R to:
 * Create matched samples.
 
 ## Linear models {#linearmodels}
-Being flexible enough to handle different types of data, yet simple enough to be useful and interpretable, linear models are among the most important tools in the statistics toolbox. In this section we'll discuss how to fit and evaluate linear models in R.
+Being flexible enough to handle different types of data, yet simple enough to be useful and interpretable, linear models are among the most important tools in the statistics toolbox. In this section, we'll discuss how to fit and evaluate linear models in R.
 
 ### Fitting linear models
 We had a quick glance at linear models in Section \@ref(firstlm). There we used the `mtcars`\index{data!\texttt{mtcars}} data:
@@ -1832,12 +1832,12 @@ m <- lm(mpg ~ hp + wt, data = mtcars)
 summary(m)
 ```
 
-Next, we'll have a look at what more R has to offer when it comes to regression. Before that though, it's a good idea to do a quick exercise to make sure that you remember how to fit linear models.
+Next, we'll look at what more R has to offer when it comes to regression. Before that though, it's a good idea to do a quick exercise to make sure that you remember how to fit linear models.
 
 $$\sim$$
 
 ```{exercise, label="ch7exc15"}
-The `sales-weather.csv` data from Section \@ref(mergedata) describes the weather in a region during the first quarter of 2020. [Download the file from the book's web page](http://www.modernstatisticswithr.com/data.zip). Fit a linear regression model with `TEMPERATURE` as response variable and `SUN_HOURS` as explanatory variable. Plot the results. Is there a connection?
+The `sales-weather.csv` data from Section \@ref(mergedata) describes the weather in a region during the first quarter of 2020. [Download the file from the book's web page](http://www.modernstatisticswithr.com/data.zip). Fit a linear regression model with `TEMPERATURE` as the response variable and `SUN_HOURS` as an explanatory variable. Plot the results. Is there a connection?
 
 You'll return to and expand this model in the next few exercises, so make sure to save your code.
 
@@ -1861,7 +1861,7 @@ m <- lm(mpg ~ hp + wt + hp:wt, data = mtcars)
 summary(m)
 ```
 
-Alternatively, to include the main effects of `hp` and `wt` along with the interaction effect, we can use `hp*wt` as a shorthand for `hp + wt + hp:wt` to write the model formula in a more concise manner:
+Alternatively, to include the main effects of `hp` and `wt` along with the interaction effect, we can use `hp*wt` as a shorthand for `hp + wt + hp:wt` to write the model formula more concisely:
 
 ```{r eval=FALSE}
 m <- lm(mpg ~ hp*wt, data = mtcars)
@@ -1890,7 +1890,7 @@ summary(m)
 ```
 
 ### Dummy variables
-Categorical variables can be included in regression models by using _dummy variables_\index{linear regression!dummy variable}. A dummy variable takes the values 0 and 1, indicating that an observations either belongs to a category (1) or not (0). If the original categorical variable has more than two categories, $c$ categories, say, the number of dummy variables included in the regression model should be $c-1$ (with the last category corresponding to all dummy variables being 0). R does this automatically for us if we include a `factor` variable in a regression model:
+Categorical variables can be included in regression models by using _dummy variables_\index{linear regression!dummy variable}. A dummy variable takes the values 0 and 1, indicating that an observation either belongs to a category (1) or not (0). If the original categorical variable has more than two categories, $c$ categories, say, the number of dummy variables included in the regression model should be $c-1$ (with the last category corresponding to all dummy variables being 0). R does this automatically for us if we include a `factor` variable in a regression model:
 
 ```{r eval=FALSE}
 # Make cyl a categorical variable:
@@ -1902,7 +1902,7 @@ summary(m)
 
 Note how only two categories, 6 cylinders and 8 cylinders, are shown in the summary table. The third category, 4 cylinders, corresponds to both those dummy variables being 0. Therefore, the coefficient estimates for `cyl6` and `cyl8` are relative to the remaining _reference category_ `cyl4`. For instance, compared to `cyl4` cars, `cyl6` cars have a higher fuel consumption, with their `mpg` being $1.26$ lower.
 
-We can control which category is used as the reference category by setting the order of the `factor` variable, as in Section \@ref(factors). The first `factor` level is always used as reference, so if for instance we want to use `cyl6` as our reference category, we'd do the following:
+We can control which category is used as the reference category by setting the order of the `factor` variable, as in Section \@ref(factors). The first `factor` level is always used as the reference, so if for instance we want to use `cyl6` as our reference category, we'd do the following:
 
 ```{r eval=FALSE}
 # Make cyl a categorical variable with cyl6 as
@@ -1970,11 +1970,11 @@ ggplot(models, aes(Fitted, Observed)) +
 Linear models are fitted and analysed using a number of assumptions, most of which are assessed by looking at plots of the model residuals\index{linear regression!residual}, $y_i-\hat{y}_i$, where $\hat{y}_i$ is the fitted value for observation $i$. Some important assumptions are:
 
 * The model is _linear in the parameters_: we check this by looking for non-linear patterns in the residuals, or in the plot of observed against fitted values.
-* _The observations are independent_: which can be difficult to assess visually. We'll look at models that are designed handle correlated observations in Sections \@ref(mixedmodels) and \@ref(tsforecast).
+* _The observations are independent_: which can be difficult to assess visually. We'll look at models that are designed to handle correlated observations in Sections \@ref(mixedmodels) and \@ref(tsforecast).
 * _Homoscedasticity_: that the random errors all have the same variance. We check this by looking for non-constant variance in the residuals. The opposite of homoscedasticity is heteroscedasticity.
 * _Normally distributed random errors_: this assumption is important if we want to use the traditional parametric p-values, confidence intervals and prediction intervals. If we use permutation p-values or bootstrap intervals (as we will later in this chapter), we no longer need this assumption.
 
-Additionally, residual plots can be used to find influential points that (possibly) have a large impact on the model coefficients (influence is measured using _Cook's distance_ and potential influence using _leverage_). We've already seen that we can use `plot(m)` to create some diagnostic plots. To get more and better looking plots, we can use the `autoplot` function for `lm` objects from the `ggfortify` package:
+Additionally, residual plots can be used to find influential points that (possibly) have a large impact on the model coefficients (influence is measured using _Cook's distance_ and potential influence using _leverage_). We've already seen that we can use `plot(m)` to create some diagnostic plots. To get more and better-looking plots, we can use the `autoplot` function for `lm` objects from the `ggfortify` package:
 
 ```{r eval=FALSE}
 library(ggfortify)
@@ -1983,14 +1983,14 @@ autoplot(m1, which = 1:6, ncol = 2, label.size = 3)
 
 In each of the plots, we look for the following:
 
-* Residuals versus fitted: look for patterns that can indicate non-linearity, e.g. that the residuals all are high in some areas and low in others. The blue line is there to aid the eye - it should ideally be relatively close to a straight line (in this case it isn't perfectly straight, which could indicate a mild non-linearity).
+* Residuals versus fitted: look for patterns that can indicate non-linearity, e.g. that the residuals all are high in some areas and low in others. The blue line is there to aid the eye - it should ideally be relatively close to a straight line (in this case, it isn't perfectly straight, which could indicate a mild non-linearity).
 * Normal Q-Q: see if the points follow the line, which would indicate that the residuals (which we for this purpose can think of as estimates of the random errors) follow a normal distribution.
-* Scale-Location: similar to the residuals versus fitted plot, this plot shows whether the residuals are evenly spread for different values of the fitted values. Look for patterns in how much the residuals vary - if they e.g. vary more for large fitted values then that is a sign of heteroscedasticity. A horizontal blue line is a sign of homoscedasticity.
+* Scale-Location: similar to the residuals versus fitted plot, this plot shows whether the residuals are evenly spread for different values of the fitted values. Look for patterns in how much the residuals vary - if they e.g. vary more for large fitted values, then that is a sign of heteroscedasticity. A horizontal blue line is a sign of homoscedasticity.
 * Cook's distance: look for points with high values. A commonly-cited rule-of-thumb (Cook & Weisberg, 1982) says that values above 1 indicate points with a high influence.
 * Residuals versus leverage: look for points with a high residual and high leverage. Observations with a high residual but low leverage deviate from the fitted model but don't affect it much. Observations with a high residual and a high leverage likely have a strong influence on the model fit, meaning that the fitted model could be quite different if these points were removed from the dataset.
-* Cook's distance versus leverage: look for observations with a high Cook's distance and a high leverage, which are likely have a strong influence on the model fit.
+* Cook's distance versus leverage: look for observations with a high Cook's distance and a high leverage, which are likely to have a strong influence on the model fit.
 
-As a complement to graphical inspection, a formal test for heteroscedasticity, the Breusch-Pagan test, is available in the `car` package\index{\texttt{car}}\index{\texttt{ncvTest}}. A low p-value indicates statistical evidence for heteroscedasticity. To run the test, we use `ncvTest` (where "ncv" stands for non-constant variance):
+A formal test for heteroscedasticity, the Breusch-Pagan test, is available in the `car` package\index{\texttt{car}}\index{\texttt{ncvTest}} as a complement to graphical inspection. A low p-value indicates statistical evidence for heteroscedasticity. To run the test, we use `ncvTest` (where "ncv" stands for non-constant variance):
 
 ```{r eval=FALSE}
 install.packages("car")
@@ -2051,11 +2051,11 @@ exdata2 <- data.frame(
 <br>
 
 ```{exercise, label="ch7exc17"}
-We continue our investgation of the the weather models from Exercises \@ref(exr:ch7exc15) and \@ref(exr:ch7exc16).
+We continue our investigation of the weather models from Exercises \@ref(exr:ch7exc15) and \@ref(exr:ch7exc16).
 
 1. Plot the observed values against the fitted values for the two models that you've fitted. Does either model seem to have a better fit?
 
-2. Create residual plots for the second model, from Exercise \@ref(exr:ch7exc16). Are there any influential points? Any patterns? Any signs of heteroscedasticity?
+2. Create residual plots for the second model from Exercise \@ref(exr:ch7exc16). Are there any influential points? Any patterns? Any signs of heteroscedasticity?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch7solutions17)
@@ -2094,7 +2094,7 @@ Run `boxcox` with your model from Exercise \@ref(exr:ch7exc16). Does it indicate
 
 
 ### Alternatives to `lm`
-Non-normal regression errors can sometimes be an indication that you need to transform your data, that your model is missing an important explanatory variable, that there are interaction effects that aren't accounted for, or that the relationship between the variables is non-linear. But sometimes you get non-normal errors simply because the errors are non-normal.
+Non-normal regression errors can sometimes be an indication that you need to transform your data, that your model is missing an important explanatory variable, that there are interaction effects that aren't accounted for, or that the relationship between the variables is non-linear. But sometimes, you get non-normal errors simply because the errors are non-normal.
 
 The p-values reported by `summary` are computed under the assumption of normally distributed regression errors, and can be sensitive to deviations from normality. An alternative is to use the `lmp` function from the `lmPerm`\index{linear regression!permutation test}\index{\texttt{lmp}}\index{\texttt{lmPerm}} package, which provides permutation test p-values instead. This doesn't affect the model fitting in any way - the only difference is how the p-values are computed. Moreover, the syntax for `lmp` is identical to that of `lm`:
 
@@ -2199,7 +2199,7 @@ boot_res <- Boot(m, method = "residual", R = 9999)
 confint(boot_res, type = "perc")
 ```
 
-Finally, the most convenient approach is to use `boot_summary`\index{\texttt{boot\_summary}} from the `boot.pval` package. It provides a data frame with estimates, bootstrap confidence intervals, and bootstrap p-values for the model coefficients. The arguments specify what interval type and resampling strategy to use (more on the latter in Exercise \@ref(exr:ch7exc20b)):
+Finally, the most convenient approach is to use `boot_summary`\index{\texttt{boot\_summary}} from the `boot.pval` package. It provides a data frame with estimates, bootstrap confidence intervals, and bootstrap p-values (computed using interval inversion) for the model coefficients. The arguments specify what interval type and resampling strategy to use (more on the latter in Exercise \@ref(exr:ch7exc20b)):
 
 ```{r eval=FALSE}
 library(boot.pval)
@@ -2218,7 +2218,7 @@ Refit your model from Exercise \@ref(exr:ch7exc16) using a robust regression est
 <br>
 
 ```{exercise, label="ch7exc20b"}
-In an alternative bootstrap scheme for regression models, often refered to as _case resampling_, the observations (or cases) $(y_i, x_{i1},\ldots,x_{ip})$ are resampled, instead of the residuals. This approach can be applicable when the explanatory variables can be treated as being random (but measured without error) rather than fixed. It can also be useful for models with heteroscedasticity, as it doesn't rely on assumptions about constant variance (which on the other hand makes it less efficient if the errors actually are homoscedastic).
+In an alternative bootstrap scheme for regression models, often referred to as _case resampling_, the observations (or cases) $(y_i, x_{i1},\ldots,x_{ip})$ are resampled instead of the residuals. This approach can be applied when the explanatory variables can be treated as being random (but measured without error) rather than fixed. It can also be useful for models with heteroscedasticity, as it doesn't rely on assumptions about constant variance (which, on the other hand, makes it less efficient if the errors actually are homoscedastic).
 
 Read the documentation for `boot_summary` to see how you can compute confidence intervals for the coefficients in the model `m <- lm(mpg ~ hp + wt, data = mtcars)` using case resampling. Do they differ substantially from those obtained using residual resampling in this case?
 
@@ -2226,7 +2226,7 @@ Read the documentation for `boot_summary` to see how you can compute confidence 
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch7solutions20b)
 
 ### Alternative summaries with `broom` {#broom}
-The `broom`\index{\texttt{broom}} package contains some useful functions when working with linear models (and many other common models), which allow us to get different summaries of the model fit in useful formats. Let's install it:
+The `broom`\index{\texttt{broom}} package contains some useful functions when working with linear models (and many other common models), which allow us to get various summaries of the model fit in useful formats. Let's install it:
 
 ```{r eval=FALSE}
 install.packages("broom")
@@ -2293,11 +2293,11 @@ mtcars %>%
 
 
 ### Variable selection {#stepwise}
-A common question when working with linear models is what variables to include in your model. Common practices for variable selection include stepwise regression methods, where variables are added to or removed from the model depending on p-values, $R^2$ values, or information criterions\index{linear regression!variable selection} like AIC or BIC.
+A common question when working with linear models is what variables to include in your model. Common practices for variable selection include stepwise regression methods, where variables are added to or removed from the model depending on p-values, $R^2$ values, or information criteria\index{linear regression!variable selection} like AIC or BIC.
 
 **Don't ever do this if your main interest is p-values.** Stepwise regression increases the risk of type I errors, renders the p-values of your final model invalid, and can lead to over-fitting; see e.g. Smith (2018). Instead, you should let your research hypothesis guide your choice of variables, or base your choice on a pilot study.
 
-If your main interest is prediction, then that is a completely different story. For predictive models, it is usually recommended that variable selection and model fitting should be done simultaneously. This can be done using regularised regression models, which Section \@ref(regularised) is devoted to.
+If your main interest is prediction, then that is a completely different story. For predictive models, it is usually recommended that variable selection and model fitting should be done simultaneously. This can be done using regularised regression models, to which Section \@ref(regularised) is devoted.
 
 ### Prediction
 An important use of linear models is prediction.\index{linear regression!prediction}\index{\texttt{predict}} In R, this is done using `predict`. By providing a fitted model and a new dataset, we can get predictions.
@@ -2387,14 +2387,14 @@ boot.ci(boot_res, type = "perc", index = 2, conf = 0.9) # Ferrari
 $$\sim$$
 
 ```{exercise, label="ch7exc21"}
-Use your model from Exercise \@ref(exr:ch7exc16) compute a bootstrap prediction interval for the temperature on a day with precipitation but no sun hours.
+Use your model from Exercise \@ref(exr:ch7exc16) to compute a bootstrap prediction interval for the temperature on a day with precipitation but no sun hours.
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch7solutions21)
 
 
 ### Prediction for multiple datasets {#multipredict}
-In certain cases, we wish to fit different models to different subsets of the data. Functionals like `apply` and `map` (Section \@ref(vectorloops)) are very useful when you want to fit several models at once. Below is an example of how we can use `split` (Section \@ref(splitvector)) and tools from the `purrr` package (Section \@ref(purrr)) to fit the models simultaneously, as well as for computing the fitted values in a single line of code:
+In certain cases, we wish to fit different models to different subsets of the data. Functionals like `apply` and `map` (Section \@ref(vectorloops)) are handy when you want to fit several models at once. Below is an example of how we can use `split` (Section \@ref(splitvector)) and tools from the `purrr` package (Section \@ref(purrr)) to fit the models simultaneously, as well as for computing the fitted values in a single line of code:
 
 ```{r eval=FALSE}
 # Split the dataset into three groups depending on the
@@ -2439,7 +2439,7 @@ Anova(m, type = "II")
 Anova(m, type = "III") # Default in SAS and SPSS.
 ```
 
-As a guideline, for unbalanced designs you should use type II tables if there are no interactions, and type III tables if there are interactions. To look for interactions, we can use `interaction.plot`\index{\texttt{interaction.plot}} to create a two-way interaction plot:
+As a guideline, for unbalanced designs, you should use type II tables if there are no interactions, and type III tables if there are interactions. To look for interactions, we can use `interaction.plot`\index{\texttt{interaction.plot}} to create a two-way interaction plot:
 
 ```{r eval=FALSE}
 interaction.plot(mtcars$am, mtcars$cyl, response = mtcars$mpg)
@@ -2464,7 +2464,7 @@ We can visualise the results of Tukey's HSD with `plot`, which shows 95 % confid
 
 ```{r eval=FALSE}
 # When the difference isn't significant, the dashed line indicating
-# no differences falls within the confidence interval for
+# "no differences" falls within the confidence interval for
 # the difference:
 plot(TukeyHSD(m, "am"))
 
@@ -2494,7 +2494,7 @@ The `aovp`\index{\texttt{aovp}} function in the `lmPerm` package can be utilised
 <br>
 
 ```{exercise, label="ch7exc21c"}
-In the case of a one-way ANOVA (i.e. ANOVA with a single explanatory variable), the Kruskal-Wallis\index{ANOVA!Kruskal-Wallis test} test can be used as a nonparametric option. It is available in `kruskal.test`\index{\texttt{kruskal.test}}. Use the Kruskal-Wallis test to run a one-way ANOVA for the `mtcars` data, with `mpg` as response variable and `cyl` as explanatory variable.
+In the case of a one-way ANOVA (i.e. ANOVA with a single explanatory variable), the Kruskal-Wallis\index{ANOVA!Kruskal-Wallis test} test can be used as a nonparametric option. It is available in `kruskal.test`\index{\texttt{kruskal.test}}. Use the Kruskal-Wallis test to run a one-way ANOVA for the `mtcars` data, with `mpg` as the response variable and `cyl` as an explanatory variable.
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch7solutions21c)
@@ -2539,7 +2539,7 @@ Finally, we can use $\hat{R}$ to check model convergence. It should be less than
 plot(m, "rhat")
 ```
 
-Just like for `lm`, `residuals(m)` provides the model residuals, which can be used for diagnostics. For instance, we can plot the residuals against the fitted values to look for signs of non-linearity, adding a curve to aid the eye:
+Like for `lm`, `residuals(m)` provides the model residuals, which can be used for diagnostics. For instance, we can plot the residuals against the fitted values to look for signs of non-linearity, adding a curve to aid the eye:
 
 ```{r eval=FALSE}
 model_diag <- data.frame(Fitted = predict(m),
@@ -2560,7 +2560,7 @@ For fitting ANOVA models, we can instead use `stan_aov`\index{\texttt{stan\_aov}
 ## Ethical issues in regression modelling
 The p-hacking problem, discussed in Section \@ref(ethicsinference), is perhaps particularly prevalent in regression modelling. Regression analysis often involves a large number of explanatory variables, and practitioners often try out several different models (e.g. by performing stepwise variable selection; see Section \@ref(stepwise)). Because so many hypotheses are tested, often in many different but similar models, there is a large risk of false discoveries. 
 
-In any regression analysis, there is a risk of finding _spurious relationships_. These are dependencies between the response variable and an explanatory variable that either are non-causal or are purely coincidental. As an example of the former, consider the number of deaths by drowning, which is strongly correlated with ice cream sales. Not because ice cream cause people to drown, but because both are affected by the weather: we are more likely to go swimming and to buy ice cream on hot days. Lurking variables, like the temperature in the ice cream-drowning example, are commonly referred to as _confounding factors_. An effect may be statistically significant, but that does not necessarily mean that it is meaningful.
+In any regression analysis, there is a risk of finding _spurious relationships_. These are dependencies between the response variable and an explanatory variable that either are non-causal or are purely coincidental. As an example of the former, consider the number of deaths by drowning, which is strongly correlated with ice cream sales. Not because ice cream cause people to drown, but because both are affected by the weather: we are more likely to go swimming or buy ice cream on hot days. Lurking variables, like the temperature in the ice cream-drowning example, are commonly referred to as _confounding factors_. An effect may be statistically significant, but that does not necessarily mean that it is meaningful.
 
 
 $$\sim$$
@@ -2573,17 +2573,17 @@ _Discuss the following._ You are tasked with analysing a study on whether Vitami
 <br>
 
 ```{exercise, label="ch8ethics2"}
-_Discuss the following._ You are fitting a linear regression model to a dataset from a medical study on new drug which potentially can have serious side-effects. The test subjects take a risk by participating in the study. Each observation in the dataset corresponds to a test subject. Like all ordinary linear regression models, your model gives more weight to observations that deviate from the average (and have a high leverage or Cook's distance). Given the risks involved for the test subjects, is it fair to give different weight to data from different individuals? Is it fair to remove outliers because they influence the results too much, meaning that the risk that the subject took was for naught?
+_Discuss the following._ You are fitting a linear regression model to a dataset from a medical study on a new drug which potentially can have serious side effects. The test subjects take a risk by participating in the study. Each observation in the dataset corresponds to a test subject. Like all ordinary linear regression models, your model gives more weight to observations that deviate from the average (and have a high leverage or Cook's distance). Given the risks involved for the test subjects, is it fair to give different weight to data from different individuals? Is it OK to remove outliers because they influence the results too much, meaning that the risk that the subject took was for nought?
   
 ```
 
 
 
 ## Generalised linear models
-Generalised linear models, abbreviated GLM, are (yes) a generalisation of the linear model, that can be used when your response variable has a non-normal error distribution. Common examples are when your response variable is binary (only takes two values, e.g. 0 or 1), or a count of something. Fitting GLM's is more or less completely analogous to fitting linear models in R, but model diagnostics is very different. In this section we will look at some examples of how it can be done.
+Generalised linear models, abbreviated GLM, are (yes) a generalisation of the linear model, that can be used when your response variable has a non-normal error distribution. Typical examples are when your response variable is binary (only takes two values, e.g. 0 or 1), or a count of something. Fitting GLM's is more or less entirely analogous to fitting linear models in R, but model diagnostics are very different. In this section we will look at some examples of how it can be done.
 
 ### Modelling proportions: Logistic regression {#logreg}
-As a first example of binary data, we will consider the wine quality dataset `wine`\index{data!\texttt{wine}} from Cortez et al. (2009), which is available in the UCI Machine Learning Repository at http://archive.ics.uci.edu/ml/datasets/Wine+Quality. It contains measurements on white and red vinho verde wine samples from northern Portugal.
+As the first example of binary data, we will consider the wine quality dataset `wine`\index{data!\texttt{wine}} from Cortez et al. (2009), which is available in the UCI Machine Learning Repository at http://archive.ics.uci.edu/ml/datasets/Wine+Quality. It contains measurements on white and red vinho verde wine samples from northern Portugal.
 
 <!-- 
 white <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv",
@@ -2626,7 +2626,7 @@ m <- glm(type ~ pH + alcohol, data = wine, family = binomial)
 summary(m)
 ```
 
-The p-values presented in the summary table are based on a Wald test that is known to have poor performance unless the sample size is very large (Agresti, 2013). In this case, with a sample size of 6,497, it is probably safe to use, but for smaller sample sizes it is preferable to use a bootstrap test instead, which you will do in Exercise \@ref(exr:ch7excGLM2).
+The p-values presented in the summary table are based on a Wald test known to have poor performance unless the sample size is very large (Agresti, 2013). In this case, with a sample size of 6,497, it is probably safe to use, but for smaller sample sizes, it is preferable to use a bootstrap test instead, which you will do in Exercise \@ref(exr:ch7excGLM2).
 
 The coefficients of a logistic regression model aren't as straightforward to interpret as those in a linear model. If we let $\beta$ denote a coefficient corresponding to an explanatory variable $x$, then:
 
@@ -2662,9 +2662,9 @@ It turns out that the model predicts that most wines are white - even the red on
 $$\sim$$ 
 
 ```{exercise, label="ch7excGLM1"}
-[Download `sharks.csv`\index{data!\texttt{sharks.csv}} file from the book's web page](http://www.modernstatisticswithr.com/data.zip). It contains information about shark attacks in South Africa. Using data on attacks that occured in 2000 or later, fit a logistic regression model to investigate whether the age and sex of the individual that was attacked affects the probability of the attack being fatal.
+[Download `sharks.csv`\index{data!\texttt{sharks.csv}} file from the book's web page](http://www.modernstatisticswithr.com/data.zip). It contains information about shark attacks in South Africa. Using data on attacks that occurred in 2000 or later, fit a logistic regression model to investigate whether the age and sex of the individual that was attacked affect the probability of the attack being fatal.
 
-Note: save the code for your model, as you will return to it in the next few exercises.
+Note: save the code for your model, as you will return to it in the subsequent exercises.
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch7solutionsGLM1)
@@ -2679,9 +2679,19 @@ In Section \@ref(broom) we saw how some functions from the `broom` package could
 
 
 ### Bootstrap confidence intervals
-In a logistic regression the response variable $y_i$ is a binomial (or Bernoulli) random variable with success probability $\pi_i$. In this case, we don't want to resample residuals to create confidence intervals, as it turns out that this can lead to predicted probabilities outside the range $(0,1)$. Instead, we can either use the case resampling strategy described in Exercise \@ref(exr:ch7exc20b) or use a parametric bootstrap approach where we generate new binomial variables (Section \@ref(distfunctions)) to construct bootstrap confidence intervals.
+In a logistic regression, the response variable $y_i$ is a binomial (or Bernoulli) random variable with success probability $\pi_i$. In this case, we don't want to resample residuals to create confidence intervals, as it turns out that this can lead to predicted probabilities outside the range $(0,1)$. Instead, we can either use the case resampling strategy described in Exercise \@ref(exr:ch7exc20b) or use a parametric bootstrap approach where we generate new binomial variables (Section \@ref(distfunctions)) to construct bootstrap confidence intervals.
 
-In the parametric approach, for each observation, the fitted success probability from the logistic model will be used to sample new observations of the response variable. This method can work well if the model is well-specified, but tends to perform poorly for misspecified models, so make sure to carefully perform model diagnostics (as described in the next section) before applying it. To use the parametric approach, we can do as follows:
+To use case resampling, we can use `boot_summary` from `boot.pval`:
+
+```{r eval=FALSE}
+library(boot.pval)
+
+m <- glm(type ~ pH + alcohol, data = wine, family = binomial)
+
+boot_summary(m, type = "perc", method = "case")
+```
+
+In the parametric approach, for each observation, the fitted success probability from the logistic model will be used to sample new observations of the response variable. This method can work well if the model is well-specified but tends to perform poorly for misspecified models, so make sure to carefully perform model diagnostics (as described in the next section) before applying it. To use the parametric approach, we can do as follows:
 
 ```{r eval=FALSE}
 library(boot)
@@ -2714,16 +2724,6 @@ boot_res <- boot(data = wine, statistic = coefficients,
 boot.ci(boot_res, type = "perc", index = 1) # Intercept
 boot.ci(boot_res, type = "perc", index = 2) # pH
 boot.ci(boot_res, type = "perc", index = 3) # Alcohol
-```
-
-To use case resampling instead, we can use `boot_summary` from `boot.pval`:
-
-```{r eval=FALSE}
-library(boot.pval)
-
-m <- glm(type ~ pH + alcohol, data = wine, family = binomial)
-
-boot_summary(m, type = "perc", method = "case")
 ```
 
 $$\sim$$
@@ -2762,7 +2762,7 @@ ggplot(res, aes(Index, Residuals)) +
       geom_point()
 ```
 
-Plots of raw residuals are of little use in logistic regression models. A better option is to use a binned residual plot, in which the observations are grouped into bins based on their fitted value. The average residual in each bin can then be computed, which will tell us if which parts of the model that have a poor fit. A function for this is available in the `arm` package:
+Plots of raw residuals are of little use in logistic regression models. A better option is to use a binned residual plot, in which the observations are grouped into bins based on their fitted value. The average residual in each bin can then be computed, which will tell us if which parts of the model have a poor fit. A function for this is available in the `arm` package:
 
 ```{r eval=FALSE}
 install.packages("arm")
@@ -2772,7 +2772,7 @@ binnedplot(predict(m, type = "response"),
            residuals(m, type = "response"))
 ```
 
-The grey lines show confidence bounds which are supposed to contain about 95 % of the bins. If too many points fall outside these bounds, it's a sign that we have a poor model fit. In this case there are a few points outside the bounds. Most notably, the average residuals are fairly large for the observations with the lowest fitted values, i.e. among the observations with the lowest predicted probability of being white wines.
+The grey lines show confidence bounds which are supposed to contain about 95 % of the bins. If too many points fall outside these bounds, it's a sign that we have a poor model fit. In this case, there are a few points outside the bounds. Most notably, the average residuals are fairly large for the observations with the lowest fitted values, i.e. among the observations with the lowest predicted probability of being white wines.
 
 Let's compare the above plot to that for a model with more explanatory variables:
 
@@ -2794,7 +2794,7 @@ anova(m, m2, test = "LRT")
 
 The p-value is very low, and we conclude that `m2` has a better model fit.
 
-Another useful function is `cooks.distance`\index{\texttt{cooks.distance}}, which can be used to compute the Cook's distance for each observation, which is useful for finding influential observations. In this case, I've chosen to print the row numbers for the observations with a Cook's distance greater than 0.004 - this number has been arbitrarily chosen in order to only highlight the observations with the highest Cook's distance.
+Another useful function is `cooks.distance`\index{\texttt{cooks.distance}}, which can be used to compute the Cook's distance for each observation, which is useful for finding influential observations. In this case, I've chosen to print the row numbers for the observations with a Cook's distance greater than 0.004 - this number has been arbitrarily chosen in order only to highlight the observations with the highest Cook's distance.
 
 ```{r eval=FALSE}
 res <- data.frame(Index = 1:length(cooks.distance(m)),
@@ -2835,7 +2835,7 @@ preds <- predict(m, wine[rows,])
 preds
 ```
 
-Those predictions look a bit strange though - what are they? By default, `predict` returns predictions on the scale of the link function. That's not really what we want in most cases - instead we are interested in the predicted probabilities. To get those instead, we have to add the argument `type = "response"` to the call:
+Those predictions look a bit strange though - what are they? By default, `predict` returns predictions on the scale of the link function. That's not really what we want in most cases - instead, we are interested in the predicted probabilities. To get those, we have to add the argument `type = "response"` to the call:
 
 ```{r eval=FALSE}
 preds <- predict(m, wine[rows,], type = "response")
@@ -2858,7 +2858,7 @@ attacks <- aggregate(Type ~ Year, data = sharks, FUN = length)
 attacks <- subset(attacks, Year >= 1960)
 ```
 
-The number of attacks in a year is not binary, but a count that in principle can take any non-negative integer as its value. Are there any trends over time for the number of reported attacks?
+The number of attacks in a year is not binary but a count that, in principle, can take any non-negative integer as its value. Are there any trends over time for the number of reported attacks?
 
 ```{r eval=FALSE}
 # Plot data from 1960-2019:
@@ -2868,7 +2868,7 @@ ggplot(attacks, aes(Year, Type)) +
       ylab("Number of attacks")
 ```
 
-No trend is evident. To confirm this, let's fit a regression model with `Type` (the number of attacks) as response variable and `Year` as explanatory variable. For count data like this, a good first model to use is _Poisson regression_. Let $\mu_i$  denote the expected value of the response variable given the explanatory variables. Given $n$ observations of $p$ explanatory variables, the Poisson regression model is:
+No trend is evident. To confirm this, let's fit a regression model with `Type` (the number of attacks) as the response variable and `Year` as an explanatory variable. For count data like this, a good first model to use is _Poisson regression_. Let $\mu_i$  denote the expected value of the response variable given the explanatory variables. Given $n$ observations of $p$ explanatory variables, the Poisson regression model is:
 
 $$\log(\mu_i)=\beta_0+\beta_1 x_{i1}+\beta_2 x_{i2}+\cdots+\beta_p x_{ip},\qquad i=1,\ldots,n$$
 To fit it, we use `glm` as before, but this time with `family = poisson`:
@@ -2913,7 +2913,7 @@ ggplot(res, aes(Index, CooksDistance)) +
                 hjust = 1.1)
 ```
 
-A common problem in Poisson regression models is excess zeros, i.e. more observations with value 0 than what is predicted by the model. To check the distribution of counts in the data we can draw a histogram:
+A common problem in Poisson regression models is excess zeros, i.e. more observations with value 0 than what is predicted by the model. To check the distribution of counts in the data, we can draw a histogram:
 
 ```{r eval=FALSE}
 ggplot(attacks, aes(Type)) +
@@ -2967,13 +2967,13 @@ boot_summary(m_nb, type = "perc", method = "case")
 $$\sim$$ 
 
 ```{exercise, label="ch7excGLM4"}
-The `quakes` dataset\index{data!\texttt{quakes}}, available in base R, contains information about seismic events off Fiji. Fit a Poisson regression model with `stations` as response variable and `mag` as explanatory variable. Are there signs of overdispersion? Does using a negative binomial model improve the model fit?
+The `quakes` dataset\index{data!\texttt{quakes}}, available in base R, contains information about seismic events off Fiji. Fit a Poisson regression model with `stations` as the response variable and `mag` as an explanatory variable. Are there signs of overdispersion? Does using a negative binomial model improve the model fit?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch7solutionsGLM4)
 
 ### Modelling rates
-Poisson regression models, and related models like negative binomial regression, can not only be used to model count data. They can also be used to model _rate data_, such as the number of cases per capita or number of cases per unit area. In that case, we need to include an _exposure_ variable $N$ that describes e.g. the population size or area corresponding to each observation. The model will be that:
+Poisson regression models, and related models like negative binomial regression, can not only be used to model count data. They can also be used to model _rate data_, such as the number of cases per capita or the number of cases per unit area. In that case, we need to include an _exposure_ variable $N$ that describes e.g. the population size or area corresponding to each observation. The model will be that:
 
 $$\log(\mu_i/N_i)=\beta_0+\beta_1 x_{i1}+\beta_2 x_{i2}+\cdots+\beta_p x_{ip},\qquad i=1,\ldots,n.$$
 Because $\log(\mu_i/N_i)=\log(\mu_i)-\log(N_i)$, this can be rewritten as:
@@ -3003,7 +3003,7 @@ summary(m)
 
 Model diagnostics can be performed as in the previous sections.
 
-Rate models are usually interpreted in terms of the rate ratios $e^{\beta_j}$, which describe the multiplicative increases of the intensity of rates when $x_j$ is increased one unit. To compute the rate ratios for our model, we use `exp`:
+Rate models are usually interpreted in terms of the rate ratios $e^{\beta_j}$, which describe the multiplicative increases of the intensity of rates when $x_j$ is increased by one unit. To compute the rate ratios for our model, we use `exp`:
 
 ```{r eval=FALSE}
 exp(coef(m))
@@ -3072,7 +3072,7 @@ plot(m, "rhat")
 
 
 ## Mixed models {#mixedmodels}
-Mixed models are used in regression problems where measurements have been made on clusters of related units. As a first example of this, we'll use a dataset from the `lme4`\index{\texttt{lme4}}\index{mixed model}\index{linear model!mixed} package, which also happens to contain useful methods for mixed models. Let's install it:
+Mixed models are used in regression problems where measurements have been made on clusters of related units. As the first example of this, we'll use a dataset from the `lme4`\index{\texttt{lme4}}\index{mixed model}\index{linear model!mixed} package, which also happens to contain useful methods for mixed models. Let's install it:
 
 ```{r eval=FALSE}
 install.packages("lme4")
@@ -3118,7 +3118,7 @@ ggplot(sleepstudy, aes(Days, Reaction, colour = Subject)) +
 
 Both the intercept and the slope of the average reaction time differs between individuals. Because of this, the fit given by the single model can be misleading. Moreover, the fact that the observations are correlated will cause problems for the traditional intervals and tests. We need to take this into account when we estimate the overall intercept and slope.
 
-One approach could be to fit a single model for each subject. That doesn't seem very useful though. We're not really interested in these particular test subjects, but in how sleep deprivation affects reaction times in an average person. It would be much better to have a single model that somehow incorporates the correlation between measurements made on the same individual. That is exactly what a linear mixed regression model does.
+One approach could be to fit a single model for each subject. That doesn't seem very useful though. We're not really interested in these particular test subjects, but in how sleep deprivation affects reaction times in an average person. It would be much better to have a single model that somehow incorporates the correlation between measurements made on the same individual. That is precisely what a linear mixed regression model does.
 
 
 
@@ -3190,9 +3190,9 @@ summary(m4, correlation = FALSE)
 
 I like to add `correlation = FALSE` here, which suppresses some superfluous output from `summary`.
 
-You'll notice that unlike the `summary` table for linear models, there are no p-values! This is a deliberate design-choice from the `lme4` developers, who argue that the approximate test available aren't good enough for small sample sizes (Bates et al., 2015).
+You'll notice that unlike the `summary` table for linear models, there are no p-values! This is a deliberate design choice from the `lme4` developers, who argue that the approximate test available aren't good enough for small sample sizes (Bates et al., 2015).
 
-Using the bootstrap, as we will do in Section \@ref(lmmbootstrap), is usually the best approach for mixed models. If you _really_ want some quick p-values\index{mixed model!p-value}, you can load the `lmerTest` package which adds p-values computed using the Satterthwaite approximation (Kuznetsova et al., 2017), which is better than the usual approximate tests, but not perfect:
+Using the bootstrap, as we will do in Section \@ref(lmmbootstrap), is usually the best approach for mixed models. If you _really_ want some quick p-values\index{mixed model!p-value}, you can load the `lmerTest` package, which adds p-values computed using the Satterthwaite approximation (Kuznetsova et al., 2017). This is better than the usual approximate test, but still not perfect.
 
 ```{r eval=FALSE}
 install.packages("lmerTest")
@@ -3331,7 +3331,7 @@ library(lme4)
 str(Pastes)
 ```
 
-We are interested in the `strength` of a chemical product. There are 10 delivery batches (`batch`), and 3 casks within each delivery (`cask`). Because of variations in manufacturing, transportation, storage, and so on, it makes sense to include random effects for both `batch` and `cask` in a linear mixed model. However, each cask only appears within a single batch, which makes the `cask` effect _nested_ within `batch`.
+We are interested in the `strength` of a chemical product. There are ten delivery batches (`batch`), and three casks within each delivery (`cask`). Because of variations in manufacturing, transportation, storage, and so on, it makes sense to include random effects for both `batch` and `cask` in a linear mixed model. However, each cask only appears within a single batch, which makes the `cask` effect _nested_ within `batch`.
 
 Models that use nested random factors are commonly known as _multilevel models_ (the random factors exist at different "levels"), or _hierarchical models_ (there is a hierarchy between the random factors). These aren't really any different from other mixed models, but depending on how the data is structured, we may have to be a bit careful to get the nesting right when we fit the model with `lmer`.
 
@@ -3406,7 +3406,7 @@ Fit a mixed effects ANOVA to the `TVbo` data, using `Coloursaturation` as the re
 ### Generalised linear mixed models
 Everything that we have just done for the linear mixed models carries over to _generalised linear mixed models_ (GLMM), which are GLM's with both fixed and random effects\index{mixed model!generalised}.
 
-A common example is the _item response model_, which plays an important role in psychometrics. This model is often used in psychological tests containing multiple questions or sets of questions ("items"), where both the subject the item are considered random effects. As an example, consider the `VerbAgg`\index{data!\texttt{VerbAgg}} data from `lme4`:
+A common example is the _item response model_, which plays an important role in psychometrics. This model is frequently used in psychological tests containing multiple questions or sets of questions ("items"), where both the subject the item are considered random effects. As an example, consider the `VerbAgg`\index{data!\texttt{VerbAgg}} data from `lme4`:
 
 ```{r eval=FALSE}
 library(lme4)
@@ -3422,7 +3422,7 @@ m <- glmer(r2 ~ Anger + Gender + (1|item) + (1|id),
 summary(m, correlation = FALSE)
 ```
 
-We can plot the fitted random effects for `item` to verify that there appears to be differences between the different items:
+We can plot the fitted random effects for `item` to verify that there appear to be differences between the different items:
 
 ```{r eval=FALSE}
 mixed_mod <- coef(m)$item
@@ -3441,7 +3441,7 @@ m <- glmer(r2 ~ Anger + Gender + situ + (1|item) + (1|id/situ),
 summary(m, correlation = FALSE)
 ```
 
-Finally, we'd like to obtain bootstrap confidence intervals for fixed effects. Because this is a fairly large dataset ($n=7,584$) this can take a looong time to run, so go stretch your legs and grab a cup of coffee or two while you wait:
+Finally, we'd like to obtain bootstrap confidence intervals for fixed effects. Because this is a fairly large dataset ($n=7,584$) this can take a looong time to run, so stretch your legs and grab a cup of coffee or two while you wait:
 
 ```{r eval=FALSE}
 library(boot.pval)
@@ -3453,14 +3453,14 @@ boot_summary(m, type = "perc", R = 100)
 $$\sim$$ 
 
 ```{exercise, label="ch7excLMM3"}
-Consider the `grouseticks` data from the `lme4` package (Elston et al., 2001). Fit a mixed Poisson regression model to the data, with `TICKS` as response variable and `YEAR` and `HEIGHT` as fixed effects. What variables are suitable to use for random effects? Compute a bootstrap confidence interval for the effect of `HEIGHT`.
+Consider the `grouseticks` data from the `lme4` package (Elston et al., 2001). Fit a mixed Poisson regression model to the data, with `TICKS` as the response variable and `YEAR` and `HEIGHT` as fixed effects. What variables are suitable to use for random effects? Compute a bootstrap confidence interval for the effect of `HEIGHT`.
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch7solutionsLMM3)
 
 
 ### Bayesian estimation of mixed models
-From a numerical point-of-view\index{mixed model!Bayesian estimation}, using Bayesian modelling with `rstanarm` is preferable to frequentist modelling with `lme4` if you have complex models with many random effects. Indeed, for some models `lme4` will return a warning message about a singular fit, basically meaning that the model is too complex, whereas `rstanarm`, powered by the use of a prior distribution, always will return a fitted model regardless of complexity.
+From a numerical point of view\index{mixed model!Bayesian estimation}, using Bayesian modelling with `rstanarm` is preferable to frequentist modelling with `lme4` if you have complex models with many random effects. Indeed, for some models, `lme4` will return a warning message about a singular fit, basically meaning that the model is too complex, whereas `rstanarm`, powered by the use of a prior distribution, always will return a fitted model regardless of complexity.
 
 After loading `rstanarm`, fitting a Bayesian linear mixed model with a weakly informative prior is as simple as substituting `lmer` with `stan_lmer`\index{\texttt{stan\_lmer}}:
 
@@ -3504,7 +3504,7 @@ plot(m4, "rhat")
 
 
 ## Survival analysis {#survival}
-Many studies are concerned with the duration of time until an event happens: time until a machine fails, time until a patient diagnosed with a disease dies, and so on. In this section we will consider some methods for _survival analysis_\index{survival analysis} (also known as reliability analysis in engineering, and duration analysis in economics), which is used for analysing such data. The main difficulty here is that studies often end before all participants have had events, meaning that some observations are _right-censored_ - for these observations we don't know when the event happened, but only that it happened after the end of the study.
+Many studies are concerned with the duration of time until an event happens: time until a machine fails, time until a patient diagnosed with a disease dies, and so on. In this section we will consider some methods for _survival analysis_\index{survival analysis} (also known as reliability analysis in engineering and duration analysis in economics), which is used for analysing such data. The main difficulty here is that studies often end before all participants have had events, meaning that some observations are _right-censored_ - for these observations, we don't know when the event happened, but only that it happened after the end of the study.
 
 The `survival`\index{\texttt{survival}} package contains a number of useful methods for survival analysis. Let's install it:
 
@@ -3647,7 +3647,7 @@ boot.ci(boot_res, type = "perc", index = 1) # Age
 boot.ci(boot_res, type = "perc", index = 2) # Sex
 ```
 
-As the name implies, the Cox proportional hazards model relies on the assumption of _proportional hazards_, which essentially means that the effect of the explanatory variables is constant over time. This can be assessed visually by plotting the model residuals, which is done using `cox.zph`\index{\texttt{cox.zph}} and the `ggcoxzph` function from the `survminer` package\index{\texttt{survminer}}\index{\texttt{ggcoxzph}}. Specifically, we will plot the scaled Schoenfeld (1982) residuals, which measure the difference between the observed covariates and the expected covariates given the risk at the time of an event. If the proportional hazards assumption holds, then there should be no trend over time for these residuals. Use the trend line to aid the eye:
+As the name implies, the Cox proportional hazards model relies on the assumption of _proportional hazards_, which essentially means that the effect of the explanatory variables is constant over time. This can be assessed visually by plotting the model residuals, using `cox.zph`\index{\texttt{cox.zph}} and the `ggcoxzph` function from the `survminer` package\index{\texttt{survminer}}\index{\texttt{ggcoxzph}}. Specifically, we will plot the scaled Schoenfeld (1982) residuals, which measure the difference between the observed covariates and the expected covariates given the risk at the time of an event. If the proportional hazards assumption holds, then there should be no trend over time for these residuals. Use the trend line to aid the eye:
 
 ```{r eval=FALSE}
 install.packages("survminer")
@@ -3687,7 +3687,7 @@ Consider the `retinopathy` data\index{data!\texttt{retinopathy}} from the `survi
 ### Accelerated failure time models
 In many cases, the proportional hazards assumption does not hold. In such cases we can turn to _accelerated failure time models_\index{survival analysis!accelerated failure time model} (Wei, 1992), for which the effect of covariates is to accelerate or decelerate the life course of a subject.
 
-While the proportional hazards model is semiparametric, accelerated failure time models are typically fully parametric, and thus involve stronger assumptions about an underlying distribution. When fitting such a model using the `survreg`\index{\texttt{survreg}} function, we must therefore specify what distribution to use. Two common choices are the Weibull distribution and the log-logistic distribution. The Weibull distribution is commonly used in engineering, e.g. in reliability studies. The hazard function of Weibull models is always monotonic, i.e. either always increasing or always decreasing. In contrast, the log-logistic distribution allows the hazard function to be non-monotonic, which makes it more flexible, and often more appropriate for biological studies. Let's fit both types of models to the `lung` data and have a look at the results:
+While the proportional hazards model is semiparametric, accelerated failure time models are typically fully parametric, and thus involve stronger assumptions about an underlying distribution. When fitting such a model using the `survreg`\index{\texttt{survreg}} function, we must therefore specify what distribution to use. Two common choices are the Weibull distribution and the log-logistic distribution. The Weibull distribution is commonly used in engineering, e.g. in reliability studies. The hazard function of Weibull models is always monotonic, i.e. either always increasing or always decreasing. In contrast, the log-logistic distribution allows the hazard function to be non-monotonic, making it more flexible, and often more appropriate for biological studies. Let's fit both types of models to the `lung` data and have a look at the results:
 
 ```{r eval=FALSE}
 library(survival)
@@ -3703,7 +3703,7 @@ m_ll <- survreg(Surv(time, status) ~ age + sex, data = lung,
 summary(m_ll)
 ```
 
-Interpreting of the coefficients of accelerated failure time models is easier than interpreting coefficients from proportional hazards models. The exponentiated coefficients shows the relative increase or decrease in the expected survival times when a covariate is increased one step while all others are kept fixed:
+Interpreting the coefficients of accelerated failure time models is easier than interpreting coefficients from proportional hazards models. The exponentiated coefficients show the relative increase or decrease in the expected survival times when a covariate is increased one step while all others are kept fixed:
 
 ```{r eval=FALSE}
 exp(coef(m_ll))
@@ -3797,7 +3797,7 @@ Let's simulate the power of a 3-year follow-up study with two arms (i.e. two gro
 weib_dist <- Weibull2(c(1, 3), c(.9, .6))
 ```
 
-We'll assume that the treatment has no effect for the first 6 months, and that it then has a constant effect, leading to a hazard ratio of 0.75 (so the hazard ratio is 1 if the time in years is less than or equal to 0.5, and 0.75 otherwise). Moreover, we'll assume that there is a constant drop-out rate, such that 20 % of the patients can be expect to drop out during the three years. Finally, there is no drop-in. We define a function to simulate survival times under these conditions:
+We'll assume that the treatment has no effect for the first 6 months, and that it then has a constant effect, leading to a hazard ratio of 0.75 (so the hazard ratio is 1 if the time in years is less than or equal to 0.5, and 0.75 otherwise). Moreover, we'll assume that there is a constant drop-out rate, such that 20 % of the patients can be expected to drop out during the three years. Finally, there is no drop-in. We define a function to simulate survival times under these conditions:
 
 ```{r eval=FALSE}
 # In the functions used to define the hazard ratio, drop-out
@@ -3843,7 +3843,7 @@ spower(rcontrol, rinterv, rcens, nc = 100, ni = 300,
 ## Left-censored data and nondetects
 Survival data is typically right-censored. Left-censored data, on the other hand, is common in medical research (e.g. in biomarker studies) and environmental chemistry (e.g. measurements of chemicals in water), where some measurements fall below the laboratory's _detection limits_ (or limit of detection, LoD). Such data also occur in studies in economics. A measurement below the detection limit, a _nondetect_, is still more informative than having no measurement at all - we may not know the exact value, but we know that the measurement is below a given threshold. 
 
-In principle, all methods that are applicable to survival analysis can be used also for left-censored data (although the interpretation of coefficients and parameters may differ), but in practice the distributions of lab measurements and economic variables often differ from those that typically describe survival times. In this section we'll have a look at methods tailored to the kind of left-censored data that appears in applications in the aforementioned fields.
+In principle, all methods that are applicable to survival analysis can also be used for left-censored data (although the interpretation of coefficients and parameters may differ), but in practice the distributions of lab measurements and economic variables often differ from those that typically describe survival times. In this section we'll look at methods tailored to the kind of left-censored data that appears in applications in the aforementioned fields.
 
 ### Estimation
 The `EnvStats`\index{\texttt{EnvStats}} package contains a number of functions that can be used to compute descriptive statistics and estimating parameters of distributions from data with nondetects. Let's install it:
@@ -3901,7 +3901,7 @@ estimates_bcmle$parameters
 estimates_ros$parameters
 ```
 
-The naive estimators tend to be biased for data with nondetects (sometimes very biased!). Your mileage may vary depending on e.g. the sample size and the amount of censoring, but in general the estimators that take censoring into account will fare much better.
+The naive estimators tend to be biased for data with nondetects (sometimes very biased!). Your mileage may vary depending on e.g. the sample size and the amount of censoring, but in general, the estimators that take censoring into account will fare much better.
 
 After we have obtained estimates for the parameters of the normal distribution, we can plot the data against the fitted distribution to check the assumption of normality:
 
@@ -3944,7 +3944,7 @@ Under the assumption that the biomarker levels follow a lognormal distribution, 
 
 
 ### Tests of means
-To test the difference of the means of two groups, nonparametric tests like the Wilcoxon-Mann-Whitney test often perform very well for data with nondetects, unlike the t-test (Zhang et al., 2009). For data with a high degree of censoring (e.g. more than 50 %), most tests perform poorly. For multivariate tests of mean vectors the situation is the opposite, with Hotelling's $T^2$ (Section \@ref(hotellingst2)) being a much better option than nonparametric tests (Thulin, 2016).
+When testing the difference between two groups' means, nonparametric tests like the Wilcoxon-Mann-Whitney test often perform very well for data with nondetects, unlike the t-test (Zhang et al., 2009). For data with a high degree of censoring (e.g. more than 50 %), most tests perform poorly. For multivariate tests of mean vectors the situation is the opposite, with Hotelling's $T^2$ (Section \@ref(hotellingst2)) being a much better option than nonparametric tests (Thulin, 2016).
 
 $$\sim$$
 
@@ -3982,7 +3982,7 @@ m <- survreg(Surv(Zinc, !Censored, type = "left") ~ Sample + Well,
 summary(m)
 ```
 
-Fitting regression models where the explanatory variables are censored is more challenging. For prediction, a good option is models based on decision trees, which are studied in Section \@ref(mlmethods). For testing whether there is a trend over time, tests based on Kendall's correlation coefficient can be useful. `EnvStats` provides two functions for this - `kendallTrendTest`\index{\texttt{kendallTrendTest}} for testing a monotonic trend, and `kendallSeasonalTrendTest`\index{\texttt{kendallSeasonalTrendTest}} for testing a monotonic trend within seasons.
+Fitting regression models where the explanatory variables are censored is more challenging. For prediction, a good option is models based on decision trees, studied in Section \@ref(mlmethods). For testing whether there is a trend over time, tests based on Kendall's correlation coefficient can be useful. `EnvStats` provides two functions for this - `kendallTrendTest`\index{\texttt{kendallTrendTest}} for testing a monotonic trend, and `kendallSeasonalTrendTest`\index{\texttt{kendallSeasonalTrendTest}} for testing a monotonic trend within seasons.
 
 
 
@@ -3992,7 +3992,7 @@ Fitting regression models where the explanatory variables are censored is more c
 
 
 ## Creating matched samples
-_Matching_ is used to balance the distribution of explanatory variables in the groups that are being compared. This is often required in observational studies, where the treatment variable is not randomly assigned, but determined by some external factor(s) which may be related to the treatment. For instance, if you wish to study the effect of smoking on mortality, you can recruit a group of smokers and non-smokers and follow them for a few years. But both mortality and smoking are related to _confounding_ variables such as age and gender, meaning that imbalances in the age and gender distributions of smokers and non-smokers can bias the results. There are several methods for creating balanced or _matched samples_\index{matched samples} that seek to mitigate this bias, including _propensity score matching_, which we'll use here. The `MatchIt`\index{\texttt{MatchIt}} and `optmatch`\index{\texttt{optmatch}} packages contain the functions that we need for this.
+_Matching_ is used to balance the distribution of explanatory variables in the groups that are being compared. This is often required in observational studies, where the treatment variable is not randomly assigned, but determined by some external factor(s) that may be related to the treatment. For instance, if you wish to study the effect of smoking on mortality, you can recruit a group of smokers and non-smokers and follow them for a few years. But both mortality and smoking are related to _confounding_ variables such as age and gender, meaning that imbalances in the age and gender distributions of smokers and non-smokers can bias the results. There are several methods for creating balanced or _matched samples_\index{matched samples} that seek to mitigate this bias, including _propensity score matching_, which we'll use here. The `MatchIt`\index{\texttt{MatchIt}} and `optmatch`\index{\texttt{optmatch}} packages contain the functions that we need for this.
 
 To begin with, let's install the two packages:
 
@@ -4084,7 +4084,7 @@ Participants with no exact matches won't be included in `matched_data`.
 
 
 ### Stepwise matching
-At times you will want to combine the above approaches. For instance, you may want to have an exact match for age, and then an approximate match using the propensity scores for other variables. This is also achievable, but requires the matching to be done in several steps. To first match the participant exactly on age and then 1-to-2 via nearest-neighbour propensity score matching on `re74` and `re75` we can use a loop:
+At times you will want to combine the above approaches. For instance, you may want to have an exact match for age, and then an approximate match using the propensity scores for other variables. This is also achievable but requires the matching to be done in several steps. To first match the participant exactly on age and then 1-to-2 via nearest-neighbour propensity score matching on `re74` and `re75` we can use a loop:
 
 ```{r eval=FALSE}
 # Match exactly one age:

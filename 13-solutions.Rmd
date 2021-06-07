@@ -824,7 +824,7 @@ bookstore %>% inset("rev_per_minute",
 ## Chapter 4 {-#solutionsch4}
 
 #### Exercise \@ref(exr:ch4exc0) {-#ch4solutions0}
-1. We change the background colour of the the entire plot to `lightblue`.
+1. We change the background colour of the entire plot to `lightblue`.
 
 ```{r eval=FALSE}
 p + theme(panel.background = element_rect(fill = "lightblue"),
@@ -5070,7 +5070,7 @@ To get the estimated effect on survival times, we exponentiate the coefficients:
 exp(coef(m))
 ```
 
-According to the model, the survival time increases 1.8 times for patients in treatment group 2, compared to patients in treatment group 1. Running `summary(m)` shows that the p-value for `rx` is 0.05, meaning that the result isn't significant at the the 5 % level (albeit with the smallest possible margin!).
+According to the model, the survival time increases 1.8 times for patients in treatment group 2, compared to patients in treatment group 1. Running `summary(m)` shows that the p-value for `rx` is 0.05, meaning that the result isn't significant at the 5 % level (albeit with the smallest possible margin!).
 
 `r if (knitr::is_html_output()) '[(Click here to return to the exercise.)]' else '[]'`(#exr:ch7excLMM5)
 
@@ -5402,7 +5402,7 @@ m <- train(selling_price ~ .,
 m$results[which(m$results$lambda == m$finalModel$lambdaOpt),]
 ```
 
-Noticing the the $\lambda$ that gave the best $RMSE$ was 10, which was the maximal $\lambda$ that we investigated, we rerun the code, allowing for higher values of $\lambda$:
+Noticing that the $\lambda$ that gave the best $RMSE$ was 10, which was the maximal $\lambda$ that we investigated, we rerun the code, allowing for higher values of $\lambda$:
 
 ```{r eval=FALSE}
 m <- train(selling_price ~ .,

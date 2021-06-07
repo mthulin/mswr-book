@@ -1,5 +1,5 @@
 # Debugging {#errorchapter}
-In Section \@ref(troubleshooting) I gave some general advice about what to do when there is an error in your R code:
+In Section \@ref(troubleshooting), I gave some general advice about what to do when there is an error in your R code:
 
 1. Read the error message carefully and try to decipher it. Have you seen it before? Does it point to a particular variable or function? Check Section \@ref(commonerrors) of this book, which deals with common error messages in R.
 
@@ -137,7 +137,7 @@ undebug(transform_number)
 ```
 
 ### Investigate the environment with `recover`
-By default, R prints an error message, returns to the global environment and stops the execution when an error occurs. You can use `recover`\index{\texttt{recover}} to change this behaviour, so that R stays in the environment where the error occurred. This allows you to investigate that environment, e.g. to see if any variables have been assigned the wrong values.
+By default, R prints an error message, returns to the global environment and stops the execution when an error occurs. You can use `recover`\index{\texttt{recover}} to change this behaviour so that R stays in the environment where the error occurred. This allows you to investigate that environment, e.g. to see if any variables have been assigned the wrong values.
 
 ```{r eval=FALSE}
 transform_number(NA)
@@ -160,7 +160,7 @@ If there is a `+`\index{\texttt{+}} sign at the beginning of the last line in th
 Type `)` in the Console to finish the expression, and your code will run. The same problem can occur if a quote is missing:
 
 ```{r eval=FALSE}
-> myString <- "Good things comes in threes
+> myString <- "Good things come in threes
 +
 ```
 
@@ -185,7 +185,7 @@ R throws this error message if we attempt to use a variable that does not exist\
 Error: object 'name_of_a_variable_that_doesnt_exist' not found
 ```
 
-This error may be due to a spelling error, so check the spelling of the variable name. It is also commonly encountered if you return to an old R script and try to run just a part of it - if the variable is created on an earlier line which hasn't been run, R won't find it because it hasn't been created yet.
+This error may be due to a spelling error, so check the spelling of the variable name. It is also commonly encountered if you return to an old R script and try to run just a part of it - if the variable is created on an earlier line that hasn't been run, R won't find it because it hasn't been created yet.
 
 ### `cannot open the connection` and `No such file or directory`
 This error message appears\index{error message!\texttt{cannot open the connection}}\index{error message!\texttt{No such file or directory}} when you try to load a file that doesn't exist:
@@ -249,7 +249,7 @@ which yields:
 Error in if (x[i] > 7) { : missing value where TRUE/FALSE needed
 ```
 
-The error occurs when `i` is `4`, because the expression `x[i] > 7` becomes `NA > 7` which evaluates to `NA`. `if` statements require that the condition evaluates to either `TRUE` or `FALSE`. When this error occurs, you should investigate why you get an `NA` instead.
+The error occurs when `i` is `4`, because the expression `x[i] > 7` becomes `NA > 7`, which evaluates to `NA`. `if` statements require that the condition evaluates to either `TRUE` or `FALSE`. When this error occurs, you should investigate why you get an `NA` instead.
 
 ### `unexpected '=' in ...`
 This message indicates that you have an assignment happening in the wrong place\index{error message!\texttt{unexpected '=' in ...}}. You probably meant to use `==` to check for equality, but accidentally wrote `=` instead, as in this example: 
@@ -397,7 +397,7 @@ lapply(x, as.numeric)
 
 
 ### `arguments imply differing number of rows`
-This message is printed when you try to create a data frame with different number of rows for different columns, like in this example\index{error message!\texttt{arguments imply differing number of rows}}, where `a` has 3 rows and `b` has 4:
+This message is printed when you try to create a data frame with different numbers of rows for different columns, like in this example\index{error message!\texttt{arguments imply differing number of rows}}, where `a` has 3 rows and `b` has 4:
 
 ```{r eval=FALSE}
 > x <- data.frame(a = 1:3, b = 6:9)
@@ -405,7 +405,7 @@ Error in data.frame(a = 1:3, b = 6:9) :
   arguments imply differing number of rows: 3, 4
 ```
 
-If you really need to create an object with different number of rows for different columns, create a `list` instead:
+If you really need to create an object with different numbers of rows for different columns, create a `list` instead:
 
 ```{r eval=FALSE}
 x <- list(a = 1:3, b = 6:9)
@@ -426,7 +426,7 @@ paste("Hello", "world")
 ```
 
 ### `non-numeric argument to mathematical function`
-This error message is similar the the previous one, and appears when you try to apply a mathematical function, like `log` or `exp` to non-numerical variables\index{error message!\texttt{non-numeric argument to mathematical function}}:
+This error message is similar the previous one, and appears when you try to apply a mathematical function, like `log` or `exp` to non-numerical variables\index{error message!\texttt{non-numeric argument to mathematical function}}:
 
 ```{r eval=FALSE}
 > log("1")
@@ -468,7 +468,7 @@ x[3:4,] <- y
 ```
 
 ### `the condition has length > 1 and only the first element will be used` {#iferror}
-This warning is thrown when you the condition in a conditional statement is a vector rather than a single value\index{warning message!\texttt{the condition has length > 1 and only the first element will be used}}. Here is an example:
+This warning is thrown when the condition in a conditional statement is a vector rather than a single value\index{warning message!\texttt{the condition has length > 1 and only the first element will be used}}. Here is an example:
 
 ```{r eval=FALSE}
 > x <- 1:3
@@ -557,7 +557,7 @@ as.numeric(x)
 ```
 
 ### `package is not available (for R version 4.x.x)`
-This warning message (which perhaps should be a error message rather than a warning) occurs when you try to install a package\index{warning message!\texttt{package is not available}} that isn't available for the version of R that you are using.
+This warning message (which perhaps should be an error message rather than a warning) occurs when you try to install a package\index{warning message!\texttt{package is not available}} that isn't available for the version of R that you are using.
 
 ```{r eval=FALSE}
 > install.packages("great_name_for_a_package")

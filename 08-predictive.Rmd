@@ -1,5 +1,5 @@
 # Predictive modelling and machine learning {#mlchapter}
-In predictive modelling, we fit statistical models that make use of historical data to make predictions about future (or unknown) outcomes. This practice is a cornerstone of modern statistics, and includes methods ranging from classical parametric linear regression to black-box machine learning models.
+In predictive modelling, we fit statistical models that use historical data to make predictions about future (or unknown) outcomes. This practice is a cornerstone of modern statistics, and includes methods ranging from classical parametric linear regression to black-box machine learning models.
 
 After reading this chapter, you will be able to use R to:
 
@@ -12,7 +12,7 @@ After reading this chapter, you will be able to use R to:
 * Make forecasts based on time series data.
 
 ## Evaluating predictive models
-In many ways, modern predictive modelling differs from the more traditional inference problems that we studied in the previous chapter. The goal of predictive modelling is (usually) not to test whether some variable affects an other, or to study causal relationships. Instead, our only goal is to make good predictions. It is little surprise then, that the tools that we use to evaluate predictive models differ from those used to evaluate models used for other purposes, like hypothesis testing. In this section, we will have a look at how to evaluate predictive models.
+In many ways, modern predictive modelling differs from the more traditional inference problems that we studied in the previous chapter. The goal of predictive modelling is (usually) not to test whether some variable affects another or to study causal relationships. Instead, our only goal is to make good predictions. It is little surprise then that the tools we use to evaluate predictive models differ from those used to evaluate models used for other purposes, like hypothesis testing. In this section, we will have a look at how to evaluate predictive models.
 
 The terminology used in predictive modelling differs a little from that used in traditional statistics. For instance, explanatory variables are often called _features_ or _predictors_, and predictive modelling is often referred to as _supervised learning_. We will stick with the terms used in Section \@ref(modchapter), to keep the terminology consistent within the book.
 
@@ -32,7 +32,7 @@ m <- lm(mpg ~ ., data = mtcars)
 
 (Recall that the formula `mpg ~ .` means that all variables in the dataset, except `mpg`, are used as explanatory variables in the model.)
 
-A number of measures of how well the model fits the data have been proposed. Without going into details (it will soon be apparent why), we can mention examples like the coefficient of determination $R^2$, and information criterions like $AIC$ and $BIC$\index{\texttt{AIC}}\index{\texttt{BIC}}\index{AIC}\index{BIC}\index{$R^2$}. All of these are straightforward to compute for our model:
+A number of measures of how well the model fits the data have been proposed. Without going into details (it will soon be apparent why), we can mention examples like the coefficient of determination $R^2$, and information criteria like $AIC$ and $BIC$\index{\texttt{AIC}}\index{\texttt{BIC}}\index{AIC}\index{BIC}\index{$R^2$}. All of these are straightforward to compute for our model:
 
 ```{r eval=FALSE}
 summary(m)$r.squared     # R^2
@@ -50,7 +50,6 @@ that is, as the named implies, the square root of the mean of the squared errors
 Another common measure is the mean absolute error (MAE)\index{MAE}:
 
 $$MAE = \frac{\sum_{i=1}^n|\hat{y}_i-y_i|}{n}.$$
-These differ mainly in how large the impact of big errors are. Because the errors are squared in the RMSE, large errors get even larger, and have bigger influence on the mean.
 
 Let's compare the predicted values $\hat{y}_i$ to the observed values $y_i$ for our `mtcars` model `m`:
 
@@ -64,7 +63,7 @@ There is a problem with this computation, and it is a big one. What we just comp
 
 All the computations that we've just done - $R^2$, $AIC$, $BIC$, $RMSE$ and $MAE$ - were examples of _in-sample evaluations_ of our model. There are a number of problems associated with in-sample evaluations, all of which have been known for a long time - see e.g. Picard & Cook (1984). In general, they tend to be overly optimistic and overestimate how well the model will perform for new data. It is about time that we got rid of them for good.
 
-A fundamental principle of predictive modelling is that the model chiefly should be judged on how well it does predictions for new data. To evaluate its performance, we therefore need to carry out some form of _out-of-sample evaluation_, i.e. to use the model to make predictions for new data (that weren't used to fit the model). We can then compare those predictions to the actual observed values for those data, and e.g. compute the $RMSE$ or $MAE$ to measure the size of the average prediction error. Out-of-sample evaluations, when done right, are less overoptimistic than in-sample evaluations, and are also better in the sense that they actually measure the right thing.
+A fundamental principle of predictive modelling is that the model chiefly should be judged on how well it makes predictions for new data. To evaluate its performance, we therefore need to carry out some form of _out-of-sample evaluation_, i.e. to use the model to make predictions for new data (that weren't used to fit the model). We can then compare those predictions to the actual observed values for those data, and e.g. compute the $RMSE$ or $MAE$ to measure the size of the average prediction error. Out-of-sample evaluations, when done right, are less overoptimistic than in-sample evaluations, and are also better in the sense that they actually measure the right thing.
 
 $$\sim$$
 
@@ -91,7 +90,7 @@ exdata <- data.frame(x1 = c(0.87, -1.03, 0.02, -0.25, -1.09, 0.74,
 1. The true relationship between the variables, used to generate the `y` variables, is $y = 2x_1-x_2+x_3\cdot x_2$. Plot the `y` values in the data against this expected value. Does a linear model seem appropriate?
 2. Fit a linear regression model with `x1`, `x2` and `x3` as explanatory variables (without any interactions) using the first 20 observations of the data. Do the p-values and $R^2$ indicate a good fit?
 3. Make predictions for the remaining 10 observations. Are the predictions accurate?
-4. A common (mal)practice is to remove explanatory variables that aren't significant from a linear model (see Section \@ref(stepwise) for some comments on this). Remove any variables from the regression model that had a p-value above 0.05, and refit the model using the first 20 observations. Do the p-values and $R^2$ indicate a good fit? Do the predictions for the remaining 10 observations improve?
+4. A common (mal)practice is to remove explanatory variables that aren't significant from a linear model (see Section \@ref(stepwise) for some comments on this). Remove any variables from the regression model with a p-value above 0.05, and refit the model using the first 20 observations. Do the p-values and $R^2$ indicate a good fit? Do the predictions for the remaining 10 observations improve?
 5. Finally, fit a model with `x1`, `x2` and `x3*x2` as explanatory variables (i.e. a correctly specified model) to the first 20 observations. Do the predictions for the remaining 10 observations improve?
 
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch8solutions1)
@@ -128,9 +127,9 @@ mae <- mean(abs(predict(m, mtcars_test) - mtcars_test$mpg))
 rmse; mae
 ```
 
-Because of the small sample sizes here, the results can vary a lot if you rerun the two code chunks above several times (try it!). When I ran them ten times, the $RMSE$ varied between 1.8 and 7.6 - quite a difference on the scale of `mpg`! This problem is usually not as pronounced if you have larger sample sizes, but even for fairly large datasets there can be a lot of variability depending on how the data happens to be split. It is not uncommon to get a "lucky" or "unlucky" test set that either overestimates or underestimates the performance of the model.
+Because of the small sample sizes here, the results can vary a lot if you rerun the two code chunks above several times (try it!). When I ran them ten times, the $RMSE$ varied between 1.8 and 7.6 - quite a difference on the scale of `mpg`! This problem is usually not as pronounced if you have larger sample sizes, but even for fairly large datasets, there can be a lot of variability depending on how the data happens to be split. It is not uncommon to get a "lucky" or "unlucky" test set that either overestimates or underestimates the model's performance.
 
-In general, I'd therefore recommend that you only use test-training splits of your data as a last resort (and only use it with sample sizes of 10,000 or more). Better tools are available, in the form of the bootstrap and its darling cousin, cross-validation.
+In general, I'd therefore recommend that you only use test-training splits of your data as a last resort (and only use it with sample sizes of 10,000 or more). Better tools are available in the form of the bootstrap and its darling cousin, cross-validation.
 
 ### Leave-one-out cross-validation and `caret` {#loocv}
 The idea behind cross-validation\index{cross-validation}\index{cross-validation!LOO} is similar to that behind test-training splitting of the data. We partition the data into several sets, and use one of them for evaluation. The key difference is that we in a cross-validation partition the data into more than two sets, and use all of them (one-by-one) for evaluation.
@@ -157,7 +156,7 @@ mae <- mean(abs(pred - mtcars$mpg))
 rmse; mae
 ```
 
-We will use cross-validation a lot, and so it is nice not to have to write a lot of code each time we want to do it. To that end, we'll install the `caret`\index{\texttt{caret}} package, which not only lets us do cross-validation, but also acts as a wrapper for a large number of packages for predictive models. That means that we won't have to learn a ton of functions to be able to fit different types of models. Instead we just have to learn a few functions from `caret`. Let's install the package and some of the packages it needs to function fully:
+We will use cross-validation a lot, and so it is nice not to have to write a lot of code each time we want to do it. To that end, we'll install the `caret`\index{\texttt{caret}} package, which not only lets us do cross-validation, but also acts as a wrapper for a large number of packages for predictive models. That means that we won't have to learn a ton of functions to be able to fit different types of models. Instead, we just have to learn a few functions from `caret`. Let's install the package and some of the packages it needs to function fully:
 
 ```{r eval=FALSE}
 install.packages("caret", dependencies = TRUE)
@@ -180,7 +179,7 @@ m <- train(mpg ~ .,
 summary(m)
 ```
 
-Many, but not all, functions that we would apply to an object fitted using `lm` still work fine with a linear model fitted using `train`, including `predict`. Others, like `coef` and `confint` no longer work (or work in a different way) - but that is not that big a problem. We only use `train` when we are fitting a linear regression model with the intent of using it for prediction - and in such cases we are typically not interested in the values of the model coefficients or their confidence intervals. If we need them we can always refit the model using `lm`.
+Many, but not all, functions that we would apply to an object fitted using `lm` still work fine with a linear model fitted using `train`, including `predict`. Others, like `coef` and `confint` no longer work (or work differently) - but that is not that big a problem. We only use `train` when we are fitting a linear regression model with the intent of using it for prediction - and in such cases, we are typically not interested in the values of the model coefficients or their confidence intervals. If we need them, we can always refit the model using `lm`.
 
 What makes `train` great is that `m` also contains information about the predictive performance of the model, computed, in this case, using leave-one-out cross-validation:
 
@@ -303,16 +302,15 @@ m$results
 $$\sim$$
 
 ```{exercise, label="ch8exc4"}
-Return to the `estates.xlsx` data from the previous exercise. Refit your linear model, but this time use the boostrap to evaluate the model. Run it several times and check the MAE. How much does the MAE vary between runs?
+Return to the `estates.xlsx` data from the previous exercise. Refit your linear model, but this time use the bootstrap to evaluate the model. Run it several times and check the MAE. How much does the MAE vary between runs?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch8solutions4)
 
-
 ### Evaluating classification models {#classifieraccuracy}
-Classification models, or classifiers, differ from regression model in that their aim is to predict which _class_ (category) an observation belongs to, rather than to predict a number. Because the target variable, the class, is categorical, it would make little sense to use measures like $RMSE$ and $MAE$ to evaluate the performance of a classifier. Instead, we will use other measures that are better suited to this type of problem.
+Classification models, or classifiers, differ from regression model in that they aim to predict which _class_ (category) an observation belongs to, rather than to predict a number. Because the target variable, the class, is categorical, it would make little sense to use measures like $RMSE$ and $MAE$ to evaluate the performance of a classifier. Instead, we will use other measures that are better suited to this type of problem.
 
-To begin with though, we'll revisit the `wine` data that we studied in Section \@ref(logreg). It contains characteristics of wines that belong to either of two classes: white and red. Let's create the dataset:
+To begin with, though, we'll revisit the `wine` data that we studied in Section \@ref(logreg). It contains characteristics of wines that belong to either of two classes: white and red. Let's create the dataset:
 
 ```{r eval=FALSE}
 # Import data about white and red wines:
@@ -362,8 +360,6 @@ The summary reports two figures from the cross-validation:
 * _Accuracy_:\index{accuracy} the proportion of correctly classified observations,
 * _Cohen's kappa_:\index{Cohen's kappa} a measure combining the observed accuracy with the accuracy expected under random guessing (which is related to the balance between the two classes in the sample).
 
-Both these measures are a little problematic. Accuracy appears to be easy to interpret, but can be very misleading for imbalanced data, where the proportions of different classes differs. For instance, imagine that we have a dataset where 98 % of the data belongs to class A and 2 % to class B. A classifier that always predicts that all observations belong to class A will achieve 98 % accuracy on such a dataset, despite being completely useless. Similarly, Cohen's kappa is quite sensitive to class imbalance, and is difficult to interpret. 
-
 We mentioned a little earlier that we can use logistic regression for classification by, for instance, classifying a wine as being red if the predicted probability that it is red is at least 0.5. It is of course possible to use another threshold as well, and classify wines as being red if the probability is at least 0.2, or 0.3333, or 0.62. When setting this threshold, there is a tradeoff between the occurrence of what is known as _false negatives_ and _false positives_. Imagine that we have two classes (white and red), and that we label one of them as negative (white) and one as positive (red). Then:
 
 * A _false negative_ is a positive (red) observation incorrectly classified as negative (white),
@@ -403,11 +399,11 @@ plots <- evalm(m)
 plots$roc
 ```
 
-The x-axis shows the _false positive rate_ of the classifier (which is 1 minus the specificity - we'd like this to be as low as possible) and the y-axis shows the corresponding sensitivity of the classifier (we'd like this to be as high as possible). The red line shows the false positive rate and sensitivity of our classifier, which each point on the line corresponding to a different threshold. The grey line shows the performance of a classifier that is no better than random guessing - ideally we want the red line to be much higher than that.
+The x-axis shows the _false positive rate_ of the classifier (which is 1 minus the specificity - we'd like this to be as low as possible) and the y-axis shows the corresponding sensitivity of the classifier (we'd like this to be as high as possible). The red line shows the false positive rate and sensitivity of our classifier, which each point on the line corresponding to a different threshold. The grey line shows the performance of a classifier that is no better than random guessing - ideally, we want the red line to be much higher than that.
 
-The beauty of the ROC curve is that it gives us a visual summary of how the classifier performs for all possible thresholds. It is particularly useful if we want to compare two or more classifiers, as you will do in Exercise \@ref(exr:ch8exc5).
+The beauty of the ROC curve is that it gives us a visual summary of how the classifier performs for all possible thresholds. It is instrumental if we want to compare two or more classifiers, as you will do in Exercise \@ref(exr:ch8exc5).
 
-The legend shows a summary measure, $AUC$, the area under the ROC curve\index{AUC}. An $AUC$ of 0.5 means that the classifier is no better than random guessing, and an $AUC$ of 1 means that the model always makes correct predictions for all thresholds. Getting an $AUC$ that is lower than 0.5, meaning that the classifier is _worse_ than random guessing, is exceedingly rare, and usually a sign of some error having been made in the model fitting.
+The legend shows a summary measure, $AUC$, the area under the ROC curve\index{AUC}. An $AUC$ of 0.5 means that the classifier is no better than random guessing, and an $AUC$ of 1 means that the model always makes correct predictions for all thresholds. Getting an $AUC$ that is lower than 0.5, meaning that the classifier is _worse_ than random guessing, is exceedingly rare, and can be a sign of some error in the model fitting.
 
 `evalm` also computes a 95 % confidence interval\index{AUC!confidence interval} for the $AUC$, which can be obtained as follows:
 
@@ -458,7 +454,7 @@ to create ROC curves and calibration plots for both models. Compare their curves
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch8solutions5)
 
 ### Visualising decision boundaries {#decisionboundaries}
-For models with two explanatory variables, the _decision boundaries_ of a classifier can easily be visualised. These shows the different regions of the sample space that the classifier associates with the different classes. Let's look at an example of this using the model `m` fitted to the `wine` data at the end of the previous section. We'll create a grid of points using `expand.grid`\index{\texttt{expand.grid}} and make predictions for each of them (i.e. classify each of them). We can then use `geom_contour`\index{\texttt{geom\_contour}} to draw the decision boundaries:
+For models with two explanatory variables, the _decision boundaries_ of a classifier can easily be visualised. These show the different regions of the sample space that the classifier associates with the different classes. Let's look at an example of this using the model `m` fitted to the `wine` data at the end of the previous section. We'll create a grid of points using `expand.grid`\index{\texttt{expand.grid}} and make predictions for each of them (i.e. classify each of them). We can then use `geom_contour`\index{\texttt{geom\_contour}} to draw the decision boundaries:
 
 ```{r eval=FALSE}
 contour_data <- expand.grid(
@@ -480,18 +476,18 @@ In this case, points to the left of the black line are classified as white, and 
 
 
 ## Ethical issues in predictive modelling
-Even when they are used for the best of intents, predictive models can inadvertently create injustice and bias, and lead to discrimination.\index{ethics} This is particularly so for models that in one way or another make predictions about people. Real-world examples include facial recognition systems that perform worse for people with darker skin (Buolamwini & Gebru, 2018) and recruitment models that are biased against women (Dastin, 2018).
+Even when they are used for the best of intents, predictive models can inadvertently create injustice and bias, and lead to discrimination.\index{ethics} This is particularly so for models that, in one way or another, make predictions about people. Real-world examples include facial recognition systems that perform worse for people with darker skin (Buolamwini & Gebru, 2018) and recruitment models that are biased against women (Dastin, 2018).
 
-A common issue that can cause this type of problem is difficult-to-spot biases in the training data. If female applicants have been less likely to get a job at a company in the past, then a recruitment model built on data from that company will likely also become biased against women. It can be problematic to simply take data from the past and to consider is as the "ground-truth" when building models.
+A common issue that can cause this type of problem is difficult-to-spot biases in the training data. If female applicants have been less likely to get a job at a company in the past, then a recruitment model built on data from that company will likely also become biased against women. It can be problematic to simply take data from the past and to consider it as the "ground-truth" when building models.
 
-Similarly, predictive models can create situations where people are stopped from improving their circumstances, and for instance are stopped from getting out of poverty because they are poor. As an example, if people from a certain (poor) zip code historically often have defaulted on their loans, then a predictive model determining who should be granted a student loan may reject an applicant from that area solely on those grounds, even though they otherwise might be an ideal candidate for a loan (which would have allowed them to get an education and a better-paid job). Finally, in extreme cases predictive models can be used by authoritarian governments to track and target dissidents, in a bid to block democracy and human rights.
+Similarly, predictive models can create situations where people are prevented from improving their circumstances, and for instance are stopped from getting out of poverty because they are poor. As an example, if people from a certain (poor) zip code historically often have defaulted on their loans, then a predictive model determining who should be granted a student loan may reject an applicant from that area solely on those grounds, even though they otherwise might be an ideal candidate for a loan (which would have allowed them to get an education and a better-paid job). Finally, in extreme cases, predictive models can be used by authoritarian governments to track and target dissidents in a bid to block democracy and human rights.
 
 When working on a predictive model, you should always keep these risks in mind, and ask yourself some questions. How will your model be used, and by whom? Are there hidden biases in the training data? Are the predictions good enough, and if they aren't, what could be the consequences for people who get erroneous predictions? Are the predictions good enough for all groups of people, or does the model have worse performance for some groups? Will the predictions improve fairness or cement structural unfairness that was implicitly incorporated in the training data?
 
 $$\sim$$
 
 ```{exercise, label="ch9ethics1"}
-_Discuss the following._ You are working for a company that tracks the behaviour of online users using cookies. The users have all agreed to being tracked by clicking on an "Accept all cookies" button, but most can be expected not to have read the terms and conditions involved. You analyse information from the cookies, consisting of data about more or less all parts of the users' digital lives, to serve targeted ads to the users. Is this acceptable? Does the accuracy of your targeting models affect your answer? What if the ads are relevant to the user 99 % of the time? What if they only are relevant 1 % of the time? 
+_Discuss the following._ You are working for a company that tracks the behaviour of online users using cookies. The users have all agreed to be tracked by clicking on an "Accept all cookies" button, but most can be expected not to have read the terms and conditions involved. You analyse information from the cookies, consisting of data about more or less all parts of the users' digital lives, to serve targeted ads to the users. Is this acceptable? Does the accuracy of your targeting models affect your answer? What if the ads are relevant to the user 99 % of the time? What if they only are relevant 1 % of the time? 
 
 ```
 
@@ -505,7 +501,7 @@ _Discuss the following._ You work for a company that has developed a facial reco
 <br>
 
 ```{exercise, label="ch9ethics3"}
-_Discuss the following._ Imagine a model that predicts how likely it is that a suspect committed a crime that they are accused of, and that said model is used in courts of law. The model is described as being faster, fairer, and more impartial than human judges. It is a highly complex black-box machine learning model built on data from previous trials. It uses hundreds of variables, and so it isn't possible to explain why it gives a particular prediction for a particular individual. The model makes correct predictions 99 % of the time. Is using such a model in the judicial system acceptable? What if an innocent person is predicted by the model to be guilty, without an explanation of why it found them to be guilty? What if the model makes correct predictions 90 % or 99.99 % of the time? Are there things that the model shouldn't be allowed to take into account, such as skin colour or income? If so, how can you make sure than such variables aren't implicitly incorporated into the training data?
+_Discuss the following._ Imagine a model that predicts how likely it is that a suspect committed a crime that they are accused of, and that said model is used in courts of law. The model is described as being faster, fairer, and more impartial than human judges. It is a highly complex black-box machine learning model built on data from previous trials. It uses hundreds of variables, and so it isn't possible to explain why it gives a particular prediction for a specific individual. The model makes correct predictions 99 % of the time. Is using such a model in the judicial system acceptable? What if an innocent person is predicted by the model to be guilty, without an explanation of why it found them to be guilty? What if the model makes correct predictions 90 % or 99.99 % of the time? Are there things that the model shouldn't be allowed to take into account, such as skin colour or income? If so, how can you make sure that such variables aren't implicitly incorporated into the training data?
 
 ```
 
@@ -658,12 +654,12 @@ ggplot(bacteria, aes(Time, OD)) +
                 colour = "red")
 ```
 
-The model fits the data that it's been fitted to extremely well - but does very poorly outside of this interval. It overestimates the future growth and underestimates the previous OD.
+The model fits the data that it's been fitted to extremely well - but does very poorly outside this interval. It overestimates the future growth and underestimates the previous OD.
 
 In this example, we had access to data from outside the range used for fitting the model, which allowed us to see that the model performs poorly outside the original data range. In most cases however, we do not have access to such data. When extrapolating outside the range of the training data, there is always a risk that the patterns governing the phenomenons we are studying are completely different, and it is important to be aware of this.
 
 ### Missing data and imputation
-The `estates.xlsx` data that you studied in Exercise \@ref(exr:ch8exc2) contained a lot of missing data, and as a consequence you had to remove a lot of rows from the dataset. Another option is to use _imputation_\index{imputation}, i.e. to add artificially generated observations in place of the missing values. This allows you to use the entire dataset - even those observations where some variables are missing. `caret` has functions for doing this, using methods that are based on some of the machine learning models that we will look at in Section \@ref(mlmethods).
+The `estates.xlsx` data that you studied in Exercise \@ref(exr:ch8exc2) contained a lot of missing data, and as a consequence, you had to remove a lot of rows from the dataset. Another option is to use _imputation_\index{imputation}, i.e. to add artificially generated observations in place of the missing values. This allows you to use the entire dataset - even those observations where some variables are missing. `caret` has functions for doing this, using methods that are based on some of the machine learning models that we will look at in Section \@ref(mlmethods).
 
 To see an example of imputation, let's create some missing values in `mtcars`:
 
@@ -750,7 +746,7 @@ When building predictive models that will be used in a real setting, it is a goo
 
 Apart from testing so many models that one happens to perform well on the test data (thus overfitting), there are several mistakes that can lead to overfitting. One example is data leakage, where part of the test data "leaks" into the training set. This can happen in several ways: maybe you include an explanatory variable that is a function of the response variable (e.g. price per square meter when trying to predict housing prices), or maybe you have twinned or duplicate observations in your data. Another example is to not include all steps of the modelling in the evaluation, for instance by first using the entire dataset to select which variables to include, and then use cross-validation to assess the performance of the model. If you use the data for variable selection, then that needs to be a part of your cross-validation as well.
 
-In contrast to much of traditional statistics, out-of-sample evaluations are example-based. We must be aware that what worked at one point won't necessarily work in the future. It is entirely possible that the phenomenon that we are modelling is non-stationary, meaning that the patterns in the training data differs from the patterns in future data. In that case our model can be overfitted in the sense that it describes patterns that no longer are valid. It is therefore important to not only validate a predictive model once, but to return to it at a later point to check that it still performs as expected. Model evaluation is a task that lasts as long as the model is in use.
+In contrast to much of traditional statistics, out-of-sample evaluations are example-based. We must be aware that what worked at one point won't necessarily work in the future. It is entirely possible that the phenomenon that we are modelling is non-stationary, meaning that the patterns in the training data differ from the patterns in future data. In that case, our model can be overfitted in the sense that it describes patterns that no longer are valid. It is therefore important to not only validate a predictive model once, but to return to it at a later point to check that it still performs as expected. Model evaluation is a task that lasts as long as the model is in use.
 
 
 
@@ -764,11 +760,11 @@ which is known as the _bias-variance decomposition_\index{bias-variance decompos
 
 Regularised regression models are linear or generalised linear models in which a small (typically) bias is introduced in the model fitting. Often this can lead to models with better predictive performance. Moreover, it turns out that this also allows us to fit models in situations where it wouldn't be possible to fit ordinary (generalised) linear models, for example when the number of variables is greater than the sample size.
 
-To introduce the bias, we add a _penalty_ term to the _loss function_ used to fit the regression model. In the case of linear regression, the usual loss function is the squared $\ell_2$ norm, meaning that we seek the estimates $\beta_i$ that minimize
+To introduce the bias, we add a _penalty_ term to the _loss function_ used to fit the regression model. In the case of linear regression, the usual loss function is the squared $\ell_2$ norm, meaning that we seek the estimates $\beta_i$ that minimise
 
 $$\sum_{i=1}^n(y_i-\beta_0-\beta_1 x_{i1}-\beta_2 x_{i2}-\cdots-\beta_p x_{ip})^2.$$
 
-When fitting a regularised regression model, we instead seek the $\beta=(\beta_1,\ldots,\beta_p)$ that minimize
+When fitting a regularised regression model, we instead seek the $\beta=(\beta_1,\ldots,\beta_p)$ that minimise
 
 $$\sum_{i=1}^n(y_i-\beta_0-\beta_1 x_{i1}-\beta_2 x_{i2}-\cdots-\beta_p x_{ip})^2 + p(\beta,\lambda),$$
 
@@ -831,7 +827,7 @@ m2$results[which(m2$results$lambda == m2$finalModel$lambdaOpt),]
 
 Note that the $RMSE$ is substantially lower than that for the ordinary linear regression (`m1`).
 
-In the `metric` setting of `train`, we said that we wanted $RMSE$ to be used to determine which value of $\lambda$ that gives the best model. To get the coefficients of the model with the best choice of $\lambda$, we use `coef` as follows:
+In the `metric` setting of `train`, we said that we wanted $RMSE$ to be used to determine which value of $\lambda$ gives the best model. To get the coefficients of the model with the best choice of $\lambda$, we use `coef` as follows:
 
 ```{r eval=FALSE}
 # Check the coefficients of the best model:
@@ -856,7 +852,7 @@ m2
 $$\sim$$
 
 ```{exercise, label="ch8exc6"}
-Return to the `estates.xlsx` data from the Exercise \@ref(exr:ch8exc2). Refit your linear model, but this time use ridge regression instead. Does the $RMSE$ and $MAE$ improve?
+Return to the `estates.xlsx` data from Exercise \@ref(exr:ch8exc2). Refit your linear model, but this time use ridge regression instead. Does the $RMSE$ and $MAE$ improve?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch8solutions6)
@@ -866,7 +862,7 @@ Return to the `estates.xlsx` data from the Exercise \@ref(exr:ch8exc2). Refit yo
 
 
 ```{exercise, label="ch8exc6b"}
-Return to the `wine` data from the Exercise \@ref(exr:ch8exc5). Fitting the models below will take a few minutes, so be prepared to wait a little.
+Return to the `wine` data from Exercise \@ref(exr:ch8exc5). Fitting the models below will take a few minutes, so be prepared to wait for a little while.
 
 1. Fit a logistic ridge regression model to the data (make sure to add `family = "binomial"` so that you actually fit a logistic model and not a linear model), using all variables in the dataset (except `type`) as explanatory variables. Use 5-fold cross-validation for choosing $\lambda$ and evaluating the model (other options are too computer-intensive). What metric is used when finding the optimal $\lambda$?
 
@@ -914,7 +910,7 @@ rownames(coef(m3$finalModel, m3$finalModel$lambdaOpt))[
 $$\sim$$
 
 ```{exercise, label="ch8exc7"}
-Return to the `estates.xlsx` data from the Exercise \@ref(exr:ch8exc2). Refit your linear model, but this time use the lasso instead. Does the $RMSE$ and $MAE$ improve?
+Return to the `estates.xlsx` data from Exercise \@ref(exr:ch8exc2). Refit your linear model, but this time use the lasso instead. Does the $RMSE$ and $MAE$ improve?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch8solutions7)
@@ -971,7 +967,7 @@ In this example, the ridge regression happened to yield the best fit, in terms o
 $$\sim$$
 
 ```{exercise, label="ch8exc8"}
-Return to the `estates.xlsx` data from the Exercise \@ref(exr:ch8exc2). Refit your linear model, but this time use the elastic net instead. Does the $RMSE$ and $MAE$ improve?
+Return to the `estates.xlsx` data from Exercise \@ref(exr:ch8exc2). Refit your linear model, but this time use the elastic net instead. Does the $RMSE$ and $MAE$ improve?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch8solutions8)
@@ -983,13 +979,13 @@ So far, we have used the values of $\lambda$ and $\alpha$ that give the best res
 * `oneSE`\index{oneSE}, which follows a rule-of-thumb from Breiman et al. (1984), which states that the simplest model within one standard error of the model with the best performance should be chosen,
 * `tolerance`\index{tolerance}, which chooses the simplest model that has a performance within (by default) 1.5 % of the model with the best performance.
 
-Neither of these can be used with LOOCV, but work for other cross-validation schemes and for the bootstrap.
+Neither of these can be used with LOOCV, but work for other cross-validation schemes and the bootstrap.
 
-We can set the rule for selecting the "best" model by using the argument `selectionFunction` in `trainControl`. By default, it uses a function called `best` that simply extracts the model with the best performance. Here are some examples for the lasso:
+We can set the rule for selecting the "best" model using the argument `selectionFunction` in `trainControl`. By default, it uses a function called `best` that simply extracts the model with the best performance. Here are some examples for the lasso:
 
 ```{r eval=FALSE}
 library(caret)
-# Choose best model (this is the default!):
+# Choose the best model (this is the default!):
   tc <- trainControl(method = "repeatedcv",
                      number = 10, repeats = 100)
   m3 <- train(mpg ~ .,
@@ -1068,7 +1064,7 @@ soccer_scaled[, c(4:16)] <- scale(soccer_scaled[, c(4:16)],
                            scale = TRUE)
 ```
 
-Next, we'll run a `for` loop to find the best $\lambda$. Because we are interested in fitting a model to this particular dataset rather than to make predictions, we will use an in-sample measure of model fit, $BIC$, to compare the different values of $\lambda$. The code below is partially adapted from `demo("glmmLasso-soccer")`:
+Next, we'll run a `for` loop to find the best $\lambda$. Because we are interested in fitting a model to this particular dataset rather than making predictions, we will use an in-sample measure of model fit, $BIC$, to compare the different values of $\lambda$. The code below is partially adapted from `demo("glmmLasso-soccer")`:
 
 ```{r eval=FALSE}
 # Number of effects used in model:
@@ -1135,7 +1131,7 @@ coef(opt_m) * sd_table[names(coef(opt_m)),]
 ## Machine learning models {#mlmethods}
 In this section we will have a look at the smorgasbord of machine learning models that can be used for predictive modelling. Some of these models differ from more traditional regression models in that they are black-box models, meaning that we don't always know what's going on inside the fitted model. This is in contrast to e.g. linear regression, where we can look at and try to interpret the $\beta$ coefficients. Another difference is that these models have been developed solely for prediction, and so often lack some of the tools that we associate with traditional regression models, like confidence intervals and p-values.
 
-Because we use `caret` for the model fitting, fitting a new type of model mostly amounts to changing the `method` argument in `train`. But please note that I wrote _mostly_ - there are a few other differences e.g. in the preprocessing of the data that you need to pay attention to. We'll point these out as we go. 
+Because we use `caret` for the model fitting, fitting a new type of model mostly amounts to changing the `method` argument in `train`. But please note that I wrote _mostly_ - there are a few other differences e.g. in the preprocessing of the data to which you need to pay attention. We'll point these out as we go. 
 
 
 
@@ -1172,7 +1168,7 @@ library(rpart.plot)
 prp(m$finalModel)
 ```
 
-What we see here _is_ our machine learning model - our decision tree. When it is used for prediction, the new observation is fed to the top of the tree, where a question about the new observation is asked: "is `tax_value` < 1610"? If the answer is _yes_, the observation continues down the line to the left, to the next question. If the answer is _no_, it continues down the line to the right, to the question "is `tax_value` < 2720`, and so on. After a number of questions, the observations reaches a circle - a so-called leaf node, with a number in it. This number is the predicted selling price of the house, which is based on observations in the training data that belong to the same leaf. When the tree is used for classification, the predicted probability of class A is the proportion of observations from the training data in the leaf that belong to class A.
+What we see here _is_ our machine learning model - our decision tree. When it is used for prediction, the new observation is fed to the top of the tree, where a question about the new observation is asked: "is `tax_value` < 1610"? If the answer is _yes_, the observation continues down the line to the left, to the next question. If the answer is _no_, it continues down the line to the right, to the question "is `tax_value` < 2720`, and so on. After a number of questions, the observation reaches a circle - a so-called _leaf node_, with a number in it. This number is the predicted selling price of the house, which is based on observations in the training data that belong to the same leaf. When the tree is used for classification, the predicted probability of class A is the proportion of observations from the training data in the leaf that belong to class A.
 
 `prp` has a number of parameters that lets us control what our tree plot looks like. `box.palette`, `shadow.col`, `nn`, `type`, `extra`, and `cex` are all useful - read the documentation for `prp` to see how they affect the plot:
 
@@ -1284,7 +1280,7 @@ Fit a random forest model to the `seeds` data from Section \@ref(pca), using `Va
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch8solutions11c)
 
 ### Boosted trees
-Another useful class of ensemble method that relies on combining decision trees are _boosted trees_\index{decision tree!boosting}\index{boosting}. Several different versions are available - we'll use a version called Stochastic Gradient Boosting (Friedman, 2002), that is available through the `gbm` package. Let's start by installing that:
+Another useful class of ensemble method that relies on combining decision trees are _boosted trees_\index{decision tree!boosting}\index{boosting}. Several different versions are available - we'll use a version called Stochastic Gradient Boosting (Friedman, 2002), which is available through the `gbm` package. Let's start by installing that:
 
 ```{r eval=FALSE}
 install.packages("gbm")
@@ -1321,7 +1317,7 @@ We can plot the model performance for different settings:
 ggplot(m)
 ```
 
-As you can see, using more trees (a higher number of boosting iterations) seems to lead to a better model. However, if we use too many trees the model usually overfits, leading to a worse performance in the evaluation:
+As you can see, using more trees (a higher number of boosting iterations) seems to lead to a better model. However, if we use too many trees, the model usually overfits, leading to a worse performance in the evaluation:
 
 ```{r eval=FALSE}
 m <- train(selling_price ~ .,
@@ -1481,7 +1477,7 @@ seeds <- read.table("https://tinyurl.com/seedsdata",
 seeds$Variety <- factor(seeds$Variety)
 ```
 
-When `caret` fits an LDA, it uses the `lda`\index{\texttt{lda}} function from the `MASS` package, which uses the same syntax as `lm`. If we use `lda` directly, without involving `caret`, we can extract the scores (linear combinations of variables) for all observations. We can then plot these, to get something that is similar to a plot of the first two principal components. There is a difference though - PCA seeks to create new variables that summarise as much as possible of the variation in the data, whereas LDA seeks to create new variables that can be used to discriminate between pre-specified groups.
+When `caret` fits an LDA, it uses the `lda`\index{\texttt{lda}} function from the `MASS` package, which uses the same syntax as `lm`. If we use `lda` directly, without involving `caret`, we can extract the scores (linear combinations of variables) for all observations. We can then plot these, to get something similar to a plot of the first two principal components. There is a difference though - PCA seeks to create new variables that summarise as much as possible of the variation in the data, whereas LDA seeks to create new variables that can be used to discriminate between pre-specified groups.
 
 ```{r eval=FALSE}
 # Run an LDA:
@@ -1564,7 +1560,7 @@ There are a number of other nonlinear kernels that can be used, with different h
 $$\sim$$
 
 ```{exercise, label="ch8exc12cc"}
-Fit a SVM to the `wine` data, using all variables (except `type`) as explanatory variables, using a kernel of your choice. Evaluate its performance using repeated 10-fold cross-validation. What is the best $AUC$ that you can get by tuning the model parameters?
+Fit an SVM to the `wine` data, using all variables (except `type`) as explanatory variables, using a kernel of your choice. Evaluate its performance using repeated 10-fold cross-validation. What is the best $AUC$ that you can get by tuning the model parameters?
 
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch8solutions12cc)
@@ -1592,13 +1588,13 @@ Fit SVM classifiers with different kernels to the `seeds` data from Section \@re
 ### Nearest neighbours classifiers
 In classification problems with numeric explanatory variables, a natural approach to finding the class of a new observation is to look at the classes of neighbouring observations, i.e. of observations that are "close" to it in some sense. This requires a distance measure, to measure how close observations are. A kNN\index{kNN}\index{nearest neighbours classifier} classifier classifies the new observations by letting the $k$ Nearest Neighbours – the $k$ points that are the closest to the observation – ”vote” about the class of the new observation. As an example, if $k=3$, two of the three closest neighbours belong to class A, and one of the three closest neighbours belongs to class B, then the new observation will be classified as A. If we like, we can also use the proportion of different classes among the nearest neighbours to get predicted probabilities of the classes (in our example: 2/3 for A, 1/3 for B).
 
-What makes kNN appealing is that it doesn't require a complicated model - instead we simply compare observations to each other. A major downside is that we have to compute the distance between each new observations and all observations in the training data, which can be time-consuming if you have large datasets. Moreover, we consequently have to store the training data indefinitely, as it is used each time we use the model for prediction. This can cause problems e.g. if the data are of a kind that falls under the European GDPR regulation, which limits how long data can be stored, and for what purpose.
+What makes kNN appealing is that it doesn't require a complicated model - instead, we simply compare observations to each other. A major downside is that we have to compute the distance between each new observations and all observations in the training data, which can be time-consuming if you have large datasets. Moreover, we consequently have to store the training data indefinitely, as it is used each time we use the model for prediction. This can cause problems e.g. if the data are of a kind that falls under the European GDPR regulation, which limits how long data can be stored, and for what purpose.
 
 A common choice of distance measure, which is the default when we set `method = "knn"` in `train`\index{\texttt{knn}}, is the common Euclidean distance. We need to take care to standardise our variables before using it, as variables with a high variance otherwise automatically will contribute more to the Euclidean distance. Unlike in regularised regression, `caret` does _not_ do this for us. Instead, we must provide the argument `preProcess = c("center", "scale")` to `train`\index{\texttt{preProcess}}.
 
 An important choice in kNN is what value to use for the parameter $k$. If $k$ is too small, we use too little information, and if $k$ is to large, the classifier will become prone to classify all observations as belonging to the most common class in the training data. $k$ is usually chosen using cross-validation or bootstrapping. To have `caret` find a good choice of $k$ for us (like we did with $\lambda$ in regularised regression models), we use the argument `tuneLength` in train, e.g. `tuneLength = 15` to try 15 different values of $k$.
 
-By now, I think that you've seen enough examples of how to fit models in `caret` that you can figure out how to fit a model with `knn` on your own (using the information above, of course). In the next exercise, you will give kNN a go, using the `wine` data.
+By now, I think you've seen enough examples of how to fit models in `caret` that you can figure out how to fit a model with `knn` on your own (using the information above, of course). In the next exercise, you will give kNN a go, using the `wine` data.
 
 $$\sim$$
 
@@ -1673,7 +1669,7 @@ For model diagnostics, we can use `checkresiduals` to check whether the residual
 checkresiduals(tsmod)
 ```
 
-In this case, the variance of the series seems to increase with time, which the model fails to capture. We therefore see more large residuals that what is expected under the model.
+In this case, the variance of the series seems to increase with time, which the model fails to capture. We therefore see more large residuals than what is expected under the model.
 
 Nevertheless, let's see how we can make a forecast for the next 24 months. The function for this is the aptly named `forecast`\index{\texttt{forecast}}:
 
@@ -1686,7 +1682,7 @@ forecast(tsmod, h = 24)
 autoplot(forecast(tsmod, h = 24))
 ```
 
-In addition to the forecasted curve, `forecast` also provides prediction intervals. By default, these are based on an asymptotic approximation. To obtain bootstrap prediction intervals instead, we can add `boostrap = TRUE` to `forecast`:
+In addition to the forecasted curve, `forecast` also provides prediction intervals. By default, these are based on an asymptotic approximation. To obtain bootstrap prediction intervals instead, we can add `bootstrap = TRUE` to `forecast`:
  
 ```{r eval=FALSE}
 autoplot(forecast(tsmod, h = 24, bootstrap = TRUE))
@@ -1720,7 +1716,7 @@ Return to the `writing` dataset from the `fma` package, that we studied in Exerc
 
 
 ## Deploying models
-The process of making a prediction model available to other users or systems, for instance by running them on a server, is known as _deployment_. In addition to the need for continuous model evaluation, mentioned in Section \@ref(overfittingtestset), you will also need to check that your R code works as intended in the environment in which you deploy your model. For instance, if you developed your model using R 4.1 and then run it on a server running R 3.6 with out-of-date versions of the packages you used, there is a risk that some of the functions that you use behave differently from what you expected. Maybe something that should be a `factor` variable becomes a `character` variable, which breaks that part of your code where you use `levels`. A lot of the time, small changes are enough to make the code work in the new environment (add a line that converts the variable to a `factor`), but sometime large changes can be needed. Likewise, you must check that the model still works after the software is updated on the server.
+The process of making a prediction model available to other users or systems, for instance by running them on a server, is known as _deployment_. In addition to the need for continuous model evaluation, mentioned in Section \@ref(overfittingtestset), you will also need to check that your R code works as intended in the environment in which you deploy your model. For instance, if you developed your model using R 4.1 and then run it on a server running R 3.6 with out-of-date versions of the packages you used, there is a risk that some of the functions that you use behave differently from what you expected. Maybe something that should be a `factor` variable becomes a `character` variable, which breaks that part of your code where you use `levels`. A lot of the time, small changes are enough to make the code work in the new environment (add a line that converts the variable to a `factor`), but sometimes large changes can be needed. Likewise, you must check that the model still works after the software is updated on the server.
 
 ### Creating APIs with `plumber`
 An Application Programming Interface (API)\index{API} is an interface that lets other systems access your R code - which is exactly what you want when you're ready to deploy your model. By using the `plumber`\index{\texttt{plumber}} package to create an API (or a REST API, to be more specific), you can let other systems (a web page, a Java script, a Python script, and so on) access your model. Those systems can call your model, sending some input, and then receive its output in different formats, e.g. a JSON list, a csv file, or an image.
@@ -1752,7 +1748,7 @@ predictions <- function(hp, wt)
 predictions(150, 2)
 ```
 
-To make this accessible to other systems, we save this function in a script called `mtcarsAPI.R` (make sure to save it in your working directory), that looks as follows:
+To make this accessible to other systems, we save this function in a script called `mtcarsAPI.R` (make sure to save it in your working directory), which looks as follows:
 
 ```{r eval=FALSE}
 # Fit the model:
@@ -1769,7 +1765,7 @@ function(hp, wt)
 }
 ```
 
-The only changes that we have made are some additional special comments (`#*`\index{\texttt{\#*}}) which specify what input is expected (parameters `hp` and `wt`) and that the function is called `predictions`. `plumber` uses this information to create the API. The functions made available in an API are referred to as _endpoints_.
+The only changes that we have made are some additional special comments (`#*`\index{\texttt{\#*}}), which specify what input is expected (parameters `hp` and `wt`) and that the function is called `predictions`. `plumber` uses this information to create the API. The functions made available in an API are referred to as _endpoints_.
 
 To make the function available to other systems, we run `pr`\index{\texttt{pr}}\index{\texttt{pr\_run}} as follows:
 

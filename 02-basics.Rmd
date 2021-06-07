@@ -1,7 +1,7 @@
 # The basics {#thebasics}
-Let's start from the very beginning. This chapter acts as an introduction to R, which will show you how to install and work with R and RStudio.
+Let's start from the very beginning. This chapter acts as an introduction to R. It will show you how to install and work with R and RStudio.
 
-After working with the material in this chapter, you will be able to use R to:
+After working with the material in this chapter, you will be able to:
 
 * Create reusable R scripts,
 * Store data in R,

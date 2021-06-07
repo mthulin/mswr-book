@@ -3,7 +3,7 @@
 # Bibliography {-#references}
 
 ## Further reading {-#references1}
-Below is a list of some highly recommended books, that either partially overlap with the content in this book or serve as a natural next step after you finish reading this book. All of these are available for free online.
+Below is a list of some highly recommended books that either partially overlap with the content in this book or serve as a natural next step after you finish reading this book. All of these are available for free online.
 
 * _The R Cookbook_ (https://rc2e.com/) by Long & Teetor (2019) contains tons of examples of how to perform common tasks in R.
 * _R for Data Science_ (https://r4ds.had.co.nz/) by Wickham & Grolemund (2017) is similar in scope to Chapters 2-6 of this book, but with less focus on statistics and greater focus on tidyverse functions.
@@ -19,11 +19,11 @@ Below is a list of some highly recommended books, that either partially overlap 
 
 
 ## Online resources {-#references2}
-* A number of reference cards cards, or cheat sheets, can be found online. I like the one at https://cran.r-project.org/doc/contrib/Short-refcard.pdf
+* A number of reference cards and cheat sheets can be found online. I like the one at https://cran.r-project.org/doc/contrib/Short-refcard.pdf
 * R-bloggers (https://www.r-bloggers.com/) collects blog posts related to R. A great place to discover new tricks and see how others are using R.
 * RSeek (http://rseek.org/) provides a custom Google search with the aim of only returning pages related to R.
-* Stack Overflow (https://stackoverflow.com/questions/tagged/r) and its sister-site Cross Validated (https://stats.stackexchange.com/) are questions-and-answers sites. They are great places for asking questions, and in addition they already contain a ton of useful information about all things R-related. The RStudio Community (https://community.rstudio.com/) is another good option.
-* The R Journal (https://journal.r-project.org/) is an open access peer-reviewed journal containing papers on R, mainly describing new add-on packages and their functionality.
+* Stack Overflow (https://stackoverflow.com/questions/tagged/r) and its sister-site Cross Validated (https://stats.stackexchange.com/) are questions-and-answers sites. They are great places for asking questions, and in addition, they already contain a ton of useful information about all things R-related. The RStudio Community (https://community.rstudio.com/) is another good option.
+* The R Journal (https://journal.r-project.org/) is an open-access peer-reviewed journal containing papers on R, mainly describing new add-on packages and their functionality.
 
 ## References {-#references3}
 
