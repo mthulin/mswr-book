@@ -3788,8 +3788,42 @@ m <- stan_surv(Surv(futime, status) ~ age + type + trt + (1|id),
 m
 ```
 
+### Multivariate survival analysis
+Some trials involve multiple time-to-event outcomes that need to be assessed simultaneously in a multivariate analysis.\index{survival analysis!multivariate} Examples includes studies of the time until each of several correlated symptoms or comorbidities occur. This is analogous to the multivariate testing problem of Section \@ref(hotellingst2), but with right-censored data. To test for group differences for a vector of right-censored outcomes, a multivariate version of the logrank test described in Persson et al. (2019) can be used. It is available through the `MultSurvTests` package:
+
+```{r eval=FALSE}
+install.packages("MultSurvTests")
+```
+
+As an example, we'll use the `diabetes`\index{\texttt{diabetes}} dataset from `MultSurvTest`. It contains two time-to-event outcomes: time until blindness in a treated eye and in an untreated eye.
+
+```{r eval=FALSE}
+library(MultSurvTests)
+# Diabetes data:
+?diabetes
+```
+
+We'll compare two groups that received two different treatments. The survival times (time until blindness) and censoring statuses of the two groups are put in a matrices called `z` and `z.delta`, which are used as input for the test function `perm_mvlogrank`\index{\texttt{perm\_mvlogrank}}:
+
+```{r eval=FALSE}
+# Survival times for the two groups:
+x <- as.matrix(subset(diabetes, LASER==1)[,c(6,8)])
+y <- as.matrix(subset(diabetes, LASER==2)[,c(6,8)])
+
+# Censoring status for the two groups:
+delta.x <- as.matrix(subset(diabetes, LASER==1)[,c(7,9)])
+delta.y <- as.matrix(subset(diabetes, LASER==2)[,c(7,9)])
+
+# Create the input for the test:
+z <- rbind(x, y)
+delta.z <- rbind(delta.x, delta.y)
+
+# Run the test with 499 permutations:
+perm_mvlogrank(B = 499, z, delta.z, n1 = nrow(x))
+```
+
 ### Power estimates for the logrank test
-The `spower`\index{\texttt{spower}} function in `Hmisc` can be used to compute the power of the logrank test in different scenarios using simulation. The helper functions `Weibull2`,  `Lognorm2`, and `Gompertz2`\index{\texttt{Weibull2}}\index{\texttt{Lognorm2}}\index{\texttt{Gompertz2}} can be used to define Weibull, lognormal and Gomperts distributions to sample from, using survival probabilities at different time points rather than the traditional parameters of those distributions. We'll look at an example involving the Weibull distribution here. Additional examples can be found in the function's documentation (`?spower`).
+The `spower`\index{\texttt{spower}} function in `Hmisc` can be used to compute the power of the univariate logrank test in different scenarios using simulation. The helper functions `Weibull2`,  `Lognorm2`, and `Gompertz2`\index{\texttt{Weibull2}}\index{\texttt{Lognorm2}}\index{\texttt{Gompertz2}} can be used to define Weibull, lognormal and Gomperts distributions to sample from, using survival probabilities at different time points rather than the traditional parameters of those distributions. We'll look at an example involving the Weibull distribution here. Additional examples can be found in the function's documentation (`?spower`).
 
 Let's simulate the power of a 3-year follow-up study with two arms (i.e. two groups, control and intervention). First, we define a Weibull distribution for (compliant) control patients. Let's say that their 1-year survival is 0.9 and their 3-year survival is 0.6. To define a Weibull distribution that corresponds to these numbers, we use `Weibull2` as follows:
 

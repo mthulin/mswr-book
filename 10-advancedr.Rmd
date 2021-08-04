@@ -506,14 +506,14 @@ As a P.S., I'll also mention the `matlab`\index{\texttt{matlab}} package, which 
 R is great for a lot of things, but it is obviously not the best choice for every task. There are a number of packages that can be used to harvest the power of other languages, or to integrate your R code with code that you or others have developed in other programming languages. In this section, we'll mention a few of them.
 
 ### Integration with C++
-C++ is commonly used to speed up functions, for instance involving loops that can't be vectorised or parallelised due to dependencies between different iterations. The `Rcpp`\index{\texttt{Rcpp}} package allows you to easily call C++ functions from R, as well as calling R functions from C++. See `vignette("Rcpp-introduction", "Rcpp")` (Eddelbuettel & Balamuta, 2018) for details.
+C++ is commonly used to speed up functions, for instance involving loops that can't be vectorised or parallelised due to dependencies between different iterations. The `Rcpp`\index{\texttt{Rcpp}} package (Eddelbuettel & Balamuta, 2018) allows you to easily call C++ functions from R, as well as calling R functions from C++. See `vignette("Rcpp-introduction", "Rcpp")` for details.
 
 An important difference between R and C++ that you should be aware of is that the indexing of vectors (and similar objects) in C++ starts with 0. So the first element of the vector is element 0, the second is element 1, and so forth. Bear this in mind if you pass a vector and a list of indices to C++ functions.
 
 ### Integration with Python
 The `reticulate`\index{\texttt{reticulate}} package can be used to call Python functions from R. See `vignette("calling_python", "reticulate")` for some examples.
 
-Some care has to be taken when sending data back and forth between R and Python. In R `NA` is used to represent missing data and `NaN` (not a number) is used to represent things that should be numbers but aren't (e.g. the result of computing `0/0`). Perfectly reasonable! However, for reasons unknown to humankind, popular Python packages like Pandas, NumPy and SciKit-Learn use `NaN` instead of `NA` to represent missing data - but only for `double` (`numeric`) variables. `integer` and `logical` variables have no way to represent missing data in Pandas. Tread gently if there are `NA` or `NaN` values in your data.
+Some care has to be taken when sending data back and forth between R and Python. In R `NA` is used to represent missing data and `NaN` (not a number) is used to represent things that should be numbers but aren't (e.g. the result of computing `0/0`). Perfectly reasonable! However, for reasons unknown to humanity, popular Python packages like Pandas, NumPy and SciKit-Learn use `NaN` instead of `NA` to represent missing data - but only for `double` (`numeric`) variables. `integer` and `logical` variables have no way to represent missing data in Pandas. Tread gently if there are `NA` or `NaN` values in your data.
 
 Like in C++, the indexing of vectors (and similar objects) in Python starts with 0.
 

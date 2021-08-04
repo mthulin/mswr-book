@@ -23,7 +23,7 @@ Choose a _download mirror_, i.e. a server to download the software from. I recom
 
 The version of R that you should download is called the (base) binary. Download and run it to install R. You may see mentions of 64-bit and 32-bit versions of R; if you have a modern computer (which in this case means a computer from 2010 or later), you should go with the 64-bit version.
 
-You have now installed the R programming language. Working with it is easier with an _integrated development environment_, or IDE for short, which allows you to easily write, run and debug your code. This book is written for use with the RStudio\index{\texttt{RStudio}} IDE, but 99.9 % of it will work equally well with other IDE's, like Emacs with ESS or Jupyter notebooks.
+You have now installed the R programming language. Working with it is easier with an _integrated development environment_, or IDE for short, which allows you to easily write, run and debug your code. This book is written for use with the RStudio\index{RStudio} IDE, but 99.9 % of it will work equally well with other IDE's, like Emacs with ESS or Jupyter notebooks.
 
 To download RStudio, go to the RStudio download page
 
@@ -43,11 +43,11 @@ When you launch RStudio, you will see three or four panels:
 
 If you launch RStudio by opening a file with R code, the _Script_ panel will appear, otherwise it won't. Don't worry if you don't see it at this point - you'll learn how to open it soon enough.
 
-The _Console_ panel will contain R's startup message, which shows information about which version of R you're running:
+The _Console_ panel will contain R's startup message, which shows information about which version of R you're running^[In addition to the version number, each relase of R has a nickname referencing a Peanuts comic by Charles Schulz. The "Camp Pontanezen" nickname of R 4.1.0 is a reference to the Peanuts comic from February 12, 1986.]:
 
 ```{r eval=FALSE}
-R version 4.0.0 (2020-04-24) -- "Arbor Day"
-Copyright (C) 2020 The R Foundation for Statistical Computing
+R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -592,7 +592,7 @@ R will return non-numerical answers if you try to perform computations where the
 
 
 ## Packages
-R comes with a ton of functions, but of course these cannot cover all possible things that you may want to do with your data. That's where _packages_\index{package} come in. Packages are collections of functions and datasets that add new features to R. Do you want to apply some obscure statistical test to your data? Plot your data on a map? Run C++ code in R? Speed up some part of your data handling process? There are R packages for that. In fact, with more than 15,000 packages and counting, there are R packages for just about anything that you could possibly want to do. All packages have been contributed by the R community - that is, by users like you and me.
+R comes with a ton of functions, but of course these cannot cover all possible things that you may want to do with your data. That's where _packages_\index{package} come in. Packages are collections of functions and datasets that add new features to R. Do you want to apply some obscure statistical test to your data? Plot your data on a map? Run C++ code in R? Speed up some part of your data handling process? There are R packages for that. In fact, with more than 17,000 packages and counting, there are R packages for just about anything that you could possibly want to do. All packages have been contributed by the R community - that is, by users like you and me.
 
 Most R packages are available from CRAN, the official R repository - a network of servers (so-called _mirrors_) around the world. Packages on CRAN are checked before they are published, to make sure that they do what they are supposed to do and don't contain malicious components. Downloading packages from CRAN is therefore generally considered to be safe.
 

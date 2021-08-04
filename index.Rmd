@@ -2,23 +2,24 @@
 title: "Modern Statistics with R"
 subtitle: "From wrangling and exploring data to inference and predictive modelling"
 author: "Måns Thulin"
-date: '`r Sys.Date()` - Draft version 0.9.13'
+date: '`r Sys.Date()` - Version 1.0.0'
 bibliography: ["book.bib"]
 link-citations: true
 documentclass: book
 output:
   bookdown::pdf_book:
     highlight: default
-    toc: yes
+    toc: no
     toc_depth: 3
   bookdown::gitbook:
     split_bib: no
 site: bookdown::bookdown_site
 ---
-
+\setcounter{page}{7}
+\tableofcontents
 
 `r if (knitr::is_html_output()) '# Welcome {-}
-<img style="float: right;" src="mswr-cover.png">This is the online version of the book _Modern Statistics with R_. It is free to use, and always will be. Printed copies will be available in the (Northern hemisphere) summer of 2021.
+<img style="float: right;" src="mswr-cover.png">This is the online version of the book _Modern Statistics with R_. It is free to use, and always will be. Printed copies are available where books are sold (ISBN 9789152701515).
 
 The past decades have transformed the world of statistical data analysis, with new methods, new types of data, and new computational tools. The aim of _Modern Statistics with R_ is to introduce you to key parts of the modern statistical toolkit. It teaches you:
 
@@ -30,18 +31,22 @@ The past decades have transformed the world of statistical data analysis, with n
 - __Ethics in statistics__ - ethical issues and good statistical practice.
 - __R programming__ - writing code that is fast, readable, and (hopefully!) free from bugs.
 
-The book includes plenty of examples and more than 200 exercises with worked solutions.
+The book includes plenty of examples and more than 200 exercises with worked solutions. [The datasets used for the examples and the exercises can be downloaded here.](http://www.modernstatisticswithr.com/data.zip)
 
-Navigate the book using the menu to the left.
+Navigate the book using the menu to the left - or download it as a [pdf file](http://www.modernstatisticswithr.com/_main.pdf) or [eBook](http://www.modernstatisticswithr.com/_main.epub).
 
 The digital version of the book is offered under the Creative Commons [CC BY-NC-SA 4.0.](https://creativecommons.org/licenses/by-nc-sa/4.0/) license, meaning that you are free to redistribute and build upon the material for noncommercial purposes, as long as appropriate credit is given to the author.' else ' '`
+
+To cite this book, please use the following:
+
+* Thulin, M. (2021). _Modern Statistics with R_. Eos Chasma Press. ISBN 9789152701515.
 
 # Introduction
 
 ## Welcome to R
 Welcome to the wonderful world of R!
 
-R is not like other statistical software packages. It is free, versatile, fast, and modern. It has a large and friendly community of users that help answer questions and develop new R tools. With more than 15,000 add-on packages available, R offers more functions for data analysis than any other statistical software. This includes specialised tools for disciplines as varied as political science, environmental chemistry, and astronomy, and new methods come to R long before they come to other programs. R makes it easy to construct reproducible analyses and workflows that allow you to easily repeat the same analysis more than once.
+R is not like other statistical software packages. It is free, versatile, fast, and modern. It has a large and friendly community of users that help answer questions and develop new R tools. With more than 17,000 add-on packages available, R offers more functions for data analysis than any other statistical software. This includes specialised tools for disciplines as varied as political science, environmental chemistry, and astronomy, and new methods come to R long before they come to other programs. R makes it easy to construct reproducible analyses and workflows that allow you to easily repeat the same analysis more than once.
 
 R is not like other programming languages. It was developed by statisticians as a tool for data analysis and not by software engineers as a tool for other programming tasks. It is designed from the ground up to handle data, and that shows. But it is also flexible enough to be used to create interactive web pages, automated reports, and APIs.
 
@@ -90,10 +95,10 @@ The datasets that are used for the examples and exercises can be downloaded from
 
 I have opted not to put the datasets in an R package, because I want you to practice loading data from files, as this is what you'll be doing whenever you use R for real work.
 
-This book is available both in print and as an open access online book. The digital version of the book is offered under the Creative Commons [CC BY-NC-SA 4.0.](https://creativecommons.org/licenses/by-nc-sa/4.0/) license, meaning that you are free to redistribute and build upon the material for non-commercial purposes, as long as appropriate credit is given to the author.
+This book is available both in print and as an open access online book. The digital version of the book is offered under the Creative Commons [CC BY-NC-SA 4.0.](https://creativecommons.org/licenses/by-nc-sa/4.0/) license, meaning that you are free to redistribute and build upon the material for non-commercial purposes, as long as appropriate credit is given to the author. The source for the book is available at it's GitHub page (https://github.com/mthulin/mswr-book).
 
 I am indebted to the numerous readers who have provided feedback on drafts of this book. My sincerest thanks go out to all of you. Any remaining misprints are, obviously, entirely my own fault.
 
-Finally, there are countless packages and statistical methods that deserve a mention but aren't included in the book. Like any author, I've had to draw the line somewhere. If you feel that something is missing, feel free to post an issue on the book's GitHub page (https://github.com/mthulin/mswr-book), and I'll gladly consider it for future revisions.
+Finally, there are countless packages and statistical methods that deserve a mention but aren't included in the book. Like any author, I've had to draw the line somewhere. If you feel that something is missing, feel free to post an issue on the book's GitHub page, and I'll gladly consider it for future revisions.
 
 \vfill

@@ -435,7 +435,7 @@ getwd()
 
 In RStudio, your working directory will usually be shown in the Files panel. If you have opened RStudio by opening a `.R` file, the working directory will be the directory in which the file is stored. You can change the working directory by using the function `setwd`\index{\texttt{setwd}} or selecting _Session > Set Working Directory > Choose Directory_ in the RStudio menu.
 
-Before we discuss paths further, let's look at how you can import data from a file that is in your working directory. [Download the file `philosophers.csv`\index{data!\texttt{philosophers.csv}} from the book's web page](http://www.modernstatisticswithr.com/data.zip) and store it in the folder that is your current working directory. Open it with a spreadsheet software to have a quick look at it. Then open it in a text editor (for instance Notepad for Windows, TextEdit for Mac or Gedit for Linux). Note how commas are used to separate the columns of the data:
+Before we discuss paths further, let's look at how you can import data from a file that is in your working directory. [The data files that we'll use in examples in this book can be downloaded from the book's web page](http://www.modernstatisticswithr.com/data.zip). They are stored in a zip file (`data.zip`) - open it an copy/extract the files to the folder that is your current working directory. Open `philosophers.csv`\index{data!\texttt{philosophers.csv}} with a spreadsheet software to have a quick look at it. Then open it in a text editor (for instance Notepad for Windows, TextEdit for Mac or Gedit for Linux). Note how commas are used to separate the columns of the data:
 
 ```{r eval=FALSE}
 "Name","Description","Born","Deceased","Rating"

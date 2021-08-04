@@ -105,6 +105,8 @@ Long, J.D., Teetor, P. (2019). _The R Cookbook_. O'Reilly Media.
 
 Moen, A., Lind, A.L., Thulin, M., Kamali–Moghaddamd, M., Roe, C., Gjerstad, J., Gordh, T. (2016). Inflammatory serum protein profiling of patients with lumbar radicular pain one year after disc herniation. _International Journal of Inflammation_, 2016, Article ID 3874964.
 
+Persson, I., Arnroth, L., Thulin, M. (2019). Multivariate two-sample permutation tests for trials with multiple time-to-event outcomes. _Pharmaceutical Statistics_, 18(4), 476-485.
+
 Petterson, T., Högbladh, S., Öberg, M. (2019). Organized violence, 1989-2018 and peace agreements. _Journal of Peace Research_, 56(4), 589-603.
 
 Picard, R.R., Cook, R.D. (1984). Cross-validation of regression models. _Journal of the American Statistical Association_, 79(387), 575–583.
