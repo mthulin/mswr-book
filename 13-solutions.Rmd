@@ -4990,7 +4990,8 @@ The resulting confidence interval is very wide!
 
 ```{r eval=FALSE}
 library(survival)
-m <- coxph(Surv(futime, fustat) ~ age + rx, data = ovarian)
+m <- coxph(Surv(futime, fustat) ~ age + rx,
+           data = ovarian, model = TRUE)
 summary(m)
 ```
 
@@ -5006,24 +5007,11 @@ ggcoxzph(cox.zph(m), var = 2)
 
 There is no clear trend over time, and the assumption appears to hold.
 
-2. To compute a bootstrap confidence interval for the hazard ratio for age, we follow the same steps as in the `lung` example, replacing the variables from that model with the variables in our new model.
+2. To compute a bootstrap confidence interval for the hazard ratio for age, we follow the same steps as in the `lung` example, using `censboot_summary`:.
 
 ```{r eval=FALSE}
-boot_fun <- function(data, formula) {
-     m_boot <- coxph(formula, data = data)
-     return(exp(coef(m_boot)))
-}
-
-# Run the resampling:
-library(boot)
-# We use strata = ovarian$rx to get the same number of patients from
-# each treatment group in each sample:
-boot_res <- censboot(ovarian[,c("futime", "fustat", "age", "rx")],
-                     boot_fun, R = 999, strata = ovarian$rx,
-                     formula = formula(Surv(futime, fustat) ~ age + rx))
-
-# Compute the percentile bootstrap confidence interval:
-boot.ci(boot_res, type = "perc", index = 1) # CI for age
+library(boot.pval)
+censboot_summary(m)
 ```
 
 All values in the confidence interval are positive, meaning that we are fairly sure that the hazard increases with age.

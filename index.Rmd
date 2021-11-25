@@ -2,7 +2,7 @@
 title: "Modern Statistics with R"
 subtitle: "From wrangling and exploring data to inference and predictive modelling"
 author: "Måns Thulin"
-date: '`r Sys.Date()` - Version 1.0.0'
+date: '`r Sys.Date()` - Version 1.0.1'
 bibliography: ["book.bib"]
 link-citations: true
 documentclass: book

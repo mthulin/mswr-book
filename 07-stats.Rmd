@@ -3012,7 +3012,7 @@ exp(coef(m))
 $$\sim$$ 
 
 ```{exercise, label="ch7excGLM5"}
-Compute bootstrap confidence intervals for the ratio ratios in the model for the `ships` data.
+Compute bootstrap confidence intervals for the rate ratios in the model for the `ships` data.
 ```
 `r if (knitr::is_html_output()) '[(Click here to go to the solution.)]' else '[]'`(#ch7solutionsGLM5)
 
@@ -3618,6 +3618,11 @@ In this case, the hazard increases with age (multiply the hazard by 1.017 for ea
 The `censboot_summary`\index{\texttt{censboot\_summary}} function from `boot.pval` provides a table of estimates, bootstrap confidence intervals, and bootstrap p-values for the model coefficients. The `coef` argument can be used to specify whether to print confidence intervals for the coefficients or for the exponentiated coeffientes (i.e. the hazard ratios):
 
 ```{r eval=FALSE}
+# censboot_summary requires us to use model = TRUE
+# when fitting our regression model:
+m <- coxph(Surv(time, status) ~ age + sex,
+           data = lung, model = TRUE)
+
 library(boot.pval)
 # Original coefficients:
 censboot_summary(m, type = "perc", coef = "raw")
@@ -3694,12 +3699,12 @@ library(survival)
 
 # Fit Weibull model:
 m_w <- survreg(Surv(time, status) ~ age + sex, data = lung,
-             dist = "weibull")
+             dist = "weibull", model = TRUE)
 summary(m_w)
 
 # Fit log-logistic model:
 m_ll <- survreg(Surv(time, status) ~ age + sex, data = lung,
-             dist = "loglogistic")
+             dist = "loglogistic", model = TRUE)
 summary(m_ll)
 ```
 
