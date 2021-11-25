@@ -1,7 +1,7 @@
 # Modern Statistics with R
 <img style="float: right;" src="mswr-cover.png">
 
-This is the Github repository for the book [_Modern Statistics with R_](http://www.modernstatisticswithr.com), available at http://www.modernstatisticswithr.com. It is free to use, and always will be. Printed copies will be available in the (Northern hemisphere) summer of 2021.
+This is the Github repository for the book [_Modern Statistics with R_](http://www.modernstatisticswithr.com), available at http://www.modernstatisticswithr.com. It is free to use, and always will be. Printed copies are available where books are sold.
 
 The past decades have transformed the world of statistical data analysis, with new methods, new types of data, and new computational tools. The aim of [_Modern Statistics with R_](http://www.modernstatisticswithr.com) is to introduce you to key parts of the modern statistical toolkit. It teaches you:
 
