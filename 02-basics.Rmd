@@ -958,7 +958,7 @@ ggplot(msleep, aes(brainwt, sleep_total, colour = vore)) +
 
 This is slightly better, but we still have a lot of points clustered near the y-axis, and some animals are now missing from the plot. If instead we wished to change the limits of the y-axis, we would have used `ylim` in the same fashion.
 
-Another option is to resacle the x-axis by applying a log transform to the brain weights, which we can do directly in `aes`:\index{log transform}
+Another option is to rescale the x-axis by applying a log transform to the brain weights, which we can do directly in `aes`:\index{log transform}
 
 ```{r eval=FALSE}
 ggplot(msleep, aes(log(brainwt), sleep_total, colour = vore)) + 
